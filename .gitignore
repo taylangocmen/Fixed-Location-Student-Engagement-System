@@ -1,0 +1,45 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+# Unignore make files
+!*MAKEFILE
+!*Makefile
+
+# OSX
+.DS_Store
+
+# Editor / IDE project files
+nbproject/
+.idea/
+
+# Executables & Compiled files
+*.exe
+*.out
+*.app
+*.o
+*.prog
+
+# libraries
+*.a
+*.lib
+
+# Objects
+*.dll
+*.so
+*.dylib
+
+# tar files
+*.tgz
+*.tar
+*.gz
+*.tar.gz
+
+# unuseful log and txt files
+*.log
+*.txt
