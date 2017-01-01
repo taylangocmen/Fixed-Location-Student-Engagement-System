@@ -1,9 +1,35 @@
 #include <ctime>
 #include <iostream>
 #include <string>
-#include <boost/asio.hpp>
 
-using boost::asio::ip::tcp;
+#include "server.h"
+
+Server::Server(boost::asio::io_service &io_service, int port)
+  : _io_service(io_service),
+    _port(port),
+    _acceptor(_io_service, tcp::endpoint(tcp::v4(), _port))
+{
+}
+
+void Server::start()
+{
+  auto connection = std::make_shared<Connection>(_io_service);
+
+  // Asynchronously accept a connection
+  _acceptor.async_accept(connection->getSock(),
+                         [&] (const boost::system::error_code &e)
+                         {
+                            std::cout << "CLIENT CONNECTED!" << std::endl;
+
+                            // Initiate another async accept
+                            start();
+
+                            if (!e)
+                            {
+                              connection->handle();
+                            }
+                         });
+}
 
 std::string make_daytime_string()
 {
@@ -17,20 +43,9 @@ int main()
   try
   {
     boost::asio::io_service io_service;
-
-    tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), 9999));
-
-    for (;;)
-    {
-      tcp::socket socket(io_service);
-      acceptor.accept(socket);
-
-      std::string message = make_daytime_string();
-
-      boost::system::error_code ignored_error;
-      boost::asio::write(socket, boost::asio::buffer(message),
-          boost::asio::transfer_all(), ignored_error);
-    }
+    Server s(io_service, 9999);
+    s.start();
+    io_service.run();
   }
   catch (std::exception& e)
   {
