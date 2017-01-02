@@ -27,6 +27,9 @@ int main(int argc, char* argv[])
     {
       boost::array<char, 128> buf;
       boost::system::error_code error;
+      std::string s = "HELLO!";
+      boost::asio::write(socket, boost::asio::buffer(s),
+           boost::asio::transfer_all(), error);
 
       size_t len = socket.read_some(boost::asio::buffer(buf), error);
 

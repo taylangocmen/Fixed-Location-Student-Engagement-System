@@ -13,11 +13,14 @@ Server::Server(boost::asio::io_service &io_service, int port)
 
 void Server::start()
 {
-  auto connection = std::make_shared<Connection>(_io_service);
+  _connections.emplace(
+    std::make_pair(_currentId,
+                   std::make_shared<Connection>(*this, _currentId)));
+  auto connection = _connections[_currentId++];
 
   // Asynchronously accept a connection
   _acceptor.async_accept(connection->getSock(),
-                         [&] (const boost::system::error_code &e)
+                         [this, connection] (const boost::system::error_code &e)
                          {
                             std::cout << "CLIENT CONNECTED!" << std::endl;
 
@@ -29,6 +32,11 @@ void Server::start()
                               connection->handle();
                             }
                          });
+}
+
+void Server::removeConnection(unsigned int id)
+{
+  _connections.erase(id);
 }
 
 std::string make_daytime_string()
