@@ -10,10 +10,11 @@ Server::Server(boost::asio::io_service &io_service, int port)
     _port(port),
     _acceptor(_io_service, tcp::endpoint(tcp::v4(), _port))
 {
-  _context.set_password_callback([] (size_t, ssl::context::password_purpose)
-                                 {
-                                    return "password";
-                                 });
+  _context.set_password_callback(
+    [] (size_t, ssl::context::password_purpose)
+    {
+      return "password";
+    });
   _context.use_certificate_chain_file("server.pem");
   _context.use_private_key_file("server.pem", ssl::context::pem);
 }
@@ -25,32 +26,27 @@ void Server::start()
                    std::make_shared<Connection>(*this, _currentId)));
   auto connection = _connections[_currentId++];
 
+  auto handler =
+    [this, connection] (const boost::system::error_code &e)
+    {
+      std::cout << "CLIENT CONNECTED!" << std::endl;
+ 
+      // Initiate another async accept
+      start();
+ 
+      if (!e)
+      {
+        connection->handle();
+      }
+    };
+
   // Asynchronously accept a connection
-  _acceptor.async_accept(connection->getSock(),
-                         [this, connection] (const boost::system::error_code &e)
-                         {
-                            std::cout << "CLIENT CONNECTED!" << std::endl;
-
-                            // Initiate another async accept
-                            start();
-
-                            if (!e)
-                            {
-                              connection->handle();
-                            }
-                         });
+  _acceptor.async_accept(connection->getSock(), handler);
 }
 
 void Server::removeConnection(unsigned int id)
 {
   _connections.erase(id);
-}
-
-std::string make_daytime_string()
-{
-  using namespace std; // For time_t, time and ctime;
-  time_t now = time(0);
-  return ctime(&now);
 }
 
 int main()

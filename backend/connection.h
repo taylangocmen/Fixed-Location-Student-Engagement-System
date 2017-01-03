@@ -15,9 +15,9 @@ class Connection
 public:
   Connection(Server &server, unsigned int id);
 
-  void handle();
   bool handleError(const boost::system::error_code &error);
 
+  void handle();
   void doRead();
   void doWrite();
 
