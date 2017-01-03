@@ -2,8 +2,11 @@
 #define CONNECTION_H
 
 #include <boost/asio.hpp>
+#include <boost/asio/ssl.hpp>
 
 using boost::asio::ip::tcp;
+namespace ssl = boost::asio::ssl;
+typedef ssl::stream<tcp::socket> ssl_socket;
 
 class Server;
 
@@ -13,17 +16,16 @@ public:
   Connection(Server &server, unsigned int id);
 
   void handle();
+  bool handleError(const boost::system::error_code &error);
 
-  void handleRead(const boost::system::error_code& error,
-                  size_t bytes_transferred);
-  void handleWrite(const boost::system::error_code& error,
-                   size_t bytes_transferred);
+  void doRead();
+  void doWrite();
 
-  tcp::socket &getSock() { return _sock; }
+  ssl_socket::lowest_layer_type &getSock() { return _sock.lowest_layer(); }
 
 private:
   Server &_server;
-  tcp::socket _sock;
+  ssl_socket _sock;
   unsigned int _id;
   char _buf[256];
 };

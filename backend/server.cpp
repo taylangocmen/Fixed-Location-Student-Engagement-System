@@ -6,9 +6,16 @@
 
 Server::Server(boost::asio::io_service &io_service, int port)
   : _io_service(io_service),
+    _context(ssl::context::tlsv12_server),
     _port(port),
     _acceptor(_io_service, tcp::endpoint(tcp::v4(), _port))
 {
+  _context.set_password_callback([] (size_t, ssl::context::password_purpose)
+                                 {
+                                    return "password";
+                                 });
+  _context.use_certificate_chain_file("server.pem");
+  _context.use_private_key_file("server.pem", ssl::context::pem);
 }
 
 void Server::start()

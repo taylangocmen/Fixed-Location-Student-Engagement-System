@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS=-g -Wall -std=c++11
-LDLIBS=-lboost_system -lpthread
+LDLIBS=-lboost_system -lpthread -lssl -lcrypto
 
 CLIENT_OBJS=client.o
 SERVER_OBJS=server.o connection.o
