@@ -1,31 +1,42 @@
-CC=g++
-CFLAGS=-g -Wall -std=c++11 -Isrc
-LDLIBS=-lboost_system -lpthread -lssl -lcrypto
+CC=gcc
+CXX=g++
+CCFLAGS=-g -Wall -Isrc -Ilibs
+CXXFLAGS=$(CCFLAGS) -std=c++11
 
-SRC_DIR=src
-BIN_DIR=bin
-BUILD_DIR=build
+LDLIBS=-lboost_system -lpthread -lssl -lcrypto -ldl
 
-CLIENT_OBJS=client.o
-SERVER_OBJS=server.o connection.o http_request.o main.o
+SRC_DIR=src/
+LIBS_DIR=libs/
+BIN_DIR=bin/
+BUILD_DIR=build/
 
-CLIENT_TARGET=client
-SERVER_TARGET=server
+LIBS_OBJS=$(addprefix $(BUILD_DIR)$(LIBS_DIR), sqlite3.o)
+CLIENT_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), client.o)
+SERVER_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), server.o connection.o http_request.o main.o)
+
+CLIENT_TARGET=$(BIN_DIR)client
+SERVER_TARGET=$(BIN_DIR)server
 
 .PHONY: all clean
-all: $(BIN_DIR)/$(CLIENT_TARGET) $(BIN_DIR)/$(SERVER_TARGET)
+all: $(CLIENT_TARGET) $(SERVER_TARGET)
 
-$(BIN_DIR)/$(CLIENT_TARGET): $(addprefix build/, $(CLIENT_OBJS))
+$(CLIENT_TARGET): $(CLIENT_OBJS) $(LIBS_OBJS)
 	@mkdir -p bin
-	$(CC) $(CFLAGS) $(LDLIBS) $^ -o $@
+	$(CXX) $(CXXFLAGS) $(LDLIBS) $^ -o $@
 
-$(BIN_DIR)/$(SERVER_TARGET): $(addprefix build/, $(SERVER_OBJS))
+$(SERVER_TARGET): $(SERVER_OBJS) $(LIBS_OBJS)
 	@mkdir -p bin
-	$(CC) $(CFLAGS) $(LDLIBS) $^ -o $@
+	$(CXX) $(CXXFLAGS) $(LDLIBS) $^ -o $@
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p build
-	$(CC) $(CFLAGS) -c $? -o $@
+$(BUILD_DIR)%.o: %.cpp
+	@mkdir -p $(BUILD_DIR)$(SRC_DIR)
+	@mkdir -p $(BUILD_DIR)$(LIBS_DIR)
+	$(CXX) $(CXXFLAGS) -c $? -o $@
+
+$(BUILD_DIR)%.o: %.c
+	@mkdir -p $(BUILD_DIR)$(SRC_DIR)
+	@mkdir -p $(BUILD_DIR)$(LIBS_DIR)
+	$(CC) $(CCFLAGS) -c $? -o $@
 
 clean:
 	@$(RM) -rf build bin
