@@ -29,8 +29,6 @@ void Server::start()
   auto handler =
     [this, connection] (const boost::system::error_code &e)
     {
-      std::cout << "CLIENT CONNECTED!" << std::endl;
- 
       // Initiate another async accept
       start();
  

@@ -8,6 +8,8 @@ using boost::asio::ip::tcp;
 namespace ssl = boost::asio::ssl;
 typedef ssl::stream<tcp::socket> ssl_socket;
 
+#define MAX_REQUEST_LENGTH 8192
+
 class Server;
 
 class Connection
@@ -27,7 +29,7 @@ private:
   Server &_server;
   ssl_socket _sock;
   unsigned int _id;
-  char _buf[256];
+  char _buf[MAX_REQUEST_LENGTH];
 };
 
 #endif

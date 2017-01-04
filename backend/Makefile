@@ -2,23 +2,30 @@ CC=g++
 CFLAGS=-g -Wall -std=c++11 -Isrc
 LDLIBS=-lboost_system -lpthread -lssl -lcrypto
 
+SRC_DIR=src
+BIN_DIR=bin
+BUILD_DIR=build
+
 CLIENT_OBJS=client.o
-SERVER_OBJS=server.o connection.o main.o
+SERVER_OBJS=server.o connection.o http_handler.o main.o
+
+CLIENT_TARGET=client
+SERVER_TARGET=server
 
 .PHONY: all clean
-all: client server
+all: $(BIN_DIR)/$(CLIENT_TARGET) $(BIN_DIR)/$(SERVER_TARGET)
 
-client: $(CLIENT_OBJS)
+$(BIN_DIR)/$(CLIENT_TARGET): $(addprefix build/, $(CLIENT_OBJS))
 	@mkdir -p bin
-	$(CC) $(CFLAGS) $(LDLIBS) $(addprefix build/, $^) -o bin/$@
+	$(CC) $(CFLAGS) $(LDLIBS) $^ -o $@
 
-server: $(SERVER_OBJS)
+$(BIN_DIR)/$(SERVER_TARGET): $(addprefix build/, $(SERVER_OBJS))
 	@mkdir -p bin
-	$(CC) $(CFLAGS) $(LDLIBS) $(addprefix build/, $^) -o bin/$@
+	$(CC) $(CFLAGS) $(LDLIBS) $^ -o $@
 
-%.o: src/%.cpp
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p build
-	$(CC) $(CFLAGS) -c $? -o build/$@
+	$(CC) $(CFLAGS) -c $? -o $@
 
 clean:
 	@$(RM) -rf build bin
