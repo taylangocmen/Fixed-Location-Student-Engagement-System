@@ -7,7 +7,7 @@ BIN_DIR=bin
 BUILD_DIR=build
 
 CLIENT_OBJS=client.o
-SERVER_OBJS=server.o connection.o http_handler.o main.o
+SERVER_OBJS=server.o connection.o http_request.o main.o
 
 CLIENT_TARGET=client
 SERVER_TARGET=server

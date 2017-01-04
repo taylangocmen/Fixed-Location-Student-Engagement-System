@@ -4,20 +4,18 @@
 #include <string>
 #include <unordered_map>
 
-class HTTPHeader
+class HTTPRequest
 {
 public:
+  HTTPRequest(std::string str);
+
+private:
   std::string method;
   std::string url;
   std::string version;
-  std::unordered_map<std::string, std::string> values;
-};
+  std::unordered_map<std::string, std::string> headers;
+  std::string body;
 
-class HTTPHandler
-{
-public:
-  static HTTPHeader parseHeader(std::string request);
-private:
 };
 
 #endif

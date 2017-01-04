@@ -1,6 +1,6 @@
 #include "connection.h"
 #include "server.h"
-#include "http_handler.h"
+#include "http_request.h"
 
 Connection::Connection(Server &server, unsigned int id)
   : _server(server),
@@ -42,15 +42,7 @@ void Connection::doRead()
     {
       if (!handleError(error))
       {
-        HTTPHeader header = HTTPHandler::parseHeader(std::string(_buf, bytes_transferred));
-        std::cout << header.method << std::endl;
-        std::cout << header.url << std::endl;
-        std::cout << header.version << std::endl;
-
-        for (auto pair : header.values)
-        {
-          std::cout << pair.first << " -> " << pair.second << std::endl;
-        }
+        HTTPRequest request(std::string(_buf, bytes_transferred));
 
         doWrite();
       }
