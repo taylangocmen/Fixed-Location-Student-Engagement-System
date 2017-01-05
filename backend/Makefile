@@ -6,7 +6,7 @@ BUILD_DIR=build/
 
 CC=gcc
 CXX=g++
-CCFLAGS=-g -Wall -I$(SRC_DIR) -I$(LIBS_DIR) -I$(LIBS_DIR)sqlite3 -I$(LIBS_DIR)soci/include/
+CCFLAGS=-g -Wall -I$(SRC_DIR) -I$(LIBS_DIR) -I$(LIBS_DIR)sqlite3 -I$(LIBS_DIR)soci/include/ -I$(LIBS_DIR)soci/_$(BUILD_DIR)include/
 CXXFLAGS=$(CCFLAGS) -std=c++11
 
 LDLIBS=-lboost_system -lpthread -lssl -lcrypto -ldl
@@ -20,7 +20,7 @@ SERVER_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), server.o db_connection.o connect
 
 SQLITE3_STATIC_TARGET=$(addprefix $(BUILD_DIR)$(LIB_DIR), libsqlite3.a libsqlite3_i.a)
 SQLITE3_SHELL_TARGET=$(BIN_DIR)sqlite3
-SOCI_TARGET=$(addprefix $(LIBS_DIR)soci/$(LIB_DIR), libsoci_core.a libsoci_sqlite3.a)
+SOCI_TARGET=$(addprefix $(LIBS_DIR)soci/_$(BUILD_DIR)$(LIB_DIR), libsoci_core.a libsoci_sqlite3.a)
 CLIENT_TARGET=$(BIN_DIR)client
 SERVER_TARGET=$(BIN_DIR)server
 
@@ -44,8 +44,9 @@ $(SQLITE3_SHELL_TARGET): $(SQLITE3_SHELL_OBJS)
 	$(CXX) $(CXXFLAGS) $(LDLIBS) $^ -o $@
 
 $(SOCI_TARGET): $(SQLITE3_STATIC_TARGET)
-	cd $(LIBS_DIR)soci && cmake -DSQLITE3_INCLUDE_DIR=../sqlite3/ -DSQLITE_ROOT_DIR=../../build .
-	cd $(LIBS_DIR)soci && make
+	@mkdir -p $(LIBS_DIR)soci/_$(BUILD_DIR)
+	cd $(LIBS_DIR)soci/_$(BUILD_DIR) && cmake -DSQLITE3_INCLUDE_DIR=../../sqlite3/ -DSQLITE_ROOT_DIR=../../build ..
+	cd $(LIBS_DIR)soci/_$(BUILD_DIR) && make
 
 $(BUILD_DIR)%.o: %.cpp
 	@mkdir -p $(@D)
