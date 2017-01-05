@@ -6,6 +6,7 @@
 #include <boost/asio/ssl.hpp>
 
 #include "connection.h"
+#include "db_connection.h"
 
 using boost::asio::ip::tcp;
 namespace ssl = boost::asio::ssl;
@@ -32,6 +33,8 @@ private:
   std::unordered_map<
     unsigned int, std::shared_ptr<Connection>
   > _connections;
+  DBConnection _auth_db;
+
 };
 
 #endif
