@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 
+#include <soci/sqlite3/soci-sqlite3.h>
+
 #include "server.h"
 
 Server::Server(boost::asio::io_service &io_service, int port)
@@ -9,7 +11,7 @@ Server::Server(boost::asio::io_service &io_service, int port)
     _context(ssl::context::tlsv12_server),
     _port(port),
     _acceptor(_io_service, tcp::endpoint(tcp::v4(), _port)),
-    _auth_db("auth.db")
+    _auth_db_pool(AUTH_DB_POOL_SIZE)
 {
   _context.set_password_callback(
     [] (size_t, ssl::context::password_purpose)
@@ -18,6 +20,12 @@ Server::Server(boost::asio::io_service &io_service, int port)
     });
   _context.use_certificate_chain_file("server.pem");
   _context.use_private_key_file("server.pem", ssl::context::pem);
+
+  // Fill the connection pool for the auth database
+  for (auto i = 0; i < AUTH_DB_POOL_SIZE; i++)
+  {
+    _auth_db_pool.at(i).open(soci::sqlite3, AUTH_DB_FILE);
+  }
 }
 
 void Server::start()

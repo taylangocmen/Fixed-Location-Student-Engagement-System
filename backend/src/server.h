@@ -5,8 +5,12 @@
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
 
+#include <soci/soci.h>
+
 #include "connection.h"
-#include "db_connection.h"
+
+#define AUTH_DB_FILE "auth.db"
+#define AUTH_DB_POOL_SIZE 10
 
 using boost::asio::ip::tcp;
 namespace ssl = boost::asio::ssl;
@@ -24,6 +28,8 @@ public:
   boost::asio::io_service &get_io_service() { return _io_service; }
   ssl::context &get_ssl_context() { return _context; }
 
+  soci::connection_pool &auth_pool() { return _auth_db_pool; }
+
 private:
   boost::asio::io_service &_io_service;
   ssl::context _context;
@@ -33,7 +39,7 @@ private:
   std::unordered_map<
     unsigned int, std::shared_ptr<Connection>
   > _connections;
-  DBConnection _auth_db;
+  soci::connection_pool _auth_db_pool;
 
 };
 
