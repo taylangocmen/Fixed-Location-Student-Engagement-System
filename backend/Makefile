@@ -16,7 +16,7 @@ SQLITE3_SHELL_OBJS=$(SQLITE3_LIB_OBJS) $(BUILD_DIR)$(LIBS_DIR)sqlite3/shell.o
 
 LIBS_OBJS=$(SQLITE3_LIB_OBJS) $(addprefix $(BUILD_DIR)$(LIBS_DIR), )
 CLIENT_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), client.o)
-SERVER_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), server.o db_connection.o connection.o http_request.o main.o)
+SERVER_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), server.o db_connection.o connection.o http_request.o http_response.o main.o)
 
 SQLITE3_STATIC_TARGET=$(addprefix $(BUILD_DIR)$(LIB_DIR), libsqlite3.a libsqlite3_i.a)
 SQLITE3_SHELL_TARGET=$(BIN_DIR)sqlite3

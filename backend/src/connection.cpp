@@ -1,6 +1,9 @@
 #include "connection.h"
 #include "server.h"
 #include "http_request.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 Connection::Connection(Server &server, unsigned int id)
   : _server(server),
@@ -13,7 +16,9 @@ bool Connection::handleError(const boost::system::error_code &error)
 {
   if (error)
   {
-    std::cout << "Connection terminated due to error: " << error.message() << std::endl;
+    std::cout << "Connection terminated due to error."
+              << " Message: " << error.message()
+              << " Value: " << error.value() << std::endl;
     _server.removeConnection(_id);
   }
   return error;
@@ -44,7 +49,22 @@ void Connection::doRead()
       {
         HTTPRequest request(std::string(_buf, bytes_transferred));
 
-        doWrite();
+        std::string msg = "{}";
+
+        // TODO: only accept POST and GET requests, write a proper request handler
+        // that takes an HTTPRequest and returns an HTTPResponse
+        // The URL parameter will specify what operation should be made
+        try
+        {
+          auto json = json::parse(request.getBody());
+          msg = json.dump();
+        }
+        catch (std::exception &e)
+        {
+          std::cout << e.what() << std::endl;
+        }
+
+        doWrite(HTTPResponse(200, false, msg));
       }
     };
 
@@ -52,9 +72,9 @@ void Connection::doRead()
   _sock.async_read_some(boost::asio::buffer(_buf), handler);
 }
 
-void Connection::doWrite()
+void Connection::doWrite(HTTPResponse response)
 {
-  std::string msg = "TEST!";
+  std::string msg = response.dump();
   auto handler =
     [this] (const boost::system::error_code &error,
             size_t bytes_transferred)

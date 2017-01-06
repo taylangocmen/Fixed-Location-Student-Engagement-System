@@ -36,9 +36,9 @@ HTTPRequest::HTTPRequest(std::string request)
   size_t index = 0;
 
   // Parse the first line of the HTTP header
-  method = parse(request, " \n", index);
-  url = parse(request, " \n", index);
-  version = parse(request, "\n", index);
+  _method = parse(request, " \n", index);
+  _url = parse(request, " \n", index);
+  _version = parse(request, "\n", index);
 
   // Parse the rest of the header
   while (request[index] != '\n' && index < request.length())
@@ -48,7 +48,7 @@ HTTPRequest::HTTPRequest(std::string request)
     index += 1;
     std::string value = parse(request, "\n", index);
     // Insert into the unordered_map
-    headers[key] = value;
+    _headers[key] = value;
   }
 
   // Skip the '\n' that signals the end of the header
@@ -57,6 +57,6 @@ HTTPRequest::HTTPRequest(std::string request)
   if (index < request.length())
   {
     // The rest of the request is the body
-    body = request.substr(index);
+    _body = request.substr(index);
   }
 }

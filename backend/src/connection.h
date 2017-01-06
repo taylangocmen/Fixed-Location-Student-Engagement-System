@@ -4,6 +4,8 @@
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
 
+#include "http_response.h"
+
 using boost::asio::ip::tcp;
 namespace ssl = boost::asio::ssl;
 typedef ssl::stream<tcp::socket> ssl_socket;
@@ -21,7 +23,7 @@ public:
 
   void handle();
   void doRead();
-  void doWrite();
+  void doWrite(HTTPResponse response);
 
   ssl_socket::lowest_layer_type &getSock() { return _sock.lowest_layer(); }
 

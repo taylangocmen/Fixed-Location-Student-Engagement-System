@@ -20,6 +20,7 @@ Server::Server(boost::asio::io_service &io_service, int port)
     });
   _context.use_certificate_chain_file("server.pem");
   _context.use_private_key_file("server.pem", ssl::context::pem);
+  _context.set_verify_mode(ssl::context::verify_none);
 
   // Fill the connection pool for the auth database
   for (auto i = 0; i < AUTH_DB_POOL_SIZE; i++)
