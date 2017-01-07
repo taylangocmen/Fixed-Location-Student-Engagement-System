@@ -1,7 +1,13 @@
-create table if not exists users (
-  id integer primary key autoincrement,
-  username varchar(20),
-  pass_hash varchar(20),
-  session_token varchar(20)
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY autoincrement,
+  username TEXT NOT NULL,
+  pass_hash TEXT NOT NULL,
+  session_token TEXT,
+  time_joined INTEGER,
+  
+  --last known location
+  latitude REAL,
+  longitude REAL,
+  time_loc INTEGER -- stored as a reference to the unix epoch
 );
 
