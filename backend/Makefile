@@ -30,7 +30,7 @@ POCO_TARGETS=$(addprefix $(LIBS_DIR)poco/$(LIB_DIR)Linux/x86_64/, \
 CLIENT_TARGET=$(BIN_DIR)client
 SERVER_TARGET=$(BIN_DIR)server
 
-SERVER_FILES=server.properties server.pem 568ca.pem
+SERVER_FILES=server.properties certs/server.key certs/server.crt
 SERVER_FILES_TARGET=$(addprefix $(BIN_DIR), $(SERVER_FILES))
 
 .PHONY: all clean
@@ -55,7 +55,8 @@ $(POCO_TARGETS):
 	cd $(LIBS_DIR)poco/ && $(MAKE) POCO_BASE=$(POCO_PATH)/
 
 $(SERVER_FILES_TARGET): $(SERVER_FILES)
-	cp $(@F) $@
+	@mkdir -p $(@D)
+	cp $(@:$(BIN_DIR)%=%) $@
 
 $(BUILD_DIR)%.o: %.cpp
 	@mkdir -p $(@D)
