@@ -7,23 +7,25 @@ BUILD_DIR=build/
 CC=gcc
 CXX=g++
 CCFLAGS=-g -Wall -I$(SRC_DIR) -I$(LIBS_DIR) -I$(LIBS_DIR)sqlite3 \
-	$(addprefix -I$(LIBS_DIR)poco/, Foundation/include/ Util/include/ Net/include/ NetSSL_OpenSSL/include/ Crypto/include/) \
+	$(addprefix -I$(LIBS_DIR)poco/, Foundation/include/ Util/include/ \
+																	JSON/include/ Data/include/ Net/include/ \
+																	NetSSL_OpenSSL/include/ Crypto/include/ \
+																	Data/SQLite/include/) \
 	-L$(LIBS_DIR)poco/$(LIB_DIR)Linux/x86_64/
 CXXFLAGS=$(CCFLAGS) -std=c++11
 
-#-lboost_system -lpthread -lssl -lcrypto -ldl
-LDLIBS=-lpthread -lssl -lcrypto
+LDLIBS=-lpthread -lssl -lcrypto -ldl
 
 SQLITE3_SHELL_OBJS=$(addprefix $(BUILD_DIR)$(LIBS_DIR), sqlite3/sqlite3.o sqlite3/shell.o)
 
 CLIENT_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), client.o)
-SERVER_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), main.o request_handler.o)
+SERVER_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), main.o request_handler.o auth.o)
 
 SQLITE3_SHELL_TARGET=$(BIN_DIR)sqlite3
 
 POCO_PATH=$(shell cd $(LIBS_DIR)poco/ && pwd -P)
 POCO_TARGETS=$(addprefix $(LIBS_DIR)poco/$(LIB_DIR)Linux/x86_64/, \
-	libPocoNetSSL.a libPocoCrypto.a libPocoDataSQLite.a libPocoUtil.a libPocoJSON.a libPocoXML.a libPocoNet.a libPocoFoundation.a)
+	libPocoNetSSL.a libPocoCrypto.a libPocoDataSQLite.a libPocoData.a libPocoUtil.a libPocoJSON.a libPocoXML.a libPocoNet.a libPocoFoundation.a)
 
 CLIENT_TARGET=$(BIN_DIR)client
 SERVER_TARGET=$(BIN_DIR)server
@@ -46,7 +48,7 @@ $(SERVER_TARGET): $(SERVER_OBJS) $(POCO_TARGETS)
 
 $(SQLITE3_SHELL_TARGET): $(SQLITE3_SHELL_OBJS)
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(LDLIBS) -ldl $^ -o $@
+	$(CXX) $(CXXFLAGS) $(LDLIBS) $^ -o $@
 
 $(POCO_TARGETS):
 	cd $(LIBS_DIR)poco/ && ./configure --typical --static --omit=Data/MySQL,Data/ODBC,Data/PostgreSQL --no-tests --no-samples
