@@ -17,7 +17,7 @@ LDLIBS=-lpthread -lssl -lcrypto
 SQLITE3_SHELL_OBJS=$(addprefix $(BUILD_DIR)$(LIBS_DIR), sqlite3/sqlite3.o sqlite3/shell.o)
 
 CLIENT_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), client.o)
-SERVER_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), main.o)
+SERVER_OBJS=$(addprefix $(BUILD_DIR)$(SRC_DIR), main.o request_handler.o)
 
 SQLITE3_SHELL_TARGET=$(BIN_DIR)sqlite3
 

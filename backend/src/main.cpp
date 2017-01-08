@@ -1,76 +1,61 @@
-#include <Poco/Net/HTTPServer.h>
-#include <Poco/Net/HTTPRequestHandler.h>
-#include <Poco/Net/HTTPServerParams.h>
-#include <Poco/Net/HTTPServerRequest.h>
-#include <Poco/Net/HTTPServerResponse.h>
-#include <Poco/Util/ServerApplication.h>
-#include <Poco/DateTime.h>
-#include <Poco/DateTimeFormatter.h>
-#include <Poco/DateTimeFormat.h>
-#include <Poco/Net/SecureServerSocket.h>
 #include <iostream>
 
-class Handler : public Poco::Net::HTTPRequestHandler
-{
+#include <Poco/Net/HTTPServer.h>
+#include <Poco/Net/HTTPServerParams.h>
+#include <Poco/Net/SecureServerSocket.h>
+#include <Poco/Util/ServerApplication.h>
+
+#include "request_handler.h"
+
+#define SERVER_PORT 9999
+#define MAX_QUEUED_CONNECTIONS 100
+#define MAX_THREADS 16
+
+class HTTPRequestHandlerFactory : public Poco::Net::HTTPRequestHandlerFactory {
 public:
-  void handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response)
-  {
-    response.setChunkedTransferEncoding(false);
-    response.setContentType("text/html");
-
-    Poco::DateTime now;
-    std::string timeString(Poco::DateTimeFormatter::format(now, Poco::DateTimeFormat::SORTABLE_FORMAT));
-
-    std::ostream& responseStream = response.send();
-    responseStream << "<html><head><head><title>Simple HTTP Server</title></head>";
-    responseStream << "<body><h1>Current Time</h1><p>";
-    responseStream << ( timeString );
-    responseStream << "</p></body></html>";
-    std::cout << "Received request" << std::endl;
+  Poco::Net::HTTPRequestHandler *createRequestHandler(
+      const Poco::Net::HTTPServerRequest &request) {
+    return new RequestHandler();
   }
 };
 
-class HandlerFactory : public Poco::Net::HTTPRequestHandlerFactory
-{
+class Server : public Poco::Util::ServerApplication {
 public:
-  Poco::Net::HTTPRequestHandler *createRequestHandler(const Poco::Net::HTTPServerRequest &request)
-  {
-    return new Handler();
-  }
-};
-
-class Server : public Poco::Util::ServerApplication
-{
-public:
-  Server()
-  {
+  Server() {
+    // Initialize SSL
     Poco::Net::initializeSSL();
   }
 
-  ~Server()
-  {
+  ~Server() {
+    // Uninitialize SSL
     Poco::Net::uninitializeSSL();
   }
 
 protected:
-  void initialize(Application& self)
-  {
-    loadConfiguration(); // load default configuration files, if present
+  void initialize(Application& self) {
+    // Load {filename}.properties config file
+    loadConfiguration();
     ServerApplication::initialize(self);
   }
 
-  int main(const std::vector<std::string> &args)
-  {
-    Poco::Net::SecureServerSocket socket(9999);
-    Poco::Net::HTTPServerParams *pParams = new Poco::Net::HTTPServerParams();
-    pParams->setMaxQueued(100);
-    pParams->setMaxThreads(16);
-    Poco::Net::HTTPServer server(new HandlerFactory(), socket, pParams);
+  int main(const std::vector<std::string> &args) {
+    Poco::Net::SecureServerSocket socket(SERVER_PORT);
+
+    Poco::Net::HTTPServerParams *params = new Poco::Net::HTTPServerParams();
+    params->setMaxQueued(MAX_QUEUED_CONNECTIONS);
+    params->setMaxThreads(MAX_THREADS);
+
+    Poco::Net::HTTPServer server(new HTTPRequestHandlerFactory(),
+                                 socket,
+                                 params);
+
     server.start();
-    std::cout << "Server started!" << std::endl;
+
+    // Wait for interrupt
     waitForTerminationRequest();
-    std::cout << "Stopping server!" << std::endl;
+
     server.stop();
+
     return EXIT_OK;
   }
 };
