@@ -17,3 +17,4 @@ std::pair<Poco::Data::Session, std::unique_lock<std::mutex>> DBManager::get() {
   return std::make_pair(_sessionPool.get(),
                         std::unique_lock<std::mutex>(_sessionMutex));
 }
+

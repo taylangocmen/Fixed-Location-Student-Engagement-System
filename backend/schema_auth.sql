@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
   username TEXT NOT NULL,
   pass_hash TEXT NOT NULL,
   session_token TEXT,
+  session_token_expiry INTEGER,
   time_joined INTEGER,
   
   --last known location

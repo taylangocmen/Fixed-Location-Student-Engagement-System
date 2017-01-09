@@ -28,16 +28,25 @@ public:
                      Poco::Net::HTTPServerResponse &response);
 
 private:
-  static const std::unordered_map<std::string, HandlerFunc> HANDLERS;
+  static const std::unordered_map<
+    std::string, std::unordered_map<std::string, HandlerFunc>
+  > HANDLERS;
 
   DBManager &_dbManager;
 
   static void errorResponse(Poco::Net::HTTPServerResponse &response,
                             std::string errorMessage);
 
+  bool validateSessionToken(const Poco::URI &uri,
+                            Poco::Net::HTTPServerResponse &response);
+
   void handleLogin(const Poco::URI &uri,
                    Poco::Net::HTTPServerRequest &request,
                    Poco::Net::HTTPServerResponse &response);
+
+  void handleUpdateWifiInfo(const Poco::URI &uri,
+                            Poco::Net::HTTPServerRequest &request,
+                            Poco::Net::HTTPServerResponse &response);
 
 };
 
