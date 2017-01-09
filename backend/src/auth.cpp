@@ -10,15 +10,15 @@ using namespace Poco::Data::Keywords;
 
 #define SESSION_TOKEN_PASSPHRASE "SP[2qD%zB/8u!nXUb-`Z"
 
-bool Auth::authenticate(Poco::Data::SessionPool &pool,
+bool Auth::authenticate(DBManager &dbManager,
                         std::string username,
                         std::string passhash,
                         std::string &sessionToken) {
-  Poco::Data::Session sess(pool.get());
+  auto sess = dbManager.get();
 
   int id;
   Poco::Data::Statement stmt =
-    (sess << "select id from users where username=? and pass_hash=?",
+    (sess.first << "select id from users where username=? and pass_hash=?",
       use(username), use(passhash), into(id), now);
 
   Poco::Data::RecordSet rs(stmt);
@@ -35,7 +35,7 @@ bool Auth::authenticate(Poco::Data::SessionPool &pool,
     sessionToken = Poco::DigestEngine::digestToHex(digest);
 
     stmt =
-      (sess << "update users set session_token=? where id=?",
+      (sess.first << "update users set session_token=? where id=?",
         use(sessionToken), use(id), now);
     return true;
   } else {

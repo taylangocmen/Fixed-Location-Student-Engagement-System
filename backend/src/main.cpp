@@ -1,4 +1,5 @@
 #include <iostream>
+#include <mutex>
 
 #include <Poco/Data/SessionPool.h>
 #include <Poco/Data/SQLite/Connector.h>
@@ -8,24 +9,29 @@
 #include <Poco/Util/ServerApplication.h>
 
 #include "request_handler.h"
+#include "db_manager.h"
 
 #define SERVER_PORT 9999
 #define MAX_QUEUED_CONNECTIONS 100
 #define MAX_THREADS 16
 
+#define DB_TYPE "SQLITE"
+#define DB_NAME "database.db"
+
 class HTTPRequestHandlerFactory : public Poco::Net::HTTPRequestHandlerFactory {
 public:
-  HTTPRequestHandlerFactory(Poco::Data::SessionPool &sessionPool)
-    : _sessionPool(sessionPool) {
+  HTTPRequestHandlerFactory(DBManager &dbManager)
+    : _dbManager(dbManager) {
   }
 
   Poco::Net::HTTPRequestHandler *createRequestHandler(
       const Poco::Net::HTTPServerRequest &request) {
-    return new RequestHandler(_sessionPool);
+    return new RequestHandler(_dbManager);
   }
 
 private:
-  Poco::Data::SessionPool &_sessionPool;
+  DBManager &_dbManager;
+
 };
 
 class Server : public Poco::Util::ServerApplication {
@@ -46,13 +52,13 @@ protected:
     loadConfiguration();
 
     Poco::Data::SQLite::Connector::registerConnector();
-    _sessionPool = new Poco::Data::SessionPool("SQLite", "database.db");
+    _dbManager = new DBManager(DB_TYPE, DB_NAME);
 
     ServerApplication::initialize(self);
   }
 
   void uninitialize() {
-    delete _sessionPool;
+    delete _dbManager;
 
     ServerApplication::uninitialize();
   }
@@ -64,9 +70,10 @@ protected:
     params->setMaxQueued(MAX_QUEUED_CONNECTIONS);
     params->setMaxThreads(MAX_THREADS);
 
-    Poco::Net::HTTPServer server(new HTTPRequestHandlerFactory(*_sessionPool),
-                                 socket,
-                                 params);
+    Poco::Net::HTTPServer server(
+      new HTTPRequestHandlerFactory(*_dbManager),
+      socket,
+      params);
 
     server.start();
 
@@ -79,7 +86,8 @@ protected:
   }
 
 private:
-  Poco::Data::SessionPool *_sessionPool;
+  DBManager *_dbManager;
+
 };
 
 POCO_SERVER_MAIN(Server);

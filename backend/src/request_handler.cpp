@@ -11,23 +11,33 @@ const std::unordered_map<std::string, HandlerFunc> RequestHandler::HANDLERS = {
       "/login", &RequestHandler::handleLogin)
   };
 
-RequestHandler::RequestHandler(Poco::Data::SessionPool &sessionPool)
- : _sessionPool(sessionPool) {
+RequestHandler::RequestHandler(DBManager &dbManager)
+ : _dbManager(dbManager) {
 }
 
 void RequestHandler::handleRequest(Poco::Net::HTTPServerRequest &request,
                                    Poco::Net::HTTPServerResponse &response) {
-  response.setContentType("text/json");
+  try {
+    response.setContentType("text/json");
 
-  // Search for the handler for this URI
-  Poco::URI uri(request.getURI());
-  auto iter = HANDLERS.find(uri.getPath());
+    // Search for the handler for this URI
+    Poco::URI uri(request.getURI());
+    auto iter = HANDLERS.find(uri.getPath());
 
-  // Call the handler if it was found
-  if (iter != HANDLERS.end()) {
-    (this->*iter->second)(uri, request, response);
-  } else {
-    errorResponse(response, "Unknown endpoint");
+    // Call the handler if it was found
+    if (iter != HANDLERS.end()) {
+      (this->*iter->second)(uri, request, response);
+    } else {
+      errorResponse(response, "Unknown endpoint");
+    }
+  } catch (Poco::Data::SessionPoolExhaustedException e) {
+    std::cout << "Caught Poco::Data::SessionPoolExhaustedException: " << e.displayText() << std::endl;
+  } catch (Poco::Exception e) {
+    std::cout << "Caught Poco::Exception: " << e.displayText() << std::endl;
+  } catch (std::exception e) {
+    std::cout << "Caught std::exception: " << e.what() << std::endl;
+  } catch (...) {
+    std::cout << "An unknown error occurred" << std::endl;
   }
 }
 
@@ -63,7 +73,10 @@ void RequestHandler::handleLogin(const Poco::URI &uri,
   if (foundUsername && foundPasshash) {
     std::string sessionToken;
     // Check the user's credentials, and assign a sessionToken if successful
-    if (Auth::authenticate(_sessionPool, username, passhash, sessionToken)) {
+    if (Auth::authenticate(_dbManager,
+                           username,
+                           passhash,
+                           sessionToken)) {
       Poco::JSON::Object::Ptr obj = new Poco::JSON::Object();
       obj->set("session_token", sessionToken);
       obj->stringify(response.send());

@@ -3,12 +3,15 @@
 
 #include <unordered_map>
 #include <string>
+#include <mutex>
 
 #include <Poco/URI.h>
 #include <Poco/Data/SessionPool.h>
 #include <Poco/Net/HTTPRequestHandler.h>
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
+
+#include "db_manager.h"
 
 class RequestHandler;
 
@@ -19,7 +22,7 @@ typedef void (RequestHandler::*HandlerFunc)(const Poco::URI &,
 class RequestHandler : public Poco::Net::HTTPRequestHandler
 {
 public:
-  RequestHandler(Poco::Data::SessionPool &sessionPool);
+  RequestHandler(DBManager &dbManager);
 
   void handleRequest(Poco::Net::HTTPServerRequest &request,
                      Poco::Net::HTTPServerResponse &response);
@@ -27,7 +30,7 @@ public:
 private:
   static const std::unordered_map<std::string, HandlerFunc> HANDLERS;
 
-  Poco::Data::SessionPool &_sessionPool;
+  DBManager &_dbManager;
 
   static void errorResponse(Poco::Net::HTTPServerResponse &response,
                             std::string errorMessage);
