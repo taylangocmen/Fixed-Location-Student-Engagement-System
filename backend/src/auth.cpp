@@ -30,7 +30,7 @@ bool Auth::authenticate(Poco::Data::SessionPool &pool,
     // Use the username, user id, and the current time to build the token
     engine.update(username);
     engine.update(std::to_string(id));
-    engine.update(std::to_string(Poco::Timestamp().epochTime()));
+    engine.update(std::to_string(Poco::Timestamp().epochMicroseconds()));
     auto digest = engine.digest();
     sessionToken = Poco::DigestEngine::digestToHex(digest);
 
