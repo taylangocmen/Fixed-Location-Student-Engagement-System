@@ -13,9 +13,13 @@ var app = express();
 
 var httpServer = http.createServer(app);
 
+var httpsServer = https.createServer(credentials, app);
+
 app.get('/login', auth.handleLogin)
 
-var httpsServer = https.createServer(credentials, app);
+process.on('uncaughtException', function (err) {
+    console.log(err);
+});
 
 httpServer.listen(8080);
 httpsServer.listen(8443);
