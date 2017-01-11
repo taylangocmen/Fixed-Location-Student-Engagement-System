@@ -5,6 +5,7 @@ var express = require('express');
 
 var auth = require('./auth');
 var config = require('./config');
+var wifiInfo = require('./wifi_info');
 
 // Handle the SSL certificate settings
 var privateKey  = fs.readFileSync(config.server.privateKey, 'utf8');
@@ -20,7 +21,9 @@ var app = express();
 var httpsServer = https.createServer(credentials, app);
 
 // Handle each endpoint
-app.get('/login', auth.handleLogin)
+app.get('/login', auth.handleLogin);
+app.get('/register', auth.handleRegister);
+app.get('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
 
 // By default return a 404 Not Found
 app.use(function(req, res){
