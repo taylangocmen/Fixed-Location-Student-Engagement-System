@@ -1,7 +1,7 @@
 var crypto = require('crypto');
 var database = require('./database');
 
-var SESSION_TOKEN_SECRET = 'SP[2qD%zB/8u!nXUb-`Z'
+var config = require('./config');
 
 module.exports = {
   // Login handler
@@ -11,6 +11,7 @@ module.exports = {
     var username = req.query.username;
     var passHash = req.query.pass_hash;
 
+		// TODO: Clean up these nested queries
     // Verify the user's credentials
     connection.query(
         'select id from ece496.users where username=? and pass_hash=?',
@@ -25,7 +26,7 @@ module.exports = {
             var now = (new Date()).getTime();
 
             // Generate a session token from the username, id, and current time
-            var sessionToken = crypto.createHmac('sha256', SESSION_TOKEN_SECRET)
+            var sessionToken = crypto.createHmac('sha256', config.sessionTokenSecret)
               .update(username)
               .update(id.toString())
               .update(now.toString())
