@@ -1,15 +1,13 @@
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, Text, View} from 'react-native';
 
-import {config} from '../../config';
-
 
 export class TestAndroid extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          This is my TestAndroid Component
+          This is my new TestAndroid Component
         </Text>
         <Text style={styles.instructions}>
           To get started, edit index.android.js

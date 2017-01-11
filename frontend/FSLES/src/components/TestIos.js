@@ -7,7 +7,7 @@ export class TestIos extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          This is my TestIos Component
+          This is my new TestIos Component
         </Text>
         <Text style={styles.instructions}>
           To get started, edit index.ios.js
