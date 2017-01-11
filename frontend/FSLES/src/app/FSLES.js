@@ -1,25 +1,13 @@
 import React, {Component} from 'react';
 import {Navigator, StyleSheet} from 'react-native';
 import {Provider} from 'react-redux';
-import {COLOR, ThemeProvider} from 'react-native-material-ui';
 
 import {config} from '../../config';
-import {} from '../components/Container';
+import {Container} from '../components/Container';
 import {TestIos} from '../components/TestIos';
 import {TestAndroid} from '../components/TestAndroid';
 import {TestComponent} from '../components/TestComponent';
 
-
-const uiTheme = {
-  palette: {
-    primaryColor: COLOR.green500,
-  },
-  toolbar: {
-    container: {
-      height: 50,
-    },
-  },
-};
 
 export class FSLES extends Component {
   render() {
@@ -34,9 +22,7 @@ export class FSLES extends Component {
     //     }
     //   />
     // </Provider>;
-    return <ThemeProvider uiTheme={uiTheme}>
-      <TestComponent />
-    </ThemeProvider>
+    return <TestComponent />;
   }
 }
 
