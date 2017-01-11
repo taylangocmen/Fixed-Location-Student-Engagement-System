@@ -11,8 +11,6 @@ var credentials = {key: privateKey, cert: certificate, passphrase: 'password'};
 
 var app = express();
 
-var httpServer = http.createServer(app);
-
 var httpsServer = https.createServer(credentials, app);
 
 app.get('/login', auth.handleLogin)
@@ -21,5 +19,4 @@ process.on('uncaughtException', function (err) {
     console.log(err);
 });
 
-httpServer.listen(8080);
-httpsServer.listen(8443);
+httpsServer.listen(443);

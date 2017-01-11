@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS ece496.users (
   pass_hash TEXT NOT NULL,
   session_token TEXT,
   session_token_expiry BIGINT,
+  is_prof BOOL,
   time_joined BIGINT,
   latitude REAL,
   longitude REAL,
