@@ -2,13 +2,18 @@ import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, Text, View} from 'react-native';
 
 import {config} from '../../config';
-import {LoginPage} from '../scenes/LoginPage'
+import {LoginScene} from '../scenes/LoginScene'
 
 
 export class TestComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {}
+  }
+  
   render() {
     return (
-      <LoginPage />
+      <LoginScene />
     );
   }
 }

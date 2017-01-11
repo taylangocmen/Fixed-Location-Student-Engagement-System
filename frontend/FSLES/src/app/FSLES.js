@@ -4,8 +4,6 @@ import {Provider} from 'react-redux';
 
 import {config} from '../../config';
 import {Container} from '../components/Container';
-import {TestIos} from '../components/TestIos';
-import {TestAndroid} from '../components/TestAndroid';
 import {TestComponent} from '../components/TestComponent';
 
 
@@ -22,7 +20,9 @@ export class FSLES extends Component {
     //     }
     //   />
     // </Provider>;
-    return <TestComponent />;
+    return <Container>
+      <TestComponent />
+    </Container>;
   }
 }
 
