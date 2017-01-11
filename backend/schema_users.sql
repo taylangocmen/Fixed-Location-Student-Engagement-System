@@ -1,13 +1,15 @@
 CREATE TABLE IF NOT EXISTS ece496.users (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  username TEXT NOT NULL,
-  pass_hash TEXT NOT NULL,
-  session_token TEXT,
+  username VARCHAR(20) NOT NULL,
+  pass_hash VARCHAR(20) NOT NULL,
+  name VARCHAR(63),
+  email VARCHAR(127),
+  session_token VARCHAR(20),
   session_token_expiry BIGINT,
-  is_prof BOOL,
+  is_prof BOOLEAN,
   time_joined BIGINT,
-  latitude REAL,
-  longitude REAL,
-  time_loc BIGINT -- stored as a reference to the unix epoch
+  latitude FLOAT,
+  longitude FLOAT,
+  time_loc TIMESTAMP
 );
 
