@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, Text, View} from 'react-native';
 
-export default class FSLES extends Component {
+import {config} from '../../config';
+
+
+export class TestAndroid extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          This is my TestAndroid Component
         </Text>
         <Text style={styles.instructions}>
           To get started, edit index.android.js
@@ -38,5 +41,3 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
-
-AppRegistry.registerComponent('FSLES', () => FSLES);
