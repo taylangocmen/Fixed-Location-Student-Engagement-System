@@ -1,6 +1,7 @@
 var fs = require('fs');
 var https = require('https');
 var express = require('express');
+var bodyParser = require('body-parser');
 
 var auth = require('./auth');
 var config = require('./config');
@@ -19,9 +20,15 @@ var credentials = {
 var app = express();
 var httpsServer = https.createServer(credentials, app);
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
 // Handle each endpoint
 app.get('/login', auth.handleLogin);
-app.get('/register', auth.handleRegister);
+app.post('/register', auth.handleRegister);
 app.get('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
 
 // By default return a 404 Not Found

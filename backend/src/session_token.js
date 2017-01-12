@@ -13,7 +13,7 @@ module.exports = {
     // Return a promise for whether or not the session token is valid
     return new Promise(function(resolve, reject) {
       // Verify that the sessionToken exists
-      if (sessionToken == undefined || sessionToken == null || sessionToken == "") {
+      if (sessionToken == undefined || sessionToken == null || sessionToken == '') {
         reject(missingSessionTokenError);
         return;
       }
