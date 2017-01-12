@@ -4,6 +4,7 @@ import {AppRegistry, StyleSheet, Text, View, TextInput, TouchableOpacity} from '
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
 
+
 export class LoginCard extends Component {
   constructor(props) {
     super(props);
