@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "0.0.0",
+  "description": "Backend server for ECE496 Capstone project",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:taylangocmen/Fixed-Location-Student-Engagement-System.git"
+  },
+  "author": "ECE496 Team 458",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/taylangocmen/Fixed-Location-Student-Engagement-System/issues"
+  },
+  "dependencies": {
+    "express": "~4.14.0",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "https": "~1.0.0",
+    "mysql": "~2.12.0"
+  }
+}
