@@ -11,8 +11,18 @@ export class LoginScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bimodalLoginRegister: true
-    }
+      bimodalLoginRegister: false
+    };
+
+    this.alternateBimodal = this.alternateBimodal.bind(this);
+  }
+
+  alternateBimodal() {
+    const bimodalLoginRegister = !this.state.bimodalLoginRegister;
+
+    this.setState({
+      bimodalLoginRegister
+    });
   }
 
   render() {
@@ -24,10 +34,10 @@ export class LoginScene extends Component {
             Fixed Student Location Engagement System
           </Text>
         </View>
-        <View style={styles.cardContainer}>
+        <View style={styles.mainContainer}>
           {this.state.bimodalLoginRegister ?
-            <LoginCard />:
-            <RegisterCard />
+            <LoginCard alternateBimodal={this.alternateBimodal} />:
+            <RegisterCard alternateBimodal={this.alternateBimodal} />
           }
         </View>
       </View>
@@ -39,6 +49,8 @@ const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
     backgroundColor: colors.officialPrussianBlue,
   },
   titleContainer: {
@@ -52,7 +64,7 @@ const styles = StyleSheet.create({
   },
   loginTitle: {
     flex: 1,
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '600',
     paddingLeft: 5,
     color: colors.basicWhite,
@@ -64,24 +76,11 @@ const styles = StyleSheet.create({
       height: 1,
     },
   },
-  cardContainer: {
+  mainContainer: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'stretch',
-    marginHorizontal: 40,
-    marginVertical: 30,
-    backgroundColor: colors.basicWhite,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.officialPrussianBlue,
-    borderRadius: 16,
-    padding: 16,
-    shadowColor: colors.secondaryBondiBlue,
-    shadowRadius: 12,
-    shadowOpacity: 0.6,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-  },
+    marginBottom: 40,
+  }
 });
