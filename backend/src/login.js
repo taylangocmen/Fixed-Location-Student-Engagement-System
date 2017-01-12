@@ -4,7 +4,7 @@ var database = require('./database');
 var config = require('./config');
 
 var missingParamsError = {error: 'Missing username or pass_hash'};
-var tokenGenerationError = {error: 'An error occurred while generating the session_token, please try again'};
+var unknownError = {error: 'An internal error occurred while generating the session_token, please try again'};
 var invalidCredentialsError = {error: 'Invalid username or password'};
 
 module.exports = {
@@ -15,7 +15,8 @@ module.exports = {
     var username = req.query.username;
     var passHash = req.query.pass_hash;
 
-    if (username == undefined || passHash == undefined) {
+    if (username == undefined || username == null || username == '' ||
+        passHash == undefined || passHash == null || passHash == '') {
       res.send(missingParamsError);
       return;
     }
@@ -26,7 +27,11 @@ module.exports = {
         'select id from ece496.users where username=? and pass_hash=?',
         [username, passHash],
         function(err, rows, fields) {
-          if (err) throw err;
+          if (err) {
+            console.log(err);
+            res.send(unknownError);
+            return;
+          }
 
           // If the user's credentials were correct
           if (rows.length == 1) {
@@ -50,9 +55,14 @@ module.exports = {
                 'select session_token from ece496.users where session_token=?',
                 [sessionToken],
                 function(err, rows, fields) {
-                  if (err) throw err;
+                  if (err) {
+                    console.log(err);
+                    res.send(unknownError);
+                    return;
+                  }
 
                   if (rows.length == 0) {
+                    // TODO: only send the user their session token if there were no errors in the update
                     // Update the user's session token
                     connection.query(
                         'update ece496.users set session_token=?, session_token_expiry=? where id=?',
@@ -62,7 +72,7 @@ module.exports = {
                     // Send the session token in response
                     res.send({session_token: sessionToken});
                   } else {
-                    res.send(tokenGenerationError);
+                    res.send(unknownError);
                   }
                 }
             );
