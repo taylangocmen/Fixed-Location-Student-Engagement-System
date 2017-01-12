@@ -3,6 +3,7 @@ import {AppRegistry, StyleSheet, Text, View} from 'react-native';
 
 import {config} from '../../config';
 import {LoginScene} from '../scenes/LoginScene'
+import {HomeScene} from '../scenes/HomeScene'
 
 
 export class TestComponent extends Component {
@@ -10,10 +11,10 @@ export class TestComponent extends Component {
     super(props);
     this.state = {}
   }
-  
+
   render() {
     return (
-      <LoginScene />
+      <HomeScene />
     );
   }
 }

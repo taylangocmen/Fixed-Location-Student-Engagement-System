@@ -16,8 +16,8 @@ export class RegisterCard extends Component {
       <View style={styles.cardContainer}>
         <View style={styles.rowContainer}>
           <TextInput
-            autoFocus={true}
-            placeholder="given names"
+            autoFocus={false}
+            placeholder="given name(s)"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
           />
@@ -25,7 +25,7 @@ export class RegisterCard extends Component {
         <View style={styles.rowContainer}>
           <TextInput
             autoFocus={false}
-            placeholder="last name"
+            placeholder="last name(s)"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
           />
@@ -141,5 +141,7 @@ const styles = StyleSheet.create({
   alternateText: {
     color: colors.secondaryBondiBlue,
     textAlign: 'center',
+    fontSize: 14,
+    textDecorationLine: 'underline',
   }
 });

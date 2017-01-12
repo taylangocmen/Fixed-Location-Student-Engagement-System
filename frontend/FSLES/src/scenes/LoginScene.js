@@ -12,7 +12,7 @@ export class LoginScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bimodalLoginRegister: false
+      bimodalLoginRegister: true
     };
 
     this.alternateBimodal = this.alternateBimodal.bind(this);

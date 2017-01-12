@@ -16,7 +16,7 @@ export class LoginCard extends Component {
       <View style={styles.cardContainer}>
         <View style={styles.rowContainer}>
           <TextInput
-            autoFocus={true}
+            autoFocus={false}
             placeholder="student #"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
@@ -117,5 +117,7 @@ const styles = StyleSheet.create({
   alternateText: {
     color: colors.secondaryBondiBlue,
     textAlign: 'center',
+    fontSize: 14,
+    textDecorationLine: 'underline',
   }
 });
