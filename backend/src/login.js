@@ -15,6 +15,8 @@ module.exports = {
     var username = req.query.username;
     var passHash = req.query.pass_hash;
 
+    // TODO: Log errors (hopefully with line numbers) when validation fails
+
     if (username == undefined || username == null || username == '' ||
         passHash == undefined || passHash == null || passHash == '') {
       res.send(missingParamsError);
@@ -62,15 +64,21 @@ module.exports = {
                   }
 
                   if (rows.length == 0) {
-                    // TODO: only send the user their session token if there were no errors in the update
                     // Update the user's session token
                     connection.query(
                         'update ece496.users set session_token=?, session_token_expiry=? where id=?',
                         [sessionToken, sessionTokenExpiry, id],
-                        function(err, rows, fields) {});
+                        function(err, rows, fields) {
+                          if (err) {
+                            console.log(err);
+                            res.send(unknownError);
+                            return;
+                          }
 
-                    // Send the session token in response
-                    res.send({session_token: sessionToken});
+                          // Send the session token in response
+                          res.send({session_token: sessionToken});
+                        }
+                    );
                   } else {
                     res.send(unknownError);
                   }
