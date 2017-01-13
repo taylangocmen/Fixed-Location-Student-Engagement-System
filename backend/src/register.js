@@ -18,6 +18,8 @@ module.exports = {
     var email = req.body.email;
     var utorID = req.body.utorid;
 
+    // TODO: Log errors (hopefully with line numbers) when validation fails
+
     // Make sure all of the required parameters are present
     if (username == undefined || username == null || username == '' ||
         passHash == undefined || passHash == null || passHash == '' ||
@@ -54,7 +56,6 @@ module.exports = {
 
         if (rows.length == 0) {
           // Check if the email is taken
-          res.send('Registered!');
           connection.query(
             'select id from ece496.users where email=?',
             [email],
@@ -66,9 +67,23 @@ module.exports = {
               }
 
               if (rows.length == 0) {
-                // TODO: Register the user
-                // TODO: Send a confirmation email to the user and determine how that will work
-                res.send({error: 'Actual registration is not yet implemented'});
+                // Insert the new user into the database
+                connection.query(
+                  'insert into ece496.users(username, pass_hash, email, utorid) values(?, ?, ?, ?)',
+                  [username, passHash, email, utorID],
+                  function(err, rows, fields) {
+                    if (err) {
+                      console.log(err);
+                      res.send(unknownError);
+                      return;
+                    }
+
+                    // Successfully registered
+                    res.send({});
+
+                    // TODO: Send a confirmation email to the user and determine how that will work
+                  }
+                );
               } else {
                 res.send(emailTakenError);
               }
