@@ -3,9 +3,10 @@ var validator = require('validator');
 var database = require('./database');
 var config = require('./config');
 
-var missingParamsError = {error: 'Missing username, pass_hash, email, or utorid'};
+var missingParamsError = {error: 'Missing username, pass_hash, name, email, or utorid'};
 var unknownError = {error: 'An internal error occurred while registering, please try again'};
 var usernameTakenError = {error: 'Username taken'};
+var invalidNameError = {error: 'Name must only contain alphabetical characters'};
 var emailTakenError = {error: 'Email taken'};
 var invalidEmailError = {error: 'Invalid email'};
 var unsupportedEmailError = {error: 'Only mail.utoronto.ca emails are currently supported'};
@@ -15,6 +16,7 @@ module.exports = {
   handle: function(req, res) {
     var username = req.body.username;
     var passHash = req.body.pass_hash;
+    var name = req.body.name;
     var email = req.body.email;
     var utorID = req.body.utorid;
 
@@ -23,9 +25,16 @@ module.exports = {
     // Make sure all of the required parameters are present
     if (username == undefined || username == null || username == '' ||
         passHash == undefined || passHash == null || passHash == '' ||
+        name == undefined || name == null || name == '' ||
         email == undefined || email == null || email == '' ||
         utorID == undefined || utorID == null || utorID == '') {
       res.send(missingParamsError);
+      return;
+    }
+
+    // TODO: Write regex to allow spaces
+    if (!validator.isAlpha(name)) {
+      res.send(invalidNameError);
       return;
     }
 
@@ -69,8 +78,8 @@ module.exports = {
               if (rows.length == 0) {
                 // Insert the new user into the database
                 connection.query(
-                  'insert into ece496.users(username, pass_hash, email, utorid) values(?, ?, ?, ?)',
-                  [username, passHash, email, utorID],
+                  'insert into ece496.users(username, pass_hash, name, email, utorid) values(?, ?, ?, ?, ?)',
+                  [username, passHash, name, email, utorID],
                   function(err, rows, fields) {
                     if (err) {
                       console.log(err);
