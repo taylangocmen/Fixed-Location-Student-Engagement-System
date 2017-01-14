@@ -1,14 +1,23 @@
+This document describes the backend API. Specifically, it defines the HTTP
+method, request, and response for each endpoint.
+
 POST /registration
 {
-  "name": string,
+  "first_name": string,
+  "last_name": string,
   "email": string,
   "utorid": string,
   "pass_hash": string
 }
+Response: {
+}
 
 POST /login
-{
-  "email": string (optional), # One of {email, utorid} is mandatory
-  "utorid": string (optional),
+Request: {
+  "username": string, # Either the user's utorid or email
   "pass_hash": string
 }
+Response: {
+	"session_token": string
+}
+
