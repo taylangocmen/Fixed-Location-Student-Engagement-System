@@ -1,0 +1,3 @@
+rootProject.name = 'FLSES'
+
+include ':app'
