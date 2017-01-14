@@ -26,8 +26,8 @@ module.exports = {
     // TODO: Clean up these nested queries
     // Verify the user's credentials
     connection.query(
-        'select id from ece496.users where username=? and pass_hash=?',
-        [username, passHash],
+        'select id, email, utorid, first_name, last_name from ece496.users where (utorid=? or email=?) and pass_hash=?',
+        [username, username, passHash],
         function(err, rows, fields) {
           if (err) {
             console.log(err);
@@ -37,16 +37,19 @@ module.exports = {
 
           // If the user's credentials were correct
           if (rows.length == 1) {
-            var id = rows[0].id;
-
             // Get the current time
             var now = (new Date()).getTime();
 
-            // Generate a session token from the username, id, and current time
+            // Generate a session token from the user's information,
+            // the current time, and a random number
             var sessionToken = crypto.createHmac('sha256', config.auth.sessionTokenSecret)
-              .update(username.toString())
-              .update(id.toString())
+              .update(rows[0].email.toString())
+              .update(rows[0].utorid.toString())
+              .update(rows[0].first_name.toString())
+              .update(rows[0].last_name.toString())
+              .update(rows[0].id.toString())
               .update(now.toString())
+              .update(Math.random().toString())
               .digest('hex');
 
             // Set the session token expiry to be in 1 day
