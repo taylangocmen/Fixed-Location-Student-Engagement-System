@@ -1,4 +1,2 @@
-bin/
-build/
 *.swp
-*.db
+node_modules/

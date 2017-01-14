@@ -1,3 +1,0 @@
-[submodule "backend/libs/poco"]
-	path = backend/libs/poco
-	url = git@github.com:pocoproject/poco.git

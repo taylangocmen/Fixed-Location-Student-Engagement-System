@@ -1,14 +1,12 @@
-CREATE TABLE IF NOT EXISTS class_id (
-  id INTEGER PRIMARY KEY autoincrement, -- id of the section
-  prof INTEGER NOT NULL, -- prof id
-  sizeof INTEGER NOT NULL, -- number of students in the class
-  time_created INTEGER, -- stored as a reference to the unix epoch
-  
-  -- location of the class
-  latitude REAL,
-  longitude REAL,
-  time_loc INTEGER, -- stored as a reference to the unix epoch
-  radius REAL, 
-  FOREIGN KEY(prof) REFERENCES prof(id)
+CREATE TABLE IF NOT EXISTS ece496.class (
+  id INTEGER PRIMARY KEY AUTO_INCREMENT, # id of the section
+  prof_id INTEGER NOT NULL, # prof id
+  sizeof INTEGER NOT NULL, # number of students in the class
+  time_created TIMESTAMP, 
+  latitude FLOAT, # location of the class
+  longitude FLOAT,
+  time_loc TIMESTAMP, #time when the location was last updated
+  radius FLOAT, 
+  FOREIGN KEY(prof_id) REFERENCES ece496.users(id)
 );
 
