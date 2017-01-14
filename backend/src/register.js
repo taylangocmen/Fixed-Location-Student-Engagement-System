@@ -3,10 +3,16 @@ var validator = require('validator');
 var database = require('./database');
 var config = require('./config');
 
-var missingParamsError = {error: 'Missing username, pass_hash, name, email, or utorid'};
+
+var missingParamsError = {error: 'Missing pass_hash, first_name, last_name, email, or utorid'};
+
 var unknownError = {error: 'An internal error occurred while registering, please try again'};
-var usernameTakenError = {error: 'Username taken'};
-var invalidNameError = {error: 'Name must only contain alphabetical characters'};
+
+var utoridTakenError = {error: 'Utorid taken'};
+
+var invalidFirstNameError = {error: 'First name must only contain alphabetical characters'};
+var invalidLastNameError = {error: 'Last name must only contain alphabetical characters'};
+
 var emailTakenError = {error: 'Email taken'};
 var invalidEmailError = {error: 'Invalid email'};
 var unsupportedEmailError = {error: 'Only mail.utoronto.ca emails are currently supported'};
@@ -14,27 +20,35 @@ var unsupportedEmailError = {error: 'Only mail.utoronto.ca emails are currently 
 module.exports = {
   // Register handler
   handle: function(req, res) {
-    var username = req.body.username;
+    // TODO: Find a way to prevent bots from spamming this endpoint
+
     var passHash = req.body.pass_hash;
-    var name = req.body.name;
+    var firstName = req.body.first_name;
+    var lastName = req.body.last_name;
     var email = req.body.email;
     var utorID = req.body.utorid;
 
     // TODO: Log errors (hopefully with line numbers) when validation fails
 
     // Make sure all of the required parameters are present
-    if (username == undefined || username == null || username == '' ||
-        passHash == undefined || passHash == null || passHash == '' ||
-        name == undefined || name == null || name == '' ||
+    if (passHash == undefined || passHash == null || passHash == '' ||
+        firstName == undefined || firstName == null || firstName == '' ||
+        lastName == undefined || lastName == null || lastName == '' ||
         email == undefined || email == null || email == '' ||
         utorID == undefined || utorID == null || utorID == '') {
       res.send(missingParamsError);
       return;
     }
 
-    // TODO: Write regex to allow spaces
-    if (!validator.isAlpha(name)) {
-      res.send(invalidNameError);
+    // First name must only contain alphabetical characters
+    if (!validator.isAlpha(firstName)) {
+      res.send(invalidFirstNameError);
+      return;
+    }
+
+    // Last name must only contain alphabetical characters
+    if (!validator.isAlpha(lastName)) {
+      res.send(invalidLastNameError);
       return;
     }
 
@@ -52,10 +66,10 @@ module.exports = {
 
     var connection = database.connect();
 
-    // Check if the username is taken
+    // Check if the utorid is taken
     connection.query(
-      'select id from ece496.users where username=?',
-      [username],
+      'select id from ece496.users where utorid=?',
+      [utorid],
       function(err, rows, fields) {
         if (err) {
           console.log(err);
@@ -78,8 +92,8 @@ module.exports = {
               if (rows.length == 0) {
                 // Insert the new user into the database
                 connection.query(
-                  'insert into ece496.users(username, pass_hash, name, email, utorid) values(?, ?, ?, ?, ?)',
-                  [username, passHash, name, email, utorID],
+                  'insert into ece496.users(pass_hash, first_name, last_name, email, utorid) values(?, ?, ?, ?, ?)',
+                  [passHash, firstName, lastName, email, utorID],
                   function(err, rows, fields) {
                     if (err) {
                       console.log(err);
@@ -99,7 +113,7 @@ module.exports = {
             }
           );
         } else {
-          res.send(usernameTakenError);
+          res.send(utoridTakenError);
         }
       }
     );

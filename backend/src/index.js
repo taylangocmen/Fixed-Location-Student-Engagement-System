@@ -27,9 +27,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // Handle each endpoint
-app.get('/login', auth.handleLogin);
+app.post('/login', auth.handleLogin);
 app.post('/register', auth.handleRegister);
-app.get('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
+app.post('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
 
 // By default return a 404 Not Found
 app.use(function(req, res){
