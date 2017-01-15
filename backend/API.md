@@ -9,7 +9,7 @@ This document describes the backend API. Specifically, it defines the HTTP metho
       "Accept": "application/json",
       "Content-Type": "application/json",
       "Authorization": "Bearer " + *session_token*,
-      *// session_token is null if user is not logged in*
+       // session_token is null if user is not logged in
     }
     Body: {
       "first_name": string,
@@ -26,7 +26,7 @@ This document describes the backend API. Specifically, it defines the HTTP metho
       "Accept": "application/json",
       "Content-Type": "application/json",
       "Authorization": "Bearer " + *session_token*,
-      *// session_token is null if user is not logged in*
+      // session_token is null if user is not logged in
 
     }
     Body: {
@@ -39,7 +39,7 @@ This document describes the backend API. Specifically, it defines the HTTP metho
 
 #### GET /courses
     Headers: {
-    "Accept": "application/json",
+      "Accept": "application/json",
       "Content-Type": "application/json",
       "Authorization": "Bearer " + *session_token*,
     }
@@ -53,24 +53,41 @@ This document describes the backend API. Specifically, it defines the HTTP metho
           "course_desc": string,
           "active_questions": {
             *question_id*: {
-              "type": string, *//valid*
+              "type": string, // valid types need to be decided, lets accept multiple choice for now
               "date": string,
               "body": string,
-              ""
+              "options": {
+                //this is the example for the multiple choice question
+                "a": string
+                "b": string
+                "c": string
+                "d": string
+                ...
+              },
+              "answer": {
+                //this should be empty for an active question
+              }
             },
             *question_id*: {
-              
+              ...
             }
+            ...
           }
-          "active_questions"
+          "inactive_questions": {
+            *question_id*: {
+              ...
+              "answer": {
+                *correct_option*: string
+              }
+            }
+            ...
         }
         *course_id*: {
           ...
         }
-        *course_id*...
         ...
       },
       "courses_expired": {
-      
+        ...
       }
     }
