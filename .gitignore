@@ -16,7 +16,9 @@
 
 # Editor / IDE project files
 nbproject/
+node_modules/
 .idea/
+
 
 # Executables & Compiled files
 *.exe
