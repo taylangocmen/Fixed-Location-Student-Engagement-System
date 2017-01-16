@@ -1,10 +1,11 @@
 var fs = require('fs');
-var http = require('http');
 var https = require('https');
 var express = require('express');
+var bodyParser = require('body-parser');
 
 var auth = require('./auth');
 var config = require('./config');
+var wifiInfo = require('./wifi_info');
 
 // Handle the SSL certificate settings
 var privateKey  = fs.readFileSync(config.server.privateKey, 'utf8');
@@ -19,8 +20,16 @@ var credentials = {
 var app = express();
 var httpsServer = https.createServer(credentials, app);
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
 // Handle each endpoint
-app.get('/login', auth.handleLogin)
+app.post('/login', auth.handleLogin);
+app.post('/register', auth.handleRegister);
+app.post('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
 
 // By default return a 404 Not Found
 app.use(function(req, res){
