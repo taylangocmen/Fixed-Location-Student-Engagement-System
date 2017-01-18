@@ -65,7 +65,7 @@ This document describes the backend API. Specifically, it defines the HTTP metho
                 ...
               },
               "answer": {
-                //this should be empty for an active question
+              //this should be empty for an active question
               }
             },
             *question_id*: {
