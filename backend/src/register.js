@@ -69,7 +69,7 @@ module.exports = {
     // Check if the utorid is taken
     connection.query(
       'select id from ece496.users where utorid=?',
-      [utorid],
+      [utorID],
       function(err, rows, fields) {
         if (err) {
           console.log(err);
