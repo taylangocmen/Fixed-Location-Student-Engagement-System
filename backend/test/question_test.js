@@ -52,9 +52,13 @@ describe('Question', function() {
       };
       var res = { send: sinon.spy() };
 
-      // When the new question gets inserted, return that its id is 100
+      // Return that the user is authorized to create questions for this class
       mockdb.query.onCall(0)
-                  .callsArgWith(2, null, {insertId: 100}, null); 
+                  .callsArgWith(2, null, [{id: 5}], null);
+
+      // When the new question gets inserted, return that its id is 100
+      mockdb.query.onCall(1)
+                  .callsArgWith(2, null, {insertId: 100}, null);
 
       question.handle(req, res);
 
@@ -72,9 +76,13 @@ describe('Question', function() {
 
       req.body.question_id = 10;
 
-      // When the question_id gets checked, return that it is invalid
+      // Return that the user is authorized to create questions for this class
       mockdb.query.onCall(0)
-                  .callsArgWith(2, null, [], null); 
+                  .callsArgWith(2, null, [{id: 5}], null);
+
+      // When the question_id gets checked, return that it is invalid
+      mockdb.query.onCall(1)
+                  .callsArgWith(2, null, [], null);
 
       question.handle(req, res);
 
@@ -92,9 +100,13 @@ describe('Question', function() {
 
       req.body.question_id = 10;
 
-      // When the question_id gets checked, return that it has already been asked
+      // Return that the user is authorized to create questions for this class
       mockdb.query.onCall(0)
-                  .callsArgWith(2, null, [{asked: true}], null); 
+                  .callsArgWith(2, null, [{id: 5}], null);
+
+      // When the question_id gets checked, return that it has already been asked
+      mockdb.query.onCall(1)
+                  .callsArgWith(2, null, [{asked: true}], null);
 
 
       question.handle(req, res);
@@ -113,19 +125,41 @@ describe('Question', function() {
 
       req.body.question_id = 10;
 
-      // When the question_id gets checked, return that it hasn't been asked
+      // Return that the user is authorized to create questions for this class
       mockdb.query.onCall(0)
-                  .callsArgWith(2, null, [{asked: false}], null); 
+                  .callsArgWith(2, null, [{id: 5}], null);
+
+      // When the question_id gets checked, return that it hasn't been asked
+      mockdb.query.onCall(1)
+                  .callsArgWith(2, null, [{asked: false}], null);
 
       // When the question gets updated, return success
-      mockdb.query.onCall(1)
-                  .callsArgWith(2, null, null, null); 
+      mockdb.query.onCall(2)
+                  .callsArgWith(2, null, null, null);
 
       question.handle(req, res);
 
       assert.equal(res.send.args.length, 1);
       assert.equal(res.send.args[0].length, 1);
       assert.deepEqual(res.send.args[0][0], {course_id: 5, question_id: 10});
+    });
+
+    it('handles unauthorized users', function() {
+      var req = {
+        query: { session_token: '' },
+        body: JSON.parse(JSON.stringify(newQuestionBody))
+      };
+      var res = { send: sinon.spy() };
+
+      // Return that the user is authorized to create questions for this class
+      mockdb.query.onCall(0)
+                  .callsArgWith(2, null, [], null);
+
+      question.handle(req, res);
+
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.authorizationError);
     });
 
   });

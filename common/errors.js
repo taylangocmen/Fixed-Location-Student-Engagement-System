@@ -26,6 +26,7 @@ module.exports = {
       validationError: {error: 'Could not validate question request'},
       invalidQuestionError: {error: 'Invalid question_id'},
       updatingAskedQuestion: {error: 'Cannot update a question that has already been asked'},
+      authorizationError: {error: 'You are not authorized to create or modify questions in this course'}
     }
   }
 };

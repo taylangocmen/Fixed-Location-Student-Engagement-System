@@ -8,7 +8,7 @@ module.exports = {
     },
     question: {
       'type': 'object',
-       'additionalProperties': false,
+      'additionalProperties': false,
       'properties': {
         'course_id': {
           'type': 'integer',

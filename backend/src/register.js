@@ -21,19 +21,19 @@ module.exports = {
   handle: function(req, res) {
     // TODO: Find a way to prevent bots from spamming this endpoint
     // TODO: Log errors (hopefully with line numbers) when validation fails
-    var pass_hash = undefsafe(req, 'body.pass_hash');
-    var first_name = undefsafe(req, 'body.first_name');
-    var last_name = undefsafe(req, 'body.last_name');
+    var passHash = undefsafe(req, 'body.pass_hash');
+    var firstName = undefsafe(req, 'body.first_name');
+    var lastName = undefsafe(req, 'body.last_name');
     var email = undefsafe(req, 'body.email');
-    var utorid = undefsafe(req, 'body.utorid');
+    var utorID = undefsafe(req, 'body.utorid');
 
     // TODO: use jsonschema to describe the body
     // Make sure all of the required parameters are present
-    if (pass_hash === undefined ||
-        first_name === undefined ||
-        last_name === undefined ||
+    if (passHash === undefined ||
+        firstName === undefined ||
+        lastName === undefined ||
         email === undefined ||
-        utorid === undefined) {
+        utorID === undefined) {
       res.send(errors.missingParamsError);
       return;
     }
