@@ -2,11 +2,7 @@ var Promise = require('promise');
 var undefsafe = require('undefsafe');
 
 var database = require('./database');
-
-var missingSessionTokenError = {error: 'Missing session_token'};
-var validateSessionTokenError = {error: 'Could not validate session_token'};
-var expiredSessionTokenError = {error: 'Expired session token'};
-var invalidSessionTokenError = {error: 'Invalid session token'};
+var errors = require('../../common/errors').POST.session_token;
 
 // TODO: Write tests to exercise each error and a successful validation
 module.exports = {
@@ -15,7 +11,7 @@ module.exports = {
     return new Promise(function(resolve, reject) {
       // Verify that the sessionToken exists
       if (sessionToken == undefined || sessionToken == null || sessionToken == '') {
-        reject(missingSessionTokenError);
+        reject(errors.missingSessionTokenError);
         return;
       }
 
@@ -29,7 +25,7 @@ module.exports = {
           // A mysql error occurred
           if (err) {
             console.log(err);
-            reject(validateSessionTokenError);
+            reject(errors.validateSessionTokenError);
             return;
           }
 
@@ -45,15 +41,15 @@ module.exports = {
                 resolve(id);
               } else {
                 // Expired session token
-                reject(expiredSessionTokenError);
+                reject(errors.expiredSessionTokenError);
               }
             } else {
               // Could not get id or expiry
-              reject(validateSessionTokenError);
+              reject(errors.validateSessionTokenError);
             }
           } else {
             // Invalid session token if rows.length != 1
-            reject(invalidSessionTokenError);
+            reject(errors.invalidSessionTokenError);
           }
         });
     });

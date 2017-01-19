@@ -3,6 +3,7 @@ var rewire = require('rewire');
 var sinon = require('sinon');
 
 var mockdb = require('./mockdb');
+var errors = require('../../common/errors').POST.register;
 
 var register = rewire('../src/register');
 register.__set__('database', mockdb);
@@ -30,7 +31,7 @@ describe('Register', function() {
       register.handle(req, res);
 
       // TODO the error message should be specified in a common module
-      assert(res.send.calledWith(register.__get__('missingParamsError')));
+      assert(res.send.calledWith(errors.missingParamsError));
     });
 
     it('validates alphabetic first names', function() {

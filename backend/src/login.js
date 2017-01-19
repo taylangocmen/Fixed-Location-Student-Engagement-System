@@ -3,10 +3,7 @@ var undefsafe = require('undefsafe');
 
 var database = require('./database');
 var config = require('./config');
-
-var missingParamsError = {error: 'Missing username or pass_hash'};
-var unknownError = {error: 'An internal error occurred while generating the session_token, please try again'};
-var invalidCredentialsError = {error: 'Invalid username or password'};
+var errors = require('../../common/errors').POST.login;
 
 var selectUserInfo =
   'select id, email, utorid, first_name, last_name ' +
@@ -32,7 +29,7 @@ module.exports = {
 
     if (!undefsafe(req, 'body.username') ||
         !undefsafe(req, 'body.pass_hash')) {
-      res.send(missingParamsError);
+      res.send(errors.missingParamsError);
       return;
     }
 
@@ -47,7 +44,7 @@ module.exports = {
         function(err, rows, fields) {
           if (err) {
             console.log(err);
-            res.send(unknownError);
+            res.send(errors.unknownError);
             return;
           }
 
@@ -82,7 +79,7 @@ module.exports = {
                 function(err, rows, fields) {
                   if (err) {
                     console.log(err);
-                    res.send(unknownError);
+                    res.send(errors.unknownError);
                     return;
                   }
 
@@ -94,7 +91,7 @@ module.exports = {
                         function(err, rows, fields) {
                           if (err) {
                             console.log(err);
-                            res.send(unknownError);
+                            res.send(errors.unknownError);
                             return;
                           }
 
@@ -103,12 +100,12 @@ module.exports = {
                         }
                     );
                   } else {
-                    res.send(unknownError);
+                    res.send(errors.unknownError);
                   }
                 }
             );
           } else {
-            res.send(invalidCredentialsError);
+            res.send(errors.invalidCredentialsError);
           }
         }
     );

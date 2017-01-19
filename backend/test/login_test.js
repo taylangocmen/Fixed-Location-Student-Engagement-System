@@ -3,6 +3,7 @@ var rewire = require('rewire');
 var sinon = require('sinon');
 
 var mockdb = require('./mockdb');
+var errors = require('../../common/errors').POST.login;
 
 var login = rewire('../src/login');
 login.__set__('database', mockdb);
@@ -35,7 +36,7 @@ describe('Login', function() {
       login.handle(req, res);
 
       // TODO the error message should be specified in a common module
-      assert(res.send.calledWith(login.__get__('missingParamsError')));
+      assert(res.send.calledWith(errors.missingParamsError));
     });
 
     it('checks credentials', function() {
@@ -50,7 +51,7 @@ describe('Login', function() {
       login.handle(req, res);
 
       // TODO the error message should be specified in a common module
-      assert(res.send.calledWith(login.__get__('invalidCredentialsError')));
+      assert(res.send.calledWith(errors.invalidCredentialsError));
     });
 
     it('does not allow session tokens to be assigned to multiple users', function() {
@@ -69,7 +70,7 @@ describe('Login', function() {
       login.handle(req, res);
 
       // TODO the error message should be specified in a common module
-      assert(res.send.calledWith(login.__get__('unknownError')));
+      assert(res.send.calledWith(errors.unknownError));
     });
 
     it('generates a session token for correct credentials', function() {

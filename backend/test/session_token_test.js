@@ -3,6 +3,7 @@ var rewire = require('rewire');
 var sinon = require('sinon');
 
 var mockdb = require('./mockdb');
+var errors = require('../../common/errors').POST.session_token;
 
 var sessionToken = rewire('../src/session_token');
 sessionToken.__set__('database', mockdb);
@@ -21,7 +22,7 @@ describe('SessionToken', function() {
 
       return promise.then(
         function(id) { assert(false, 'Promise unexpectedly resolved') },
-        function(err) { assert.equal(err, sessionToken.__get__('missingSessionTokenError')) }
+        function(err) { assert.equal(err, errors.missingSessionTokenError) }
       );
     });
 
@@ -36,7 +37,7 @@ describe('SessionToken', function() {
 
       return promise.then(
         function(id) { assert(false, 'Promise unexpectedly resolved') },
-        function(err) { assert.equal(err, sessionToken.__get__('invalidSessionTokenError')) }
+        function(err) { assert.equal(err, errors.invalidSessionTokenError) }
       );
     });
 
@@ -51,7 +52,7 @@ describe('SessionToken', function() {
 
       return promise.then(
         function(id) { assert(false, 'Promise unexpectedly resolved') },
-        function(err) { assert.equal(err, sessionToken.__get__('validateSessionTokenError')) }
+        function(err) { assert.equal(err, errors.validateSessionTokenError) }
       );
     });
 
@@ -66,7 +67,7 @@ describe('SessionToken', function() {
 
       return promise.then(
         function(id) { assert(false, 'Promise unexpectedly resolved') },
-        function(err) { assert.equal(err, sessionToken.__get__('validateSessionTokenError')) }
+        function(err) { assert.equal(err, errors.validateSessionTokenError) }
       );
     });
 
@@ -87,7 +88,7 @@ describe('SessionToken', function() {
 
       return promise.then(
         function(id) { assert(false, 'Promise unexpectedly resolved') },
-        function(err) { assert.equal(err, sessionToken.__get__('expiredSessionTokenError')) }
+        function(err) { assert.equal(err, errors.expiredSessionTokenError) }
       );
     });
 
