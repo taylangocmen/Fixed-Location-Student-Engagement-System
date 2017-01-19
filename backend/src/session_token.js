@@ -30,7 +30,7 @@ module.exports = {
           }
 
           // Check that there was 1 row returned
-          if (rows.length == 1) {
+          if (rows.length === 1) {
             if (undefsafe(rows[0], 'id') && undefsafe(rows[0], 'session_token_expiry')) {
               var id = rows[0].id;
               var expiry = rows[0].session_token_expiry;

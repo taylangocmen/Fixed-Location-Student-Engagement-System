@@ -87,31 +87,22 @@ Headers: {
 	"Authorization": "Bearer " + *session_token*,
 }
 Body: {
+  "course_id": int,
+	"question_id": int (Optional),
 	"timeout": int,
 	"ask_immediately": bool,
-	... (TODO)
+  "question": {
+    "text": string,
+    "correct_answer": int,
+    "answers": [
+      string,
+      ...
+    ]
+  } (Optional only if question_id field is present)
 }
 Response: {
+  "course_id": int,
 	"question_id": int
-}
-```
-
-#### UPDATE /question
-
-This endpoint is used by instructors to initiate questions that were created
-with `ask_immediately=false`.
-TODO: could also allow instructors to modify a question.
-
-```
-Headers: {
-	"Accept": "application/json",
-	"Content-Type": "application/json",
-	"Authorization": "Bearer " + *session_token*,
-}
-Body: {
-	"question_id": int
-}
-Response: {
 }
 ```
 

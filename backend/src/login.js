@@ -23,18 +23,19 @@ var updateSessionToken =
 module.exports = {
   // Login handler
   handle: function(req, res) {
-    var connection = database.connect();
-
     // TODO: Log errors (hopefully with line numbers) when validation fails
 
-    if (!undefsafe(req, 'body.username') ||
-        !undefsafe(req, 'body.pass_hash')) {
+    // TODO: use jsonschema to describe the body
+    var username = undefsafe(req, 'body.username');
+    var passHash = undefsafe(req, 'body.pass_hash');
+
+    if (username === undefined ||
+        passHash === undefined) {
       res.send(errors.missingParamsError);
       return;
     }
 
-    var username = req.body.username;
-    var passHash = req.body.pass_hash;
+    var connection = database.connect();
 
     // TODO: Clean up these nested queries
     // Verify the user's credentials
@@ -49,7 +50,7 @@ module.exports = {
           }
 
           // If the user's credentials were correct
-          if (rows.length == 1) {
+          if (rows.length === 1) {
             var id = rows[0].id;
 
             // Get the current time
@@ -83,7 +84,7 @@ module.exports = {
                     return;
                   }
 
-                  if (rows.length == 0) {
+                  if (rows.length === 0) {
                     // Update the user's session token
                     connection.query(
                         updateSessionToken,

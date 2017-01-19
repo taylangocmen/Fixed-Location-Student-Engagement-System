@@ -20,6 +20,11 @@ module.exports = {
       validateSessionTokenError: {error: 'Could not validate session_token'},
       expiredSessionTokenError: {error: 'Expired session token'},
       invalidSessionTokenError: {error: 'Invalid session token'}
+    },
+    question: {
+      missingQuestionError: {error: 'Either question_id or question must be set'},
+      validationError: {error: 'Could not validate question request'}
     }
   }
 };
+

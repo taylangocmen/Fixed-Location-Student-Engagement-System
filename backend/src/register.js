@@ -5,27 +5,38 @@ var database = require('./database');
 var config = require('./config');
 var errors = require('../../common/errors').POST.register;
 
+var selectUtorID =
+    'select utorid from ece496.users where utorid=?';
+
+var selectEmail =
+    'select email from ece496.users where email=?';
+
+var insertUser =
+    'insert into ece496.users ' +
+    '(pass_hash, first_name, last_name, email, utorid) ' +
+    'values(?, ?, ?, ?, ?)';
+
 module.exports = {
   // Register handler
   handle: function(req, res) {
     // TODO: Find a way to prevent bots from spamming this endpoint
     // TODO: Log errors (hopefully with line numbers) when validation fails
+    var pass_hash = undefsafe(req, 'body.pass_hash');
+    var first_name = undefsafe(req, 'body.first_name');
+    var last_name = undefsafe(req, 'body.last_name');
+    var email = undefsafe(req, 'body.email');
+    var utorid = undefsafe(req, 'body.utorid');
 
+    // TODO: use jsonschema to describe the body
     // Make sure all of the required parameters are present
-    if (!undefsafe(req, 'body.pass_hash') ||
-        !undefsafe(req, 'body.first_name') ||
-        !undefsafe(req, 'body.last_name') ||
-        !undefsafe(req, 'body.email') ||
-        !undefsafe(req, 'body.utorid')) {
+    if (pass_hash === undefined ||
+        first_name === undefined ||
+        last_name === undefined ||
+        email === undefined ||
+        utorid === undefined) {
       res.send(errors.missingParamsError);
       return;
     }
-
-    var passHash = req.body.pass_hash;
-    var firstName = req.body.first_name;
-    var lastName = req.body.last_name;
-    var email = req.body.email;
-    var utorID = req.body.utorid;
 
     // First name must only contain alphabetical characters
     if (!validator.isAlpha(firstName)) {
@@ -55,7 +66,7 @@ module.exports = {
 
     // Check if the utorid is taken
     connection.query(
-      'select id from ece496.users where utorid=?',
+      selectUtorID,
       [utorID],
       function(err, rows, fields) {
         if (err) {
@@ -64,10 +75,10 @@ module.exports = {
           return;
         }
 
-        if (rows.length == 0) {
+        if (rows.length === 0) {
           // Check if the email is taken
           connection.query(
-            'select id from ece496.users where email=?',
+            selectEmail,
             [email],
             function(err, rows, fields) {
               if (err) {
@@ -76,10 +87,10 @@ module.exports = {
                 return;
               }
 
-              if (rows.length == 0) {
+              if (rows.length === 0) {
                 // Insert the new user into the database
                 connection.query(
-                  'insert into ece496.users(pass_hash, first_name, last_name, email, utorid) values(?, ?, ?, ?, ?)',
+                  insertUser,
                   [passHash, firstName, lastName, email, utorID],
                   function(err, rows, fields) {
                     if (err) {
