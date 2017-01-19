@@ -8,36 +8,47 @@ module.exports = {
     },
     question: {
       'type': 'object',
+       'additionalProperties': false,
       'properties': {
-        'course_id': { 'type': 'integer' },
-        'question_id': { 'type': 'integer' },
-        'timeout': { 'type': 'integer' },
-        'ask_immediately': { 'type': 'boolean' },
+        'course_id': {
+          'type': 'integer',
+          'required': true
+        },
+        'question_id': {
+          'type': 'integer'
+        },
+        'timeout': {
+          'type': 'integer',
+          'required': true
+        },
+        'ask_immediately': {
+          'type': 'boolean',
+          'required': true
+        },
         'question': {
           'type': 'object',
+          'required': true,
+          'additionalProperties': false,
           'properties': {
-            'text': { 'type': 'string' },
-            'correct_answer': { 'type': 'integer' },
+            'text': {
+              'type': 'string',
+              'required': true
+            },
+            'correct_answer': {
+              'type': 'integer',
+              'required': true
+            },
             'answers': {
               'type': 'array',
+              'required': true,
               'items': {
                 'type': 'string',
                 'minItems': 1
               }
             }
-          },
-          'required': [
-            'text',
-            'correct_answer',
-            'answers'
-          ]
+          }
         }
-      },
-      'required': [
-        'course_id',
-        'timeout',
-        'ask_immediately'
-      ]
+      }
     }
   }
 };

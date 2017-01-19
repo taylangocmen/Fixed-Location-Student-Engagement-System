@@ -14,7 +14,7 @@ var selectEmail =
 var insertUser =
     'insert into ece496.users ' +
     '(pass_hash, first_name, last_name, email, utorid) ' +
-    'values(?, ?, ?, ?, ?)';
+    'values (?, ?, ?, ?, ?)';
 
 module.exports = {
   // Register handler

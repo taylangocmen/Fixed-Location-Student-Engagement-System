@@ -31,23 +31,39 @@ describe('Question', function() {
       mockdb.reset();
     });
 
-    it('handles create with missing question', function() {
+    it('handles missing parameters', function() {
+      var req = {
+        query: { session_token: '' },
+        body: { }
+      };
+      var res = { send: sinon.spy() };
+
+      question.handle(req, res);
+
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.validationError);
+    });
+
+    it('handles create question', function() {
       var req = {
         query: { session_token: '' },
         body: JSON.parse(JSON.stringify(newQuestionBody))
       };
       var res = { send: sinon.spy() };
 
-      req.body.question = undefined;
+      // When the new question gets inserted, return that its id is 100
+      mockdb.query.onCall(0)
+                  .callsArgWith(2, null, {insertId: 100}, null); 
 
       question.handle(req, res);
 
       assert.equal(res.send.args.length, 1);
       assert.equal(res.send.args[0].length, 1);
-      assert.equal(res.send.args[0][0], errors.missingQuestionError);
+      assert.deepEqual(res.send.args[0][0], {course_id: 5, question_id: 100});
     });
 
-    it('handles update with missing question', function() {
+    it('handles update invalid question', function() {
       var req = {
         query: { session_token: '' },
         body: JSON.parse(JSON.stringify(newQuestionBody))
@@ -55,30 +71,63 @@ describe('Question', function() {
       var res = { send: sinon.spy() };
 
       req.body.question_id = 10;
-      req.body.question = undefined;
+
+      // When the question_id gets checked, return that it is invalid
+      mockdb.query.onCall(0)
+                  .callsArgWith(2, null, [], null); 
 
       question.handle(req, res);
 
       assert.equal(res.send.args.length, 1);
       assert.equal(res.send.args[0].length, 1);
-      assert.equal(res.send.args[0][0].course_id, 5);
-      assert.equal(res.send.args[0][0].question_id, 10);
+      assert.equal(res.send.args[0][0], errors.invalidQuestionError);
     });
 
-    it('successfully validates all parameters', function() {
+    it('handles update asked question', function() {
       var req = {
         query: { session_token: '' },
         body: JSON.parse(JSON.stringify(newQuestionBody))
       };
       var res = { send: sinon.spy() };
 
+      req.body.question_id = 10;
+
+      // When the question_id gets checked, return that it has already been asked
+      mockdb.query.onCall(0)
+                  .callsArgWith(2, null, [{asked: true}], null); 
+
+
       question.handle(req, res);
 
       assert.equal(res.send.args.length, 1);
       assert.equal(res.send.args[0].length, 1);
-      assert.equal(res.send.args[0][0].course_id, 5);
-      assert.equal(res.send.args[0][0].question_id, 1);
+      assert.equal(res.send.args[0][0], errors.updatingAskedQuestion);
     });
+
+    it('handles update question', function() {
+      var req = {
+        query: { session_token: '' },
+        body: JSON.parse(JSON.stringify(newQuestionBody))
+      };
+      var res = { send: sinon.spy() };
+
+      req.body.question_id = 10;
+
+      // When the question_id gets checked, return that it hasn't been asked
+      mockdb.query.onCall(0)
+                  .callsArgWith(2, null, [{asked: false}], null); 
+
+      // When the question gets updated, return success
+      mockdb.query.onCall(1)
+                  .callsArgWith(2, null, null, null); 
+
+      question.handle(req, res);
+
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.deepEqual(res.send.args[0][0], {course_id: 5, question_id: 10});
+    });
+
   });
 });
 

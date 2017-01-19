@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS ece496.questions (
   ans_7 VARCHAR(255),
   ans_8 VARCHAR(255),
   correct_ans_mc INTEGER, # the integer value of the correct answer (2-8) in the case of multiple choice
+  asked BOOLEAN,
+  completed BOOLEAN,
   time_created TIMESTAMP,
   time_opened TIMESTAMP, # soonest time when the prof opened the question
   time_closed TIMESTAMP, # time when the prof closed the question

@@ -2,12 +2,12 @@ module.exports = {
   POST: {
     login: {
       missingParamsError: {error: 'Missing username or pass_hash'},
-      unknownError: {error: 'An internal error occurred while generating the session_token, please try again'},
+      unknownError: {error: 'An internal error occurred, please try again'},
       invalidCredentialsError: {error: 'Invalid username or password'}
     },
     register: {
       missingParamsError: {error: 'Missing pass_hash, first_name, last_name, email, or utorid'},
-      unknownError: {error: 'An internal error occurred while registering, please try again'},
+      unknownError: {error: 'An internal error occurred, please try again'},
       utoridTakenError: {error: 'Utorid taken'},
       invalidFirstNameError: {error: 'First name must only contain alphabetical characters'},
       invalidLastNameError: {error: 'Last name must only contain alphabetical characters'},
@@ -22,8 +22,10 @@ module.exports = {
       invalidSessionTokenError: {error: 'Invalid session token'}
     },
     question: {
-      missingQuestionError: {error: 'Either question_id or question must be set'},
-      validationError: {error: 'Could not validate question request'}
+      unknownError: {error: 'An internal error occurred, please try again'},
+      validationError: {error: 'Could not validate question request'},
+      invalidQuestionError: {error: 'Invalid question_id'},
+      updatingAskedQuestion: {error: 'Cannot update a question that has already been asked'},
     }
   }
 };
