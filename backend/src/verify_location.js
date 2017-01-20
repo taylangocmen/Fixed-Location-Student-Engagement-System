@@ -14,7 +14,7 @@ var handleResponses = function(err, rows, fields) {
 
   // Build an adjacency matrix representing edges between users
   var adj = new Array(rows.length);
-  
+
   // Build a map of device_id -> index into adj
   var deviceToIndex = {};
   for (var i = 0; i < rows.length; i++) {
@@ -41,6 +41,20 @@ var handleResponses = function(err, rows, fields) {
   // TODO for each user, perform some heuristic to determine whether they
   // are in the class or not. Either by dividing the class into subgroups,
   // or by expecting each user to see a certain percentage of the rest of the class
+
+  for (var i = 0; i < rows.length; i++) {
+    var outgoing = 0, incoming = 0;
+    for (var j = 0; j < rows.length; j++) {
+      if (adj[i][j]) {
+        outgoing++;
+      }
+      if (adj[j][i]) {
+        incoming++;
+      }
+    }
+    // TODO: If the number of outgoing and incoming edges are high enough,
+    // accept this user's answer. Update the database to reflect that
+  }
 };
 
 module.exports = {
