@@ -3,10 +3,7 @@ var undefsafe = require('undefsafe');
 
 var database = require('./database');
 var config = require('./config');
-
-var missingParamsError = {error: 'Missing username or pass_hash'};
-var unknownError = {error: 'An internal error occurred while generating the session_token, please try again'};
-var invalidCredentialsError = {error: 'Invalid username or password'};
+var errors = require('../../common/errors').POST.login;
 
 var selectUserInfo =
   'select id, email, utorid, first_name, last_name ' +
@@ -26,18 +23,19 @@ var updateSessionToken =
 module.exports = {
   // Login handler
   handle: function(req, res) {
-    var connection = database.connect();
-
     // TODO: Log errors (hopefully with line numbers) when validation fails
 
-    if (!undefsafe(req, 'body.username') ||
-        !undefsafe(req, 'body.pass_hash')) {
-      res.send(missingParamsError);
+    // TODO: use jsonschema to describe the body
+    var username = undefsafe(req, 'body.username');
+    var passHash = undefsafe(req, 'body.pass_hash');
+
+    if (username === undefined ||
+        passHash === undefined) {
+      res.send(errors.missingParamsError);
       return;
     }
 
-    var username = req.body.username;
-    var passHash = req.body.pass_hash;
+    var connection = database.connect();
 
     // TODO: Clean up these nested queries
     // Verify the user's credentials
@@ -47,12 +45,12 @@ module.exports = {
         function(err, rows, fields) {
           if (err) {
             console.log(err);
-            res.send(unknownError);
+            res.send(errors.unknownError);
             return;
           }
 
           // If the user's credentials were correct
-          if (rows.length == 1) {
+          if (rows.length === 1) {
             var id = rows[0].id;
 
             // Get the current time
@@ -82,11 +80,11 @@ module.exports = {
                 function(err, rows, fields) {
                   if (err) {
                     console.log(err);
-                    res.send(unknownError);
+                    res.send(errors.unknownError);
                     return;
                   }
 
-                  if (rows.length == 0) {
+                  if (rows.length === 0) {
                     // Update the user's session token
                     connection.query(
                         updateSessionToken,
@@ -94,7 +92,7 @@ module.exports = {
                         function(err, rows, fields) {
                           if (err) {
                             console.log(err);
-                            res.send(unknownError);
+                            res.send(errors.unknownError);
                             return;
                           }
 
@@ -103,12 +101,12 @@ module.exports = {
                         }
                     );
                   } else {
-                    res.send(unknownError);
+                    res.send(errors.unknownError);
                   }
                 }
             );
           } else {
-            res.send(invalidCredentialsError);
+            res.send(errors.invalidCredentialsError);
           }
         }
     );

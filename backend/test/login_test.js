@@ -3,6 +3,7 @@ var rewire = require('rewire');
 var sinon = require('sinon');
 
 var mockdb = require('./mockdb');
+var errors = require('../../common/errors').POST.login;
 
 var login = rewire('../src/login');
 login.__set__('database', mockdb);
@@ -28,58 +29,70 @@ describe('Login', function() {
       mockdb.reset();
     });
 
-    it('should handle missing parameters', function() {
+    it('handles missing parameters', function() {
       var req = { body: { } };
       var res = { send: sinon.spy() };
 
       login.handle(req, res);
 
       // TODO the error message should be specified in a common module
-      assert(res.send.calledWith(login.__get__('missingParamsError')));
+      assert(res.send.calledWith(errors.missingParamsError));
     });
 
-    it('should check credentials', function() {
-      var req = { body: { username:'hello', pass_hash:'1234' } };
+    it('checks credentials', function() {
+      // Attempt to login with invalid credentials
+      var req = { body: { username:'test', pass_hash:'1234' } };
       var res = { send: sinon.spy() };
 
-      // The first query returns an empty list
+      // The first database query returns an empty list
       mockdb.query.onCall(0)
                   .callsArgWith(2, null, [], null);
 
       login.handle(req, res);
 
       // TODO the error message should be specified in a common module
-      assert(res.send.calledWith(login.__get__('invalidCredentialsError')));
+      assert(res.send.calledWith(errors.invalidCredentialsError));
     });
 
-    it('should not allow session tokens to be assigned to multiple users', function() {
-      var req = { body: { username:'hello', pass_hash:'1234' } };
+    it('does not allow session tokens to be assigned to multiple users', function() {
+      // Attempt to login with valid credentials
+      var req = { body: { username:'test', pass_hash:'1234' } };
       var res = { send: sinon.spy() };
 
+      // The first database call returns a valid user
       mockdb.query.onCall(0)
                   .callsArgWith(2, null, [validUserInfo], null);
+      // The second database call returns that the session token has
+      // already been assigned
       mockdb.query.onCall(1)
                   .callsArgWith(2, null, [validSessionToken], null); 
 
       login.handle(req, res);
 
       // TODO the error message should be specified in a common module
-      assert(res.send.calledWith(login.__get__('unknownError')));
+      assert(res.send.calledWith(errors.unknownError));
     });
 
-    it('should generate a session token for correct credentials', function() {
-      var req = { body: { username:'hello', pass_hash:'1234' } };
+    it('generates a session token for correct credentials', function() {
+      // Attempt to login with valid credentials
+      var req = { body: { username:'test', pass_hash:'1234' } };
       var res = { send: sinon.spy() };
 
+      // The first database call returns a valid user
       mockdb.query.onCall(0)
                   .callsArgWith(2, null, [validUserInfo], null);
+      // The second database call returns that the session token hasn't
+      // already been assigned
       mockdb.query.onCall(1)
                   .callsArgWith(2, null, [], null); 
+      // The third database call returns that there were no errors updating
+      // the database with the session token
       mockdb.query.onCall(2)
                   .callsArgWith(2, null, null, null); 
 
       login.handle(req, res);
 
+      // Verify that a session token was returned
       assert(res.send.calledWith(sessionTokenMatcher));
     });
 

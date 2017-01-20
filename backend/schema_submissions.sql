@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS ece496.submissions (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   time_recieved TIMESTAMP, #server time when the answer is recieved
-  class_id INTEGER,
+  course_id INTEGER,
   student_id INTEGER,  
   answer_mc INTEGER, # stores the multiple choice number selected (2-8)
   answer_text VARCHAR(255), # for text based answers
-  FOREIGN KEY(class_id) REFERENCES ece496.class(id),
+  FOREIGN KEY(course_id) REFERENCES ece496.courses(id),
   FOREIGN KEY(student_id) REFERENCES ece496.users(id),
   
   /* Note on location storage: we should store location in users and 

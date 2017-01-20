@@ -6,7 +6,8 @@ var bodyParser = require('body-parser');
 var auth = require('./auth');
 var config = require('./config');
 var wifiInfo = require('./wifi_info');
-var api = require('./api');
+
+var question = require('./question');
 
 // Handle the SSL certificate settings
 var privateKey  = fs.readFileSync(config.server.privateKey, 'utf8');
@@ -31,7 +32,7 @@ app.use(bodyParser.json())
 app.post('/login', auth.handleLogin);
 app.post('/register', auth.handleRegister);
 app.post('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
-app.post('/getUserClasses', api.getClassesByUser);
+app.post('/question', question.handle);
 
 // By default return a 404 Not Found
 app.use(function(req, res){
