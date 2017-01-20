@@ -30,7 +30,7 @@ module.exports = {
     }
   },
   PUT: {
-    pose_question: {
+    question: {
       unknownError: {error: 'An internal error occurred, please try again'},
       validationError: {error: 'Could not validate question pose request'},
       invalidQuestionError: {error: 'Invalid question'},

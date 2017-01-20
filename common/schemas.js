@@ -48,7 +48,7 @@ module.exports = {
     }
   },
   PUT: {
-    pose_question: {
+    question: {
       'type': 'object',
       'additionalProperties': false,
       'properties': {

@@ -4,8 +4,8 @@ var validate = require('jsonschema').validate;
 var auth = require('./auth');
 var database = require('./database');
 var config = require('./config');
-var errors = require('../../common/errors').PUT.pose_question;
-var schemas = require('../../common/schemas');
+var errors = require('../../common/errors').PUT.question;
+var schema = require('../../common/schemas').PUT.question;
 
 var verifyAuthorizedUserQuery =
   'select id ' +
@@ -28,7 +28,7 @@ module.exports = {
     auth.validateSessionToken(req.query.session_token)
       .then(function(user_id) {
         // Validate the request body
-        var result = validate(req.body, schemas.PUT.pose_question);
+        var result = validate(req.body, schema);
         if (result.errors.length === 0) {
           var connection = database.connect();
 
