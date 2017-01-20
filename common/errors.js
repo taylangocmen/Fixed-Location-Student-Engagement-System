@@ -1,12 +1,12 @@
 module.exports = {
   POST: {
     login: {
-      missingParamsError: {error: 'Missing username or pass_hash'},
+      validationError: {error: 'Could not validate login request'},
       unknownError: {error: 'An internal error occurred, please try again'},
       invalidCredentialsError: {error: 'Invalid username or password'}
     },
     register: {
-      missingParamsError: {error: 'Missing pass_hash, first_name, last_name, email, or utorid'},
+      validationError: {error: 'Could not validate register request'},
       unknownError: {error: 'An internal error occurred, please try again'},
       utoridTakenError: {error: 'Utorid taken'},
       invalidFirstNameError: {error: 'First name must only contain alphabetical characters'},

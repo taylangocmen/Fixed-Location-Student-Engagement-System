@@ -35,8 +35,10 @@ describe('Login', function() {
 
       login.handle(req, res);
 
-      // TODO the error message should be specified in a common module
-      assert(res.send.calledWith(errors.missingParamsError));
+      // TODO improve this test by making it check each of the fields of the request
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.validationError);
     });
 
     it('checks credentials', function() {
@@ -50,8 +52,9 @@ describe('Login', function() {
 
       login.handle(req, res);
 
-      // TODO the error message should be specified in a common module
-      assert(res.send.calledWith(errors.invalidCredentialsError));
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.invalidCredentialsError);
     });
 
     it('does not allow session tokens to be assigned to multiple users', function() {
@@ -69,8 +72,9 @@ describe('Login', function() {
 
       login.handle(req, res);
 
-      // TODO the error message should be specified in a common module
-      assert(res.send.calledWith(errors.unknownError));
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.unknownError);
     });
 
     it('generates a session token for correct credentials', function() {

@@ -1,8 +1,44 @@
 module.exports = {
   POST: {
     login: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'username': {
+          'type': 'string',
+          'required': true
+        },
+        'pass_hash': {
+          'type': 'string',
+          'required': true
+        }
+      }
     },
     register: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'first_name': {
+          'type': 'string',
+          'required': true
+        },
+        'last_name': {
+          'type': 'string',
+          'required': true
+        },
+        'email': {
+          'type': 'string',
+          'required': true
+        },
+        'utorid': {
+          'type': 'string',
+          'required': true
+        },
+        'pass_hash': {
+          'type': 'string',
+          'required': true
+        }
+      }
     },
     session_token: {
     },

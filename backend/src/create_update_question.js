@@ -1,4 +1,3 @@
-var undefsafe = require('undefsafe');
 var validate = require('jsonschema').validate;
 
 var auth = require('./auth');
@@ -98,40 +97,41 @@ var handleCreateQuestion = function(req, res, connection) {
 module.exports = {
   // Question handler
   handle: function(req, res) {
+    // Validate the request body
+    var result = validate(req.body, schema);
+    if (result.errors.length !== 0) {
+      res.send(errors.validationError);
+      return;
+    }
+
     auth.validateSessionToken(req.query.session_token)
       .then(function(user_id) {
-        // Validate the request body
-        var result = validate(req.body, schema);
-        if (result.errors.length === 0) {
-          var connection = database.connect();
+        var connection = database.connect();
 
-          // Verify that the user is listed as the prof for this course
-          connection.query(
-            verifyAuthorizedUserQuery,
-            [req.body.course_id, user_id],
-            function(err, rows, fields) {
-              if (err) {
-                console.log(err);
-                res.send(errors.unknownError);
-                return;
-              }
-
-              // If the user is authorized
-              if (rows.length == 1) {
-                // Handle an update/create based on if question_id is present
-                if (req.body.question_id !== undefined) {
-                  handleUpdateQuestion(req, res, connection);
-                } else {
-                  handleCreateQuestion(req, res, connection);
-                }
-              } else {
-                res.send(errors.authorizationError);
-              }
+        // Verify that the user is listed as the prof for this course
+        connection.query(
+          verifyAuthorizedUserQuery,
+          [req.body.course_id, user_id],
+          function(err, rows, fields) {
+            if (err) {
+              console.log(err);
+              res.send(errors.unknownError);
+              return;
             }
-          );
-        } else {
-          res.send(errors.validationError);
-        }
+
+            // If the user is authorized
+            if (rows.length == 1) {
+              // Handle an update/create based on if question_id is present
+              if (req.body.question_id !== undefined) {
+                handleUpdateQuestion(req, res, connection);
+              } else {
+                handleCreateQuestion(req, res, connection);
+              }
+            } else {
+              res.send(errors.authorizationError);
+            }
+          }
+        );
       })
       .catch(function(err) {
         res.send(err);
