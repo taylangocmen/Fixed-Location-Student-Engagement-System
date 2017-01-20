@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var auth = require('./auth');
 var config = require('./config');
 var wifiInfo = require('./wifi_info');
-
+var enrolInClass = require('./enrolInClass');
 var question = require('./question');
 
 // Handle the SSL certificate settings
@@ -33,6 +33,7 @@ app.post('/login', auth.handleLogin);
 app.post('/register', auth.handleRegister);
 app.post('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
 app.post('/question', question.handle);
+app.post('/enrolInClass', enrolInClass.handle);
 
 // By default return a 404 Not Found
 app.use(function(req, res){

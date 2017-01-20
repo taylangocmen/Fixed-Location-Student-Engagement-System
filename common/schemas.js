@@ -6,6 +6,20 @@ module.exports = {
     },
     session_token: {
     },
+    enrol: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'utorid': {
+          'type': 'integer',
+          'required': true
+        },
+        'course_name': {
+          'type': 'string',
+          'required': true
+        }
+      }
+    },
     question: {
       'type': 'object',
       'additionalProperties': false,
@@ -52,4 +66,3 @@ module.exports = {
     }
   }
 };
-

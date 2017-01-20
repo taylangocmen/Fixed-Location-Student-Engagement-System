@@ -27,7 +27,12 @@ module.exports = {
       invalidQuestionError: {error: 'Invalid question_id'},
       updatingAskedQuestion: {error: 'Cannot update a question that has already been asked'},
       authorizationError: {error: 'You are not authorized to create or modify questions in this course'}
+    },
+    enrolInClass: {
+      invalidUserError: {error: 'The user you specified does not exist'},
+      unknownError: {error: 'An internal error occurred, please try again'},
+      invalidCourseError: {error: 'The course you specified does not exist'},
+      userAlreadyEnrolledError: {error: 'The user you specified is already enrolled in this course'}
     }
   }
 };
-
