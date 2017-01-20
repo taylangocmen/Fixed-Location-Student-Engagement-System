@@ -12,6 +12,7 @@ if [ $1 = "create" ]; then
   cat schema_enrol.sql | $MYSQL
   cat schema_submissions.sql | $MYSQL
   cat schema_questions.sql | $MYSQL
+  cat schema_users_class.sql | $MYSQL
 elif [ $1 = "destroy" ]; then
   echo 'drop table ece496.questions' | $MYSQL
   echo 'drop table ece496.submissions' | $MYSQL
