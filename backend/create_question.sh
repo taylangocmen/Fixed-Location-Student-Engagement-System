@@ -19,7 +19,7 @@ QUESTION_REQUEST='{
     ]
   }
 }'
-
+echo $SESSION_TOKEN
 curl -X POST $QUESTION_URL \
      -d "$QUESTION_REQUEST" \
      -H 'Content-Type: application/json' \

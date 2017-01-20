@@ -3,6 +3,7 @@ var undefsafe = require('undefsafe');
 
 var database = require('./database');
 var config = require('./config');
+var auth = require('./auth');
 
 var userQuery =
   'select *' +
@@ -36,7 +37,6 @@ module.exports = {
           var class_name = req.body.class_name;
           var student_id;
           var course_id;
-
           //does user exist?
           connection.query(
             userQuery,
@@ -106,11 +106,15 @@ module.exports = {
               }
               else {
                 res.send("Student enrolled successfully");
+                return;
               }
             }
           );
       }
+    }, function(err){
+      console.log(err);
+      res.send(err);
       return;
     });
-  }
+}
 }

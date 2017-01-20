@@ -6,10 +6,10 @@ SESSION_TOKEN=$(curl -s -X POST 'https://localhost:8443/login' \
 ENROL_URL='https://localhost:8443/enrolInClass?session_token='$SESSION_TOKEN
 
 ENROL_REQUEST='{
-  utorid: "blah",
-  course_id: 1
+  "utorid": "blah",
+  "course_id": 1
 }'
-
+echo $SESSION_TOKEN
 curl -X POST $ENROL_URL \
      -d "$ENROL_REQUEST" \
      -H 'Content-Type: application/json' \
