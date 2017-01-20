@@ -6,10 +6,10 @@ var sinon = require('sinon');
 var mockdb = require('./mockdb');
 var mockSessionToken = require('./mock_session_token');
 var errors = require('../../common/errors').POST.question;
-var question = rewire('../src/question');
+var createUpdateQuestion = rewire('../src/create_update_question');
 
-question.__set__('database', mockdb);
-question.__set__('auth.validateSessionToken', mockSessionToken);
+createUpdateQuestion.__set__('database', mockdb);
+createUpdateQuestion.__set__('auth.validateSessionToken', mockSessionToken);
 
 var newQuestionBody = {
   course_id: 5,
@@ -37,7 +37,7 @@ describe('Question', function() {
       };
       var res = { send: sinon.spy() };
 
-      question.handle(req, res);
+      createUpdateQuestion.handle(req, res);
 
       assert.equal(res.send.args.length, 1);
       assert.equal(res.send.args[0].length, 1);
@@ -59,7 +59,7 @@ describe('Question', function() {
       mockdb.query.onCall(1)
                   .callsArgWith(2, null, {insertId: 100}, null);
 
-      question.handle(req, res);
+      createUpdateQuestion.handle(req, res);
 
       assert.equal(res.send.args.length, 1);
       assert.equal(res.send.args[0].length, 1);
@@ -83,7 +83,7 @@ describe('Question', function() {
       mockdb.query.onCall(1)
                   .callsArgWith(2, null, [], null);
 
-      question.handle(req, res);
+      createUpdateQuestion.handle(req, res);
 
       assert.equal(res.send.args.length, 1);
       assert.equal(res.send.args[0].length, 1);
@@ -108,7 +108,7 @@ describe('Question', function() {
                   .callsArgWith(2, null, [{asked: true}], null);
 
 
-      question.handle(req, res);
+      createUpdateQuestion.handle(req, res);
 
       assert.equal(res.send.args.length, 1);
       assert.equal(res.send.args[0].length, 1);
@@ -136,7 +136,7 @@ describe('Question', function() {
       mockdb.query.onCall(2)
                   .callsArgWith(2, null, null, null);
 
-      question.handle(req, res);
+      createUpdateQuestion.handle(req, res);
 
       assert.equal(res.send.args.length, 1);
       assert.equal(res.send.args[0].length, 1);
@@ -154,7 +154,7 @@ describe('Question', function() {
       mockdb.query.onCall(0)
                   .callsArgWith(2, null, [], null);
 
-      question.handle(req, res);
+      createUpdateQuestion.handle(req, res);
 
       assert.equal(res.send.args.length, 1);
       assert.equal(res.send.args[0].length, 1);

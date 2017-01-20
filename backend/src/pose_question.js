@@ -72,8 +72,11 @@ module.exports = {
 
                             // If a timeout is set then schedule the question to be closed automatically
                             if (timeout !== undefined && timeout !== null) {
-                              // TODO Schedule asynchronous event to signal the end of the question
+                              // TODO Schedule asynchronous timer event to run at the end of the question
                             }
+
+                            // TODO if we eventually use websockets, dispatch an event to all users
+                            // in this class that the question was just asked
                           }
                         );
                       } else {
