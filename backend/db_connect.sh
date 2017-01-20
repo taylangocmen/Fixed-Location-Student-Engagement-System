@@ -13,6 +13,7 @@ if [ $1 = "create" ]; then
   cat schema_enrol.sql | $MYSQL
   cat schema_submissions.sql | $MYSQL
   cat schema_questions.sql | $MYSQL
+  cat schema_users_class.sql | $MYSQL
 else
   $MYSQL
 fi

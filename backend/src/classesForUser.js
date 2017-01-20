@@ -9,10 +9,7 @@ module.exports = {
 	//takes a utorid and session token as input and returns the classes they're enrolled in
 	handle: function (req, res) {
 		auth.validateSessionToken(req.query.session_token).then(function(user_id) {
-			
-		}}
 
-
-
+		}
 	}
 }
