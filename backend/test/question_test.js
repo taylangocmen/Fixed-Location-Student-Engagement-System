@@ -150,7 +150,7 @@ describe('Question', function() {
       };
       var res = { send: sinon.spy() };
 
-      // Return that the user is authorized to create questions for this class
+      // Return that the user is unauthorized to create questions for this class
       mockdb.query.onCall(0)
                   .callsArgWith(2, null, [], null);
 

@@ -40,7 +40,15 @@ module.exports = {
         }
       }
     },
-    session_token: {
+    create_course: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'course_name': {
+          'type': 'string',
+          'required': true
+        }
+      }
     },
     question: {
       'type': 'object',

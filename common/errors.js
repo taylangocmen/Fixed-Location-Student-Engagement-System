@@ -21,6 +21,11 @@ module.exports = {
       expiredSessionTokenError: {error: 'Expired session token'},
       invalidSessionTokenError: {error: 'Invalid session token'}
     },
+    create_course: {
+      validationError: {error: 'Could not validate create course request'},
+      unknownError: {error: 'An internal error occurred, please try again'},
+      authorizationError: {error: 'You are not authorized to create courses'}
+    },
     question: {
       unknownError: {error: 'An internal error occurred, please try again'},
       validationError: {error: 'Could not validate question request'},

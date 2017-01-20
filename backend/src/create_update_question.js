@@ -88,8 +88,10 @@ var handleCreateQuestion = function(req, res, connection) {
 
       // Get the id of the newly inserted question
       var question_id = rows.insertId;
-
-      res.send({course_id: req.body.course_id, question_id: question_id});
+      res.send({
+        course_id: req.body.course_id,
+        question_id: question_id
+      });
     }
   );
 };
