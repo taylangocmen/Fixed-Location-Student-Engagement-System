@@ -24,9 +24,18 @@ module.exports = {
     question: {
       unknownError: {error: 'An internal error occurred, please try again'},
       validationError: {error: 'Could not validate question request'},
-      invalidQuestionError: {error: 'Invalid question_id'},
+      invalidQuestionError: {error: 'Invalid question'},
       updatingAskedQuestion: {error: 'Cannot update a question that has already been asked'},
       authorizationError: {error: 'You are not authorized to create or modify questions in this course'}
+    }
+  },
+  PUT: {
+    pose_question: {
+      unknownError: {error: 'An internal error occurred, please try again'},
+      validationError: {error: 'Could not validate question pose request'},
+      invalidQuestionError: {error: 'Invalid question'},
+      posingAskedQuestion: {error: 'Cannot pose a question that has already been asked'},
+      authorizationError: {error: 'You are not authorized to pose questions in this course'}
     }
   }
 };

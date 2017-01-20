@@ -21,10 +21,6 @@ module.exports = {
           'type': 'integer',
           'required': true
         },
-        'ask_immediately': {
-          'type': 'boolean',
-          'required': true
-        },
         'question': {
           'type': 'object',
           'required': true,
@@ -47,6 +43,22 @@ module.exports = {
               }
             }
           }
+        }
+      }
+    }
+  },
+  PUT: {
+    pose_question: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'course_id': {
+          'type': 'integer',
+          'required': true
+        },
+        'question_id': {
+          'type': 'integer',
+          'required': true
         }
       }
     }

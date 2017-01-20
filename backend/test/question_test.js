@@ -14,7 +14,6 @@ question.__set__('auth.validateSessionToken', mockSessionToken);
 var newQuestionBody = {
   course_id: 5,
   timeout: 1000,
-  ask_immediately: false,
   question: {
     text: 'This is a question?',
     correct_answer: 1,
