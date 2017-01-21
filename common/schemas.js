@@ -11,10 +11,9 @@ module.exports = {
       'additionalProperties': false,
       'properties': {
         'utorid': {
-          'type': 'integer',
           'required': true
         },
-        'course_name': {
+        'class_name': {
           'type': 'string',
           'required': true
         }

@@ -52,7 +52,6 @@ module.exports = {
             reject(errors.invalidSessionTokenError);
           }
         });
-        reject(errors.unknownError);
     });
   }
 };
