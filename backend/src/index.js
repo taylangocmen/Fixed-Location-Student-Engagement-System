@@ -7,6 +7,11 @@ var auth = require('./auth');
 var config = require('./config');
 var wifiInfo = require('./wifi_info');
 
+var question = require('./question');
+var poseQuestion = require('./pose_question');
+
+var createCourse = require('./create_course');
+
 // Handle the SSL certificate settings
 var privateKey  = fs.readFileSync(config.server.privateKey, 'utf8');
 var certificate = fs.readFileSync(config.server.certificate, 'utf8');
@@ -30,6 +35,10 @@ app.use(bodyParser.json())
 app.post('/login', auth.handleLogin);
 app.post('/register', auth.handleRegister);
 app.post('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
+app.post('/question', question.handle);
+app.post('/create_course', createCourse.handle);
+
+app.put('/question', poseQuestion.handle);
 
 // By default return a 404 Not Found
 app.use(function(req, res){

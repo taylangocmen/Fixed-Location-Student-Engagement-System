@@ -14,6 +14,6 @@ config.db.port = 3306
 config.server.privateKey = 'ca/private/localhost.key.pem';
 config.server.certificate = 'ca/certs/localhost.cert.pem';
 config.server.passphrase = 'password';
-config.server.port = 443;
+config.server.port = 8443;
 
 module.exports = config;
