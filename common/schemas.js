@@ -50,6 +50,19 @@ module.exports = {
         }
       }
     },
+    enrol: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'utorid': {
+          'required': true
+        },
+        'class_name': {
+          'type': 'string',
+          'required': true
+        }
+      }
+    },
     question: {
       'type': 'object',
       'additionalProperties': false,
@@ -108,4 +121,3 @@ module.exports = {
     }
   }
 };
-
