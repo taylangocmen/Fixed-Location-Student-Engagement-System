@@ -1,9 +1,10 @@
 var validator = require('validator');
-var undefsafe = require('undefsafe');
+var validate = require('jsonschema').validate;
 
 var database = require('./database');
 var config = require('./config');
 var errors = require('../../common/errors').POST.register;
+var schema = require('../../common/schemas').POST.register;
 
 var selectUtorID =
     'select utorid from ece496.users where utorid=?';
@@ -21,22 +22,19 @@ module.exports = {
   handle: function(req, res) {
     // TODO: Find a way to prevent bots from spamming this endpoint
     // TODO: Log errors (hopefully with line numbers) when validation fails
-    var passHash = undefsafe(req, 'body.pass_hash');
-    var firstName = undefsafe(req, 'body.first_name');
-    var lastName = undefsafe(req, 'body.last_name');
-    var email = undefsafe(req, 'body.email');
-    var utorID = undefsafe(req, 'body.utorid');
 
-    // TODO: use jsonschema to describe the body
-    // Make sure all of the required parameters are present
-    if (passHash === undefined ||
-        firstName === undefined ||
-        lastName === undefined ||
-        email === undefined ||
-        utorID === undefined) {
-      res.send(errors.missingParamsError);
+    // Validate the request body
+    var result = validate(req.body, schema);
+    if (result.errors.length !== 0) {
+      res.send(errors.validationError);
       return;
     }
+
+    var passHash = req.body.pass_hash;
+    var firstName = req.body.first_name;
+    var lastName = req.body.last_name;
+    var email = req.body.email;
+    var utorID = req.body.utorid;
 
     // First name must only contain alphabetical characters
     if (!validator.isAlpha(firstName)) {

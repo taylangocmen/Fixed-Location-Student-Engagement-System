@@ -1,9 +1,10 @@
 var crypto = require('crypto');
-var undefsafe = require('undefsafe');
+var validate = require('jsonschema').validate;
 
 var database = require('./database');
 var config = require('./config');
 var errors = require('../../common/errors').POST.login;
+var schema = require('../../common/schemas').POST.login;
 
 var selectUserInfo =
   'select id, email, utorid, first_name, last_name ' +
@@ -25,19 +26,18 @@ module.exports = {
   handle: function(req, res) {
     // TODO: Log errors (hopefully with line numbers) when validation fails
 
-    // TODO: use jsonschema to describe the body
-    var username = undefsafe(req, 'body.username');
-    var passHash = undefsafe(req, 'body.pass_hash');
-
-    if (username === undefined ||
-        passHash === undefined) {
-      res.send(errors.missingParamsError);
+    // Validate the request body
+    var result = validate(req.body, schema);
+    if (result.errors.length !== 0) {
+      res.send(errors.validationError);
       return;
     }
 
+    var username = req.body.username;
+    var passHash = req.body.pass_hash;
+
     var connection = database.connect();
 
-    // TODO: Clean up these nested queries
     // Verify the user's credentials
     connection.query(
         selectUserInfo,
@@ -57,6 +57,7 @@ module.exports = {
             var now = (new Date()).getTime();
 
             // TODO: make sure each of these fields exist
+
             // Generate a session token from the user's information,
             // the current time, and a random number
             var sessionToken = crypto.createHmac('sha256',

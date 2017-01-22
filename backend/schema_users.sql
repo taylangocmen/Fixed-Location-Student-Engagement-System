@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS ece496.users (
   session_token TEXT,
   session_token_expiry BIGINT,
   is_prof BOOLEAN DEFAULT FALSE,
+  create_courses BOOLEAN DEFAULT FALSE,
   time_joined BIGINT,
   latitude FLOAT,
   longitude FLOAT,
