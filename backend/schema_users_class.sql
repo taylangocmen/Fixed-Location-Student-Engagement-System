@@ -1,5 +1,0 @@
-CREATE TABLE IF NOT EXISTS ece496.users_classes (
-  id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  student_id INTEGER NOT NULL,
-  class_id INTEGER NOT NULL
-);
