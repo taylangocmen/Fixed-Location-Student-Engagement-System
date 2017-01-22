@@ -30,8 +30,10 @@ describe('Register', function() {
 
       register.handle(req, res);
 
-      // TODO the error message should be specified in a common module
-      assert(res.send.calledWith(errors.missingParamsError));
+      // TODO improve this test by making it check each of the fields of the request
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.validationError);
     });
 
     it('validates alphabetic first names', function() {
@@ -41,9 +43,12 @@ describe('Register', function() {
       register.handle(req, res);
 
       // TODO get rid of this assert false and complete the test
-      assert(false);
+      assert(false, 'TODO: implement this test');
 
       assert(res.send.calledWith());
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.validationError);
     });
 
     it('validates alphabetic last names', function() {
@@ -53,9 +58,11 @@ describe('Register', function() {
       register.handle(req, res);
 
       // TODO get rid of this assert false and complete the test
-      assert(false);
+      assert(false, 'TODO: implement this test');
 
-      assert(res.send.calledWith());
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.validationError);
     });
 
     it('validates emails', function() {
@@ -65,9 +72,11 @@ describe('Register', function() {
       register.handle(req, res);
 
       // TODO get rid of this assert false and complete the test
-      assert(false);
+      assert(false, 'TODO: implement this test');
 
-      assert(res.send.calledWith());
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.validationError);
     });
 
     it('validates emails end with mail.utoronto.ca', function() {
@@ -77,9 +86,11 @@ describe('Register', function() {
       register.handle(req, res);
 
       // TODO get rid of this assert false and complete the test
-      assert(false);
+      assert(false, 'TODO: implement this test');
 
-      assert(res.send.calledWith());
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.validationError);
     });
 
     it('handles duplicate utorids', function() {
@@ -90,10 +101,12 @@ describe('Register', function() {
       register.handle(req, res);
 
       // TODO get rid of this assert false and complete the test
-      assert(false);
+      assert(false, 'TODO: implement this test');
 
       // Verify that an empty response was returned
-      assert(res.send.calledWith({}));
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.validationError);
     });
 
     it('handles duplicate emails', function() {
@@ -104,10 +117,12 @@ describe('Register', function() {
       register.handle(req, res);
 
       // TODO get rid of this assert false and complete the test
-      assert(false);
+      assert(false, 'TODO: implement this test');
 
       // Verify that an empty response was returned
-      assert(res.send.calledWith({}));
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.validationError);
     });
 
     it('successfully registers if all validation passes', function() {
@@ -118,10 +133,12 @@ describe('Register', function() {
       register.handle(req, res);
 
       // TODO get rid of this assert false and complete the test
-      assert(false);
+      assert(false, 'TODO: implement this test');
 
       // Verify that an empty response was returned
-      assert(res.send.calledWith({}));
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.equal(res.send.args[0][0], errors.validationError);
     });
 
     // TODO: Add tests for query() returning an err at each stage

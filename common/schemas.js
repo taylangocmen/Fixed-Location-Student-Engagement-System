@@ -1,10 +1,54 @@
 module.exports = {
   POST: {
     login: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'username': {
+          'type': 'string',
+          'required': true
+        },
+        'pass_hash': {
+          'type': 'string',
+          'required': true
+        }
+      }
     },
     register: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'first_name': {
+          'type': 'string',
+          'required': true
+        },
+        'last_name': {
+          'type': 'string',
+          'required': true
+        },
+        'email': {
+          'type': 'string',
+          'required': true
+        },
+        'utorid': {
+          'type': 'string',
+          'required': true
+        },
+        'pass_hash': {
+          'type': 'string',
+          'required': true
+        }
+      }
     },
-    session_token: {
+    create_course: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'course_name': {
+          'type': 'string',
+          'required': true
+        }
+      }
     },
     enrol: {
       'type': 'object',
@@ -34,10 +78,6 @@ module.exports = {
           'type': 'integer',
           'required': true
         },
-        'ask_immediately': {
-          'type': 'boolean',
-          'required': true
-        },
         'question': {
           'type': 'object',
           'required': true,
@@ -60,6 +100,22 @@ module.exports = {
               }
             }
           }
+        }
+      }
+    }
+  },
+  PUT: {
+    question: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'course_id': {
+          'type': 'integer',
+          'required': true
+        },
+        'question_id': {
+          'type': 'integer',
+          'required': true
         }
       }
     }

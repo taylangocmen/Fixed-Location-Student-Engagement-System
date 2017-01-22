@@ -1,12 +1,12 @@
 module.exports = {
   POST: {
     login: {
-      missingParamsError: {error: 'Missing username or pass_hash'},
+      validationError: {error: 'Could not validate login request'},
       unknownError: {error: 'An internal error occurred, please try again'},
       invalidCredentialsError: {error: 'Invalid username or password'}
     },
     register: {
-      missingParamsError: {error: 'Missing pass_hash, first_name, last_name, email, or utorid'},
+      validationError: {error: 'Could not validate register request'},
       unknownError: {error: 'An internal error occurred, please try again'},
       utoridTakenError: {error: 'Utorid taken'},
       invalidFirstNameError: {error: 'First name must only contain alphabetical characters'},
@@ -22,10 +22,15 @@ module.exports = {
       expiredSessionTokenError: {error: 'Expired session token'},
       invalidSessionTokenError: {error: 'Invalid session token'}
     },
+    create_course: {
+      validationError: {error: 'Could not validate create course request'},
+      unknownError: {error: 'An internal error occurred, please try again'},
+      authorizationError: {error: 'You are not authorized to create courses'}
+    },
     question: {
       unknownError: {error: 'An internal error occurred, please try again'},
       validationError: {error: 'Could not validate question request'},
-      invalidQuestionError: {error: 'Invalid question_id'},
+      invalidQuestionError: {error: 'Invalid question'},
       updatingAskedQuestion: {error: 'Cannot update a question that has already been asked'},
       authorizationError: {error: 'You are not authorized to create or modify questions in this course'}
     },
@@ -36,6 +41,15 @@ module.exports = {
       userAlreadyEnrolledError: {error: 'The user you specified is already enrolled in this course'},
       authorizationError: {error: 'Authorization failed. Are you sure you have permissions for this action?'},
       schemaError: {error: 'The arguments you provided do not match expected. Please refer to API.md'}
+    }
+  },
+  PUT: {
+    question: {
+      unknownError: {error: 'An internal error occurred, please try again'},
+      validationError: {error: 'Could not validate question pose request'},
+      invalidQuestionError: {error: 'Invalid question'},
+      posingAskedQuestion: {error: 'Cannot pose a question that has already been asked'},
+      authorizationError: {error: 'You are not authorized to pose questions in this course'}
     }
   }
 };
