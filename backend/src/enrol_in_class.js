@@ -4,7 +4,7 @@ var database = require('./database');
 var config = require('./config');
 var auth = require('./auth');
 var schema = require('../../common/schemas').POST.enrol;
-var errors = require('../../common/errors');
+var errors = require('../../common/errors').POST.enrol;
 
 var userQuery =
     'select * ' +
@@ -33,7 +33,8 @@ module.exports = {
         auth.validateSessionToken(req.query.session_token)
             .then(function(user_id) {
                     var result = validate(req.body, schema);
-                    //console.log(result.errors.length);
+                    console.log(result.errors.length);
+
                     if (result.errors.length !== 0) {
                         res.send(errors.schemaError);
                         return;
@@ -58,7 +59,6 @@ module.exports = {
                                 return;
                             } else {
                                 student_id = rows[0].id;
-                                console.log("student_id " + student_id);
                                 //does the course exist?
                                 connection.query(
                                     courseQuery, [class_name],
@@ -72,12 +72,10 @@ module.exports = {
                                             return;
                                         } else {
                                             course_id = rows[0].id;
-                                            console.log("course_id "+course_id);
                                             //is the user already enrolled?
                                             connection.query(
                                                 userAlreadyEnrolledQuery, [student_id, course_id],
                                                 function(err, rows, fields) {
-                                                  console.log("checking if student is enrolled");
                                                     if (err) {
                                                         console.log(err);
                                                         res.send(errors.unknownError);
@@ -89,7 +87,7 @@ module.exports = {
                                                         return;
                                                     } else {
                                                         //otherwise do the operation
-                                                        console.log("User and course OK, enrolling.");
+                                                        //console.log("User and course OK, enrolling.");
                                                         connection.query(
                                                             insertLinkQuery, [student_id, course_id],
                                                             function(err, rows, fields) {

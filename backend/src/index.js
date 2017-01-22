@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var auth = require('./auth');
 var config = require('./config');
 var wifiInfo = require('./wifi_info');
-var enrolInClass = require('./enrolInClass');
+var enrolInClass = require('./enrol_in_class');
 var question = require('./question');
 
 // Handle the SSL certificate settings

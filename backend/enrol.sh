@@ -7,7 +7,8 @@ ENROL_URL='https://localhost:8443/enrolInClass?session_token='$SESSION_TOKEN
 
 ENROL_REQUEST='{
   "utorid": "blah",
-  "class_name": "Zachs Class"
+  "class_name": "Zachs Class",
+  "broken field": "this shouldnt work"
 }'
 
 curl -X POST $ENROL_URL \
