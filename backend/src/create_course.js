@@ -8,7 +8,7 @@ var schema = require('../../common/schemas').POST.create_course;
 
 var verifyAuthorizedUserQuery =
   'select id ' +
-  'from ece496.users' +
+  'from ece496.users ' +
   'where id=? and create_courses=true';
 
 var createCourseQuery =
