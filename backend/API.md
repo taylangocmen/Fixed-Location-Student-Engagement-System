@@ -141,15 +141,6 @@ Response: {
 				},
 				...
 			]
-			"inactive_questions": {
-				*question_id*: {
-					...
-					"answer": {
-						*correct_option*: string
-					}
-				}
-				...
-			}
 		},
 		...
 	],
@@ -159,3 +150,48 @@ Response: {
 }
 ```
 
+
+#### GET /courses?course_id=*course_id*
+```
+Headers: {
+	"Authorization": "Bearer " + *session_token*,
+}
+Body: {
+	"username": string,
+}
+Response: {
+	"course_id": int,
+	"course_name": string,
+	"course_desc": string,
+	"active_questions": [
+		{
+			"question_id": int,
+			"type": string, // valid types need to be decided, lets accept multiple choice for now
+			"date": string,
+			"body": string,
+			"options": {
+				//this is the example for the multiple choice question
+				"a": string
+				"b": string
+				"c": string
+				"d": string
+				...
+			},
+			"answer": {
+				//this should be empty for an active question
+			}
+		},
+		...
+	]
+	"inactive_questions": [
+		{
+			*question_id*: {
+				...
+			"answer": {
+				*correct_option*: string
+			}
+		},
+		...
+	]
+}
+```
