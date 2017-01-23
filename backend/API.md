@@ -122,6 +122,7 @@ Response: {
 			"course_name": string,
 			"course_desc": string,
 			"active_questions": [
+			// only the active questions here not the inactive ones
 				{
 					"question_id": int,
 					"type": string, // valid types need to be decided, lets accept multiple choice for now
