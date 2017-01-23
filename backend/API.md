@@ -33,7 +33,8 @@ Headers: {
 
 }
 Body: {
-	"email": string,
+	"username": string,
+	// either utorid or email
 	"pass_hash": string,
 }
 Response: {
@@ -106,15 +107,13 @@ Response: {
 }
 ```
 
-#### GET /courses
+#### GET /courses?username=*username*
 ```
 Headers: {
-	"Accept": "application/json",
-	"Content-Type": "application/json",
 	"Authorization": "Bearer " + *session_token*,
 }
 Body: {
-	"email": string,
+	"username": string,
 }
 Response: {
 	"courses_registered": [
