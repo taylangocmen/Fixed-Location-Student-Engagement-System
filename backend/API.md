@@ -151,7 +151,7 @@ Response: {
 ```
 
 
-#### GET /courses?course_id=*course_id*
+#### GET /questions?course_id=*course_id*
 ```
 Headers: {
 	"Authorization": "Bearer " + *session_token*,
