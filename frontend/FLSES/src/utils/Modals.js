@@ -2,7 +2,7 @@ import * as colors from '../styling/Colors';
 
 export const flow = {
   a: {
-    left: 'close',
+    left: 'logout',
     right: 'menu',
     title: 'Courses',
   },

@@ -28,7 +28,10 @@ export class CourseCard extends Component {
           <Text style={[styles.courseText, {fontWeight}]}>
             Course Description Here
           </Text>
-          <QuestionMiniCard status={this.props.status}/>
+          <QuestionMiniCard
+            onActivePress={this.props.onActivePress}
+            status={this.props.status}
+          />
         </View>
         <TouchableOpacity
           style={[styles.rightButton, {backgroundColor}]}

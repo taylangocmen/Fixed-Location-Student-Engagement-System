@@ -22,17 +22,22 @@ export class EntryPoint extends Component {
     };
 
     this.onLogin = this.onLogin.bind(this);
+    this.onLogin = this.onLogin.bind(this);
   }
 
   onLogin() {
     this.setState({bimodalLoginHome: false});
   }
 
+  onLogout() {
+    this.setState({bimodalLoginHome: true});
+  }
+
   render() {
     return (
       this.state.bimodalLoginHome ?
-        <LoginScene onComplete={this.onLogin}/> :
-        <LandingScene />
+        <LoginScene onComplete={()=>this.onLogin()}/> :
+        <LandingScene onLogout={()=>this.onLogout()}/>
     );
   }
 }

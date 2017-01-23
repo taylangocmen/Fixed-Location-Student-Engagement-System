@@ -14,8 +14,13 @@ export class AnsweringOption extends Component {
 
   render() {
     const fontWeight = questionStatusFontWeights[this.props.status];
+    const optionStyle = this.props.chosen? styles.optionChosen: styles.optionFree;
+
     return (
-      <TouchableOpacity style={styles.optionButton}>
+      <TouchableOpacity
+        style={optionStyle}
+        onPress={this.props.onPress}
+      >
         <Text style={[styles.optionText, {fontWeight}]}>
           {this.props.optionText}
         </Text>
@@ -28,10 +33,19 @@ const styles = StyleSheet.create({
   questionContainer: {
     marginBottom: 15,
   },
-  optionButton: {
+  optionFree: {
     borderRadius: 16,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.secondaryCocoaBrown,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginVertical: 4,
+  },
+optionChosen: {
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: colors.secondaryCocoaBrown,
+    backgroundColor: opacity(colors.basicGreen, 0.1),
     paddingVertical: 8,
     paddingHorizontal: 12,
     marginVertical: 4,

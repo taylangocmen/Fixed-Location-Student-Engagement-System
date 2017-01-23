@@ -30,7 +30,10 @@ export class NavigationBar extends Component {
   render() {
     return (
       <View style={styles.navigationBarContainer}>
-        <TouchableOpacity style={styles.leftContainer}>
+        <TouchableOpacity
+          style={styles.leftContainer}
+          onPress={this.props.onPressLeft}
+        >
           {this.renderIcon(this.props.left)}
         </TouchableOpacity>
         <View style={styles.titleContainer}>
@@ -38,7 +41,10 @@ export class NavigationBar extends Component {
             {this.props.title}
           </Text>
         </View>
-        <TouchableOpacity style={styles.rightContainer}>
+        <TouchableOpacity
+          style={styles.rightContainer}
+          onPress={this.props.onPressRight}
+        >
           {this.renderIcon(this.props.right)}
         </TouchableOpacity>
       </View>

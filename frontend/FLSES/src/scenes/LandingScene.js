@@ -49,16 +49,17 @@ export class LandingScene extends Component {
 
   getOnPressLeft() {
     switch (this.state.title) {
-      case 'flow':
-        return <NavigationArrowBack style={styles.icon}/>;
-      case 'close':
-        return <NavigationClose style={styles.icon}/>;
-      case 'menu':
-        return <NavigationMenu style={styles.icon}/>;
-      case 'logout':
-        return <NavigationLogout style={styles.icon}/>;
+      case flow.a.title:
+        this.props.onLogout();
+        break;
+      case flow.b.title:
+        this.goToCourses();
+        break;
+      case flow.c.title:
+        this.goToQuestions();
+        break;
       default:
-        return <View />;
+        return null;
     }
   }
 
@@ -71,16 +72,19 @@ export class LandingScene extends Component {
       <View style={styles.pageContainer}>
         <NavigationBar
           left={this.state.content.left}
-          onPressLeft={this.getOnPressLeft}
+          onPressLeft={()=>this.getOnPressLeft()}
           right={this.state.content.right}
-          onPressRight={this.getOnPressRight}
+          onPressRight={()=>this.getOnPressRight()}
           title={this.state.content.title}
         />
         {
           (this.state.title === flow.a.title?
-            <CoursesScroller onRightButtonPress={this.goToQuestions} /> :
+            <CoursesScroller
+              onRightButtonPress={()=>this.goToQuestions()}
+              onActivePress={()=>this.goToAnswering()}
+            /> :
             (this.state.title === flow.b.title?
-              <QuestionsScroller onRightButtonPress={this.goToAnswering} />:
+              <QuestionsScroller onRightButtonPress={()=>this.goToAnswering()} />:
               <AnsweringCard status='active'/>))
         }
       </View>

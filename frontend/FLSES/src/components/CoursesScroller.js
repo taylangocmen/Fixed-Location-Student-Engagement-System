@@ -15,14 +15,14 @@ export class CoursesScroller extends Component {
   render() {
     return (
       <ScrollView style={styles.scrollView}>
-        <CourseCard status='active' onRightButtonPress={this.props.onRightButtonPress}/>
-        <CourseCard status='inactive' onRightButtonPress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null}/>
+        <CourseCard status='active' onRightButtonPress={this.props.onRightButtonPress} onActivePress={this.props.onActivePress}/>
+        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
+        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
+        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
+        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
+        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
+        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
+        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
       </ScrollView>
     );
   }
