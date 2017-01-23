@@ -15,6 +15,7 @@ var newQuestionBody = {
   course_id: 5,
   timeout: 1000,
   question: {
+    title: 'Question 1',
     text: 'This is a question?',
     correct_answer: 1,
     answers: [
@@ -23,7 +24,9 @@ var newQuestionBody = {
   }
 };
 
-describe('Question', function() {
+// TODO figure out a way to verify that the arguments are passed into the queries in the correct order
+
+describe('Create/Update Question', function() {
   describe('#handle()', function() {
     // Reset the database before each test
     beforeEach(function() {
