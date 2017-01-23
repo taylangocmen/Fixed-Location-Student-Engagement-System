@@ -1,28 +1,78 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View, TextInput, TouchableOpacity, Navigator} from 'react-native';
+import {AppRegistry, StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
+import {NavigationArrowBack, NavigationClose, NavigationMenu, NavigationLogout} from '../components/NavigationComponents';
 
 
 export class NavigationBar extends Component {
   constructor(props) {
     super(props);
+    this.renderIcon = this.renderIcon.bind(this);
+  }
+
+  renderIcon(icon) {
+    switch (icon) {
+      case 'back':
+        return <NavigationArrowBack style={styles.icon}/>;
+      case 'close':
+        return <NavigationClose style={styles.icon}/>;
+      case 'menu':
+        return <NavigationMenu style={styles.icon}/>;
+      case 'logout':
+        return <NavigationLogout style={styles.icon}/>;
+      default:
+        return <View />;
+    }
   }
 
   render() {
     return (
-      <Navigator.NavigationBar
-        style={styles.navigationBarContainer}
-        {...this.props}
-      />
+      <View style={styles.navigationBarContainer}>
+        <TouchableOpacity style={styles.leftContainer}>
+          {this.renderIcon(this.props.left)}
+        </TouchableOpacity>
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleText}>
+            {this.props.title}
+          </Text>
+        </View>
+        <TouchableOpacity style={styles.rightContainer}>
+          {this.renderIcon(this.props.right)}
+        </TouchableOpacity>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   navigationBarContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     backgroundColor: colors.officialPrussianBlue,
-    height: 60,
+    height: 50,
   },
+  titleContainer: {
+    flex: 1,
+  },
+  leftContainer: {
+    paddingHorizontal: 8
+  },
+  rightContainer: {
+    paddingHorizontal: 8
+  },
+  titleText: {
+    color: colors.basicWhite,
+    fontSize: 26,
+    fontWeight: '700',
+    textAlign: 'center',
+    alignSelf: 'center'
+  },
+  icon: {
+    backgroundColor: colors.officialPrussianBlue,
+    width: 32,
+    height: 32,
+  }
 });

@@ -12,52 +12,25 @@ export const CardLeftColorBar = ({backgroundColor, width}) => <View
 export const NavigationChevronRight = ({backgroundColor, width}) => <Image
   source={require('../material-design-icons/navigation/ios/ic_chevron_right_white_48pt.imageset/ic_chevron_right_white_48pt.png')}
   style={{backgroundColor, width}}
-  resizeMode={Image.resizeMode.contain}
+  // resizeMode={Image.resizeMode.contain}
 />;
 
-export const NavigationClose = () => <View style={styles.iconContainer}><Image
+export const NavigationClose = ({style}) => <Image
   source={require('../material-design-icons/navigation/ios/ic_close_white_48pt.imageset/ic_close_white_48pt.png')}
-  style={styles.icon}
-/></View>;
+  style={style}
+/>;
 
-export const NavigationArrowBack = () => <View style={styles.iconContainer}><Image
+export const NavigationArrowBack = ({style}) => <Image
   source={require('../material-design-icons/navigation/ios/ic_arrow_back_white_48pt.imageset/ic_arrow_back_white_48pt.png')}
-  style={styles.icon}
-/></View>;
+  style={style}
+/>;
 
-export const NavigationMenu = () => <View style={styles.iconContainer}><Image
+export const NavigationMenu = ({style}) => <Image
   source={require('../material-design-icons/navigation/ios/ic_menu_white_48pt.imageset/ic_menu_white_48pt.png')}
-  style={styles.icon}
-/></View>;
+  style={style}
+/>;
 
-export const NavigationTitle = ({title}) => <View style={styles.titleContainer}>
-  <Text style={styles.titleText}>
-    {title} 
-  </Text>
-</View>;
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 30,
-  },
-  iconContainer:{
-    flex: 1,
-  },
-  titleText: {
-    backgroundColor: colors.officialPrussianBlue,
-    color: colors.basicWhite,
-    fontSize: 24,
-    fontWeight: '700',
-    textAlign: 'center',
-    alignSelf: 'center',
-  },
-  icon: {
-    backgroundColor: colors.officialPrussianBlue,
-    width: 30,
-    height: 30,
-    marginRight: 8,
-    marginLeft: 8,
-  }
-});
+export const NavigationLogout = ({style}) => <Image
+  source={require('../material-design-icons/action/ios/ic_power_settings_new_white_48pt.imageset/ic_power_settings_new_white_48pt.png')}
+  style={style}
+/>;

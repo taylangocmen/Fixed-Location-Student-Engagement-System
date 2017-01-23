@@ -1,9 +1,21 @@
 import * as colors from '../styling/Colors';
 
 export const flow = {
-  a: 'Courses',
-  b: 'Questions',
-  c: 'Answering',
+  a: {
+    left: 'close',
+    right: 'menu',
+    title: 'Courses',
+  },
+  b: {
+    left: 'back',
+    right: 'menu',
+    title: 'Questions',
+  },
+  c: {
+    left: 'back',
+    right: 'menu',
+    title: 'Answering',
+  },
 };
 
 export const courseStatusColors = {

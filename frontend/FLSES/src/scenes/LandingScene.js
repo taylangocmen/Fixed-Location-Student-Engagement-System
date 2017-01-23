@@ -15,44 +15,71 @@ export class LandingScene extends Component {
     super(props);
     this.state = {
       //TODO: change this to flow.a at the end
-      content: flow.a
+      title: flow.a.title,
+      content: flow.a,
     };
 
     this.goToCourses = this.goToCourses.bind(this);
     this.goToQuestions = this.goToQuestions.bind(this);
     this.goToAnswering = this.goToAnswering.bind(this);
+    this.getOnPressLeft = this.getOnPressLeft.bind(this);
+    this.getOnPressRight = this.getOnPressRight.bind(this);
   }
 
   goToCourses() {
     this.setState({
-      content: flow.a
+      title: flow.a.title,
+      content: flow.a,
     });
   }
 
   goToQuestions() {
     this.setState({
-      content: flow.b
+      title: flow.b.title,
+      content: flow.b,
     });
   }
 
   goToAnswering() {
     this.setState({
-      content: flow.c
+      title: flow.c.title,
+      content: flow.c,
     });
+  }
+
+  getOnPressLeft() {
+    switch (this.state.title) {
+      case 'flow':
+        return <NavigationArrowBack style={styles.icon}/>;
+      case 'close':
+        return <NavigationClose style={styles.icon}/>;
+      case 'menu':
+        return <NavigationMenu style={styles.icon}/>;
+      case 'logout':
+        return <NavigationLogout style={styles.icon}/>;
+      default:
+        return <View />;
+    }
+  }
+
+  getOnPressRight() {
+
   }
 
   render() {
     return (
       <View style={styles.pageContainer}>
         <NavigationBar
-          left="back"
-          right="menu"
-          title={this.state.content}
+          left={this.state.content.left}
+          onPressLeft={this.getOnPressLeft}
+          right={this.state.content.right}
+          onPressRight={this.getOnPressRight}
+          title={this.state.content.title}
         />
         {
-          (this.state.content === flow.a ?
+          (this.state.title === flow.a.title?
             <CoursesScroller onRightButtonPress={this.goToQuestions} /> :
-            (this.state.content === flow.b ?
+            (this.state.title === flow.b.title?
               <QuestionsScroller onRightButtonPress={this.goToAnswering} />:
               <AnsweringCard status='active'/>))
         }

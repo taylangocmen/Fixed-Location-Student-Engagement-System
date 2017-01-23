@@ -1,13 +1,16 @@
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, Text, View, Navigator, TouchableHighlight, StatusBar, TouchableOpacity} from 'react-native';
+import {Provider} from 'react-redux';
 
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
-import {EntryPoint} from '../scenes/EntryPoint';
-import {Container} from '../components/Container';
+import {scenesByIndex} from '../utils/Modals';
+import {opacity} from '../utils/Functions';
+import {LoginScene} from '../scenes/LoginScene';
+import {LandingScene} from '../scenes/LandingScene';
 
 
-export class FLSES extends Component {
+export class EntryPoint extends Component {
   //TODO: add the store
   //TODO: remove test component add the commented out rendering system
   //TODO: alert works
@@ -27,9 +30,9 @@ export class FLSES extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <EntryPoint />
-      </Container>
+      this.state.bimodalLoginHome ?
+        <LoginScene onComplete={this.onLogin}/> :
+        <LandingScene />
     );
   }
 }
