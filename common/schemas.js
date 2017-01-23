@@ -57,9 +57,13 @@ module.exports = {
         'utorid': {
           'required': true
         },
-        'class_name': {
-          'type': 'string',
+        'course_id': {
+          'type': 'integer',
           'required': true
+        },
+        'command': {
+          'type': 'string',
+          'required': false
         }
       }
     },
