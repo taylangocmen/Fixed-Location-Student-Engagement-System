@@ -15,8 +15,8 @@ export class Container extends Component {
   }
   
   render() {
-    const marginTop = (config.os === 'ios' ? 20: 0);
-    const style = {flex: 1, marginTop};
+    // const marginTop = (config.os === 'ios' ? 20: 0);
+    const style = {flex: 1};
 
     return (
       <View style={style}>

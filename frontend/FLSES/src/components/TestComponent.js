@@ -3,7 +3,7 @@ import {AppRegistry, StyleSheet, Text, View} from 'react-native';
 
 import {config} from '../../config';
 import {LoginScene} from '../scenes/LoginScene'
-import {HomeScene} from '../scenes/HomeScene'
+import {LandingScene} from '../scenes/LandingScene'
 
 
 export class TestComponent extends Component {
@@ -19,7 +19,7 @@ export class TestComponent extends Component {
     return (
       this.state.bimodalLoginHome ?
         <LoginScene onComplete={()=>this.setState({bimodalLoginHome: false})}/>:
-        <HomeScene />
+        <LandingScene />
     );
   }
 }

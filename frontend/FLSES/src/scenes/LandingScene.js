@@ -10,7 +10,7 @@ import {QuestionsScroller} from '../components/QuestionsScroller';
 import {AnsweringCard} from '../components/AnsweringCard';
 
 
-export class HomeScene extends Component {
+export class LandingScene extends Component {
   constructor(props) {
     super(props);
     this.state = {

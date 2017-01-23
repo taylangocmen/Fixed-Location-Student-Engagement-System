@@ -29,3 +29,17 @@ export const questionStatusFontWeights = {
   inactive: "400",
   other: "100",
 };
+
+export const scenesByIndex = [
+  'login',
+  'landing',
+  'questions',
+  'answer',
+];
+
+export const sceneNavBarTitles = {
+  login: null,
+  landing: 'Your Courses',
+  questions: 'Questions',
+  answer: 'Answer',
+};

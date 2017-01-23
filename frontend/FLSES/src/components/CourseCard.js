@@ -3,7 +3,7 @@ import {AppRegistry, StyleSheet, Text, View, TextInput, ScrollView, TouchableOpa
 
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
-import {CardLeftColorBar, NavigationChevronRight} from '../images/Icons';
+import {CardLeftColorBar, NavigationChevronRight} from './NavigationComponents';
 import {courseStatusColors, courseStatusFontWeights} from '../utils/Modals';
 import {QuestionMiniCard} from '../components/QuestionMiniCard';
 
