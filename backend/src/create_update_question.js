@@ -13,13 +13,13 @@ var verifyAuthorizedUserQuery =
 
 var updateQuestionQuery =
   'update ece496.questions ' +
-  'set timeout=?, question=? ' +
+  'set timeout=?, title=?, question_text=?, correct_answer=?, num_answers=?, answers_array=? ' +
   'where course_id=? and id=?';
 
 var createQuestionQuery =
   'insert into ece496.questions ' +
-  '(course_id, timeout, question) ' +
-  'values (?, ?, ?)';
+  '(course_id, timeout, title, question_text, correct_answer, num_answers, answers_array, time_created) ' +
+  'values (?, ?, ?, ?, ?, ?, ?, NOW())';
 
 var selectQuestionAskedQuery =
   'select asked ' +
@@ -46,7 +46,11 @@ var handleUpdateQuestion = function(req, res, connection) {
           connection.query(
             updateQuestionQuery,
             [req.body.timeout,
-             JSON.stringify(req.body.question),
+             req.body.question.title,
+             req.body.question.text,
+             req.body.question.correct_answer,
+             req.body.question.answers.length,
+             JSON.stringify(req.body.question.answers),
              req.body.course_id,
              req.body.question_id],
             function(err, rows, fields) {
@@ -78,7 +82,11 @@ var handleCreateQuestion = function(req, res, connection) {
     createQuestionQuery,
     [req.body.course_id,
      req.body.timeout,
-     JSON.stringify(req.body.question)],
+     req.body.question.title,
+     req.body.question.text,
+     req.body.question.correct_answer,
+     req.body.question.answers.length,
+     JSON.stringify(req.body.question.answers)],
     function(err, rows, fields) {
       if (err) {
         console.log(err);

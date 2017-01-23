@@ -9,18 +9,10 @@ QUESTION_URL='https://localhost:8443/question?session_token='$SESSION_TOKEN
 
 QUESTION_REQUEST='{
   "course_id":1,
-  "timeout":1000,
-  "question": {
-    "title": "Question 1",
-    "text": "Is this a question?",
-    "correct_answer": 1,
-    "answers": [
-      "Yes, this is."
-    ]
-  }
+	"question_id":1
 }'
 echo $SESSION_TOKEN
-curl -X POST $QUESTION_URL \
+curl -X PUT $QUESTION_URL \
      -d "$QUESTION_REQUEST" \
      -H 'Content-Type: application/json' \
      --cacert ca/certs/ca.cert.pem
