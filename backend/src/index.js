@@ -1,4 +1,5 @@
 var fs = require('fs');
+var http = require('http');
 var https = require('https');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -21,8 +22,9 @@ var credentials = {
   passphrase: config.server.passphrase
 };
 
-// Create an https server
+// Create http + https servers
 var app = express();
+var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
 // parse application/x-www-form-urlencoded
@@ -51,5 +53,6 @@ process.on('uncaughtException', function (err) {
   console.log(err);
 });
 
-// Start the https server
-httpsServer.listen(config.server.port);
+// Start the http + https servers
+httpServer.listen(config.server.http_port);
+httpsServer.listen(config.server.https_port);
