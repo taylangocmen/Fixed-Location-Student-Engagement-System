@@ -1,12 +1,10 @@
 var crypto = require('crypto');
-var undefsafe = require('undefsafe');
+var validate = require('jsonschema').validate;
 
 var database = require('./database');
 var config = require('./config');
-
-var missingParamsError = {error: 'Missing username or pass_hash'};
-var unknownError = {error: 'An internal error occurred while generating the session_token, please try again'};
-var invalidCredentialsError = {error: 'Invalid username or password'};
+var errors = require('../../common/errors').POST.login;
+var schema = require('../../common/schemas').POST.login;
 
 var selectUserInfo =
   'select id, email, utorid, first_name, last_name ' +
@@ -26,20 +24,20 @@ var updateSessionToken =
 module.exports = {
   // Login handler
   handle: function(req, res) {
-    var connection = database.connect();
-
     // TODO: Log errors (hopefully with line numbers) when validation fails
 
-    if (!undefsafe(req, 'body.username') ||
-        !undefsafe(req, 'body.pass_hash')) {
-      res.send(missingParamsError);
+    // Validate the request body
+    var result = validate(req.body, schema);
+    if (result.errors.length !== 0) {
+      res.send(errors.validationError);
       return;
     }
 
     var username = req.body.username;
     var passHash = req.body.pass_hash;
 
-    // TODO: Clean up these nested queries
+    var connection = database.connect();
+
     // Verify the user's credentials
     connection.query(
         selectUserInfo,
@@ -47,18 +45,19 @@ module.exports = {
         function(err, rows, fields) {
           if (err) {
             console.log(err);
-            res.send(unknownError);
+            res.send(errors.unknownError);
             return;
           }
 
           // If the user's credentials were correct
-          if (rows.length == 1) {
+          if (rows.length === 1) {
             var id = rows[0].id;
 
             // Get the current time
             var now = (new Date()).getTime();
 
             // TODO: make sure each of these fields exist
+
             // Generate a session token from the user's information,
             // the current time, and a random number
             var sessionToken = crypto.createHmac('sha256',
@@ -82,11 +81,11 @@ module.exports = {
                 function(err, rows, fields) {
                   if (err) {
                     console.log(err);
-                    res.send(unknownError);
+                    res.send(errors.unknownError);
                     return;
                   }
 
-                  if (rows.length == 0) {
+                  if (rows.length === 0) {
                     // Update the user's session token
                     connection.query(
                         updateSessionToken,
@@ -94,7 +93,7 @@ module.exports = {
                         function(err, rows, fields) {
                           if (err) {
                             console.log(err);
-                            res.send(unknownError);
+                            res.send(errors.unknownError);
                             return;
                           }
 
@@ -103,12 +102,12 @@ module.exports = {
                         }
                     );
                   } else {
-                    res.send(unknownError);
+                    res.send(errors.unknownError);
                   }
                 }
             );
           } else {
-            res.send(invalidCredentialsError);
+            res.send(errors.invalidCredentialsError);
           }
         }
     );
