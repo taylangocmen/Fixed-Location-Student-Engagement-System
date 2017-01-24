@@ -13,8 +13,8 @@ var verifyAuthorizedUserQuery =
 
 var createCourseQuery =
   'insert into ece496.courses ' +
-  '(prof_id, sizeof, course_name) ' +
-  'values (?, 0, ?)';
+  '(prof_id, course_name, course_desc) ' +
+  'values (?, ?, ?)';
 
 module.exports = {
   // Question handler
@@ -46,7 +46,8 @@ module.exports = {
               connection.query(
                 createCourseQuery,
                 [user_id,
-                 req.body.course_name],
+                 req.body.course_name,
+                 req.body.course_desc],
                 function(err, rows, fields) {
                   if (err) {
                     console.log(err);

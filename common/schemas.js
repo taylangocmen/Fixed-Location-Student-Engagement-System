@@ -1,4 +1,16 @@
 module.exports = {
+  GET: {
+    courses: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'session_token': {
+          'type': 'string',
+          'required': true
+        }
+      }
+    }
+  },
   POST: {
     login: {
       'type': 'object',
@@ -45,6 +57,10 @@ module.exports = {
       'additionalProperties': false,
       'properties': {
         'course_name': {
+          'type': 'string',
+          'required': true
+        },
+        'course_desc': {
           'type': 'string',
           'required': true
         }
