@@ -14,6 +14,13 @@ export class AnsweringCard extends Component {
       optionChosen: -1,
     };
 
+    this.chooseOption = this.chooseOption.bind(this);
+  }
+
+  chooseOption(optionChosen) {
+    this.setState({
+      optionChosen,
+    });
   }
 
   render() {
@@ -34,18 +41,26 @@ export class AnsweringCard extends Component {
           <AnsweringOption
             optionText="A. Yes"
             status={this.props.status}
+            onPress={()=>this.chooseOption(0)}
+            chosen={this.state.optionChosen === 0}
           />
           <AnsweringOption
             optionText="B. No"
             status={this.props.status}
+            onPress={()=>this.chooseOption(1)}
+            chosen={this.state.optionChosen === 1}
           />
           <AnsweringOption
             optionText="C. Maybe"
             status={this.props.status}
+            onPress={()=>this.chooseOption(2)}
+            chosen={this.state.optionChosen === 2}
           />
           <AnsweringOption
             optionText="D. Kappa"
             status={this.props.status}
+            onPress={()=>this.chooseOption(3)}
+            chosen={this.state.optionChosen === 3}
           />
           {this.props.status === 'active' ?
             <Text>
@@ -65,7 +80,8 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     flexDirection: 'row',
-    borderWidth: 6,
+    // borderWidth: 6,
+    borderWidth: 1,
     padding: 16,
   },
   mainContainer: {
