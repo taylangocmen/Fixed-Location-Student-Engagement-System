@@ -3,12 +3,10 @@ SESSION_TOKEN=$(curl -s -X POST 'https://localhost:8443/login' \
      -H 'Content-Type: application/json' \
      --cacert ca/certs/ca.cert.pem | sed -e 's/.*session_token.*"\(.*\)".*/\1/')
 
-ENROL_URL='https://localhost:8443/enrolInClass?session_token='$SESSION_TOKEN
+ENROL_URL='https://localhost:8443/enrol?session_token='$SESSION_TOKEN
 
 ENROL_REQUEST='{
-  "utorid": "blah",
-  "class_name": "Zachs Class",
-  "broken field": "this shouldnt work"
+  "course_id": 1
 }'
 
 curl -X POST $ENROL_URL \
