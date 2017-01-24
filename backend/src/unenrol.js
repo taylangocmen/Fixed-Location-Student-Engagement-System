@@ -26,8 +26,6 @@ module.exports = {
         auth.validateSessionToken(req.query.session_token)
             .then(function(user_id) {
                     var result = validate(req.body, schema);
-                    console.log(result.errors.length);
-
                     if (result.errors.length !== 0) {
                         res.send(errors.schemaError);
                         return;
