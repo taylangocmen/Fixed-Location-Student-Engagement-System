@@ -6,7 +6,8 @@ var bodyParser = require('body-parser');
 var auth = require('./auth');
 var config = require('./config');
 var wifiInfo = require('./wifi_info');
-var enrolInClass = require('./enrol_in_class');
+var enrol = require('./enrol');
+var unenrol = require('./unenrol');
 var poseQuestion = require('./pose_question');
 
 var createCourse = require('./create_course');
@@ -34,7 +35,8 @@ app.use(bodyParser.json())
 app.post('/login', auth.handleLogin);
 app.post('/register', auth.handleRegister);
 app.post('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
-app.post('/enrolInClass', enrolInClass.handle);
+app.post('/enrol', enrol.handle);
+app.post('/unenrol', unenrol.handle);
 app.post('/create_course', createCourse.handle);
 
 app.put('/question', poseQuestion.handle);

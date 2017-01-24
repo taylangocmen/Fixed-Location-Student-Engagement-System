@@ -54,16 +54,19 @@ module.exports = {
       'type': 'object',
       'additionalProperties': false,
       'properties': {
-        'utorid': {
-          'required': true
-        },
         'course_id': {
           'type': 'integer',
           'required': true
-        },
-        'command': {
-          'type': 'string',
-          'required': false
+        }
+      }
+    },
+    unenrol: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'course_id': {
+          'type': 'integer',
+          'required': true
         }
       }
     },
