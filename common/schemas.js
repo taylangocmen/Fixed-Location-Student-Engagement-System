@@ -1,4 +1,16 @@
 module.exports = {
+  GET: {
+    courses: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'session_token': {
+          'type': 'string',
+          'required': true
+        }
+      }
+    }
+  },
   POST: {
     login: {
       'type': 'object',
@@ -47,6 +59,10 @@ module.exports = {
         'course_name': {
           'type': 'string',
           'required': true
+        },
+        'course_desc': {
+          'type': 'string',
+          'required': true
         }
       }
     },
@@ -54,11 +70,18 @@ module.exports = {
       'type': 'object',
       'additionalProperties': false,
       'properties': {
-        'utorid': {
+        'course_id': {
+          'type': 'integer',
           'required': true
-        },
-        'class_name': {
-          'type': 'string',
+        }
+      }
+    },
+    unenrol: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'course_id': {
+          'type': 'integer',
           'required': true
         }
       }
@@ -83,6 +106,10 @@ module.exports = {
           'required': true,
           'additionalProperties': false,
           'properties': {
+            'title': {
+              'type': 'string',
+              'required': true
+            },
             'text': {
               'type': 'string',
               'required': true

@@ -10,8 +10,8 @@ QUESTION_URL='https://localhost:8443/question?session_token='$SESSION_TOKEN
 QUESTION_REQUEST='{
   "course_id":1,
   "timeout":1000,
-  "ask_immediately":false,
   "question": {
+    "title": "Question 1",
     "text": "Is this a question?",
     "correct_answer": 1,
     "answers": [

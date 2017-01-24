@@ -1,15 +1,18 @@
+#!/bin/bash
+
 SESSION_TOKEN=$(curl -s -X POST 'https://localhost:8443/login' \
      -d '{"username":"blah","pass_hash":"1234"}' \
      -H 'Content-Type: application/json' \
      --cacert ca/certs/ca.cert.pem | sed -e 's/.*session_token.*"\(.*\)".*/\1/')
 
-ENROL_URL='https://localhost:8443/enrol?session_token='$SESSION_TOKEN
+URL='https://localhost:8443/create_course?session_token='$SESSION_TOKEN
 
-ENROL_REQUEST='{
-  "course_id": 1
+COURSE_REQUEST='{
+  "course_name":"ece496",
+	"course_desc":"Fantastic course"
 }'
-
-curl -X POST $ENROL_URL \
-     -d "$ENROL_REQUEST" \
+echo $SESSION_TOKEN
+curl -X POST $URL \
+     -d "$COURSE_REQUEST" \
      -H 'Content-Type: application/json' \
      --cacert ca/certs/ca.cert.pem

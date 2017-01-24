@@ -1,13 +1,17 @@
 var fs = require('fs');
+var http = require('http');
 var https = require('https');
 var express = require('express');
 var bodyParser = require('body-parser');
 
+var getCourses = require('./get_courses');
+
 var auth = require('./auth');
 var config = require('./config');
 var wifiInfo = require('./wifi_info');
-var enrolInClass = require('./enrol_in_class');
-var question = require('./question');
+var enrol = require('./enrol');
+var unenrol = require('./unenrol');
+var createUpdateQuestion = require('./create_update_question');
 var poseQuestion = require('./pose_question');
 
 var createCourse = require('./create_course');
@@ -21,8 +25,9 @@ var credentials = {
   passphrase: config.server.passphrase
 };
 
-// Create an https server
+// Create http + https servers
 var app = express();
+var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
 // parse application/x-www-form-urlencoded
@@ -32,11 +37,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // Handle each endpoint
+app.get('/courses', getCourses.handle);
+
 app.post('/login', auth.handleLogin);
 app.post('/register', auth.handleRegister);
 app.post('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
-app.post('/question', question.handle);
-app.post('/enrolInClass', enrolInClass.handle);
+app.post('/enrol', enrol.handle);
+app.post('/unenrol', unenrol.handle);
+app.post('/question', createUpdateQuestion.handle);
 app.post('/create_course', createCourse.handle);
 
 app.put('/question', poseQuestion.handle);
@@ -51,5 +59,6 @@ process.on('uncaughtException', function (err) {
   console.log(err);
 });
 
-// Start the https server
-httpsServer.listen(config.server.port);
+// Start the http + https servers
+httpServer.listen(config.server.http_port);
+httpsServer.listen(config.server.https_port);

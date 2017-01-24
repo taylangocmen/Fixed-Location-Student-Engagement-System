@@ -1,4 +1,9 @@
 module.exports = {
+  GET: {
+    courses: {
+      validationError: {error: 'Could not validate get courses request'}
+    }
+  },
   POST: {
     login: {
       validationError: {error: 'Could not validate login request'},
@@ -40,7 +45,8 @@ module.exports = {
       invalidCourseError: {error: 'The course you specified does not exist'},
       userAlreadyEnrolledError: {error: 'The user you specified is already enrolled in this course'},
       authorizationError: {error: 'Authorization failed. Are you sure you have permissions for this action?'},
-      schemaError: {error: 'The arguments you provided do not match expected. Please refer to API.md'}
+      schemaError: {error: 'The arguments you provided do not match expected. Please refer to API.md'},
+      userNotEnrolledError: {error: 'The user you specified is not enrolled in this course'}
     }
   },
   PUT: {
