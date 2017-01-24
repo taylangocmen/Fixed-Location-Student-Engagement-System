@@ -37,8 +37,8 @@ export class LoginScene extends Component {
         </View>
         <View style={styles.mainContainer}>
           {this.state.bimodalLoginRegister ?
-            <LoginCard alternateBimodal={this.alternateBimodal} login={this.props.onComplete}/>:
-            <RegisterCard alternateBimodal={this.alternateBimodal} register={this.props.onComplete}/>
+            <LoginCard alternateBimodal={this.alternateBimodal} login={this.props.onCompleteLogin}/>:
+            <RegisterCard alternateBimodal={this.alternateBimodal} register={this.props.onCompleteRegister}/>
           }
         </View>
       </View>
