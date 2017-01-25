@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View, TextInput, ScrollView, Image} from 'react-native';
+import {ActivityIndicator, AppRegistry, StyleSheet, Text, View, TextInput, ScrollView, Image} from 'react-native';
 
 import * as colors from '../styling/Colors';
 
@@ -12,7 +12,6 @@ export const CardLeftColorBar = ({backgroundColor, width}) => <View
 export const NavigationChevronRight = ({backgroundColor, width}) => <Image
   source={require('../material-design-icons/navigation/ios/ic_chevron_right_white_48pt.imageset/ic_chevron_right_white_48pt.png')}
   style={{backgroundColor, width}}
-  // resizeMode={Image.resizeMode.contain}
 />;
 
 export const NavigationClose = ({style}) => <Image
@@ -39,3 +38,16 @@ export const NavigationRefresh = ({style}) => <Image
   source={require('../material-design-icons/action/ios/ic_cached_white_48pt.imageset/ic_cached_white_48pt.png')}
   style={style}
 />;
+
+export const NavigationLoading = ({style}) => <View
+  style={{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }}
+>
+  <ActivityIndicator
+    size="large"
+    color={colors.officialPrussianBlue}
+  />
+</View>;

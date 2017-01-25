@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, Text, View, TextInput, ScrollView} from 'react-native';
 
 import {config} from '../../config';
+import {api} from '../app/api';
 import * as colors from '../styling/Colors';
 import {flow} from '../utils/Modals';
 import {NavigationBar} from '../components/NavigationBar';
 import {CoursesScroller} from '../components/CoursesScroller';
 import {QuestionsScroller} from '../components/QuestionsScroller';
 import {AnsweringCard} from '../components/AnsweringCard';
+import {NavigationLoading} from '../components/NavigationComponents';
 
 
 export class LandingScene extends Component {
@@ -15,8 +17,8 @@ export class LandingScene extends Component {
     super(props);
     this.state = {
       //TODO: change this to flow.a at the end
-      title: flow.c.title,
-      content: flow.c,
+      title: flow.a.title,
+      content: flow.a,
     };
 
     this.goToCourses = this.goToCourses.bind(this);
@@ -67,7 +69,36 @@ export class LandingScene extends Component {
 
   }
 
+  renderCourses() {
+    return !!this.props.courses ?
+      <CoursesScroller
+        onRightButtonPress={()=>this.goToQuestions()}
+        onActivePress={()=>this.goToAnswering()}
+        courses={this.props.courses}
+      /> :
+      <NavigationLoading />;
+  }
+
+  renderQuestions() {
+    return !!this.props.questions ?
+      <QuestionsScroller
+        onRightButtonPress={()=>this.goToAnswering()}
+        questions={this.props.questions}
+      /> :
+      <NavigationLoading />;
+  }
+
+  renderAnswering() {
+    return !!this.props.answering ?
+      <AnsweringCard
+        answering={this.props.answering}
+      /> :
+      <NavigationLoading />;
+  }
+
   render() {
+    console.warn('LandingScene token is: ', api.returnToken().session_token, api.token());
+
     return (
       <View style={styles.pageContainer}>
         <NavigationBar
@@ -78,14 +109,12 @@ export class LandingScene extends Component {
           title={this.state.content.title}
         />
         {
-          (this.state.title === flow.a.title?
-            <CoursesScroller
-              onRightButtonPress={()=>this.goToQuestions()}
-              onActivePress={()=>this.goToAnswering()}
-            /> :
-            (this.state.title === flow.b.title?
-              <QuestionsScroller onRightButtonPress={()=>this.goToAnswering()} />:
-              <AnsweringCard status='active'/>))
+          (this.state.title === flow.a.title ?
+            this.renderCourses():
+            (this.state.title === flow.b.title ?
+              this.renderQuestions():
+              this.renderAnswering()
+            ))
         }
       </View>
     );
@@ -106,5 +135,5 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'stretch',
     backgroundColor: colors.basicWhite,
-  }
+  },
 });

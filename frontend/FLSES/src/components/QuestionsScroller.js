@@ -15,21 +15,13 @@ export class QuestionsScroller extends Component {
   render() {
     return (
       <ScrollView style={styles.scrollView}>
-        <QuestionCard status='active' onRightButtonPress={this.props.onRightButtonPress}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
-        <QuestionCard status='inactive' onRightButtonPress={null}/>
+        {
+
+          // <View>
+          //   <QuestionCard status='active' onRightButtonPress={this.props.onRightButtonPress}/>
+          //   <QuestionCard status='inactive' onRightButtonPress={null}/>
+          // </View>
+        }
       </ScrollView>
     );
   }

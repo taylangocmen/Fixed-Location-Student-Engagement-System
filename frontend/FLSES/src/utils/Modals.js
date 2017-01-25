@@ -21,13 +21,15 @@ export const flow = {
 export const courseStatusColors = {
   active: colors.secondaryCrimson,
   inactive: colors.secondaryBondiBlue,
-  other: colors.basicLime,
+  expired: colors.basicLime,
+  other: colors.basicBlack,
 };
 
 export const courseStatusFontWeights = {
   active: "700",
   inactive: "400",
-  other: "100",
+  expired: "100",
+  other: "900",
 };
 
 export const questionStatusColors = {

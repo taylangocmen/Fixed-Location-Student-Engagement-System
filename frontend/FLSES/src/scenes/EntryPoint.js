@@ -12,58 +12,69 @@ import {LandingScene} from '../scenes/LandingScene';
 
 
 export class EntryPoint extends Component {
-  //TODO: add the store
-  //TODO: remove test component add the commented out rendering system
-  //TODO: alert works
-
   constructor(props) {
     super(props);
     this.state = {
       // TODO: make this true
-      bimodalLoginHome: true,
+      bimodalLoginLanding: true,
+      courses: null,
+      questions: null,
+      answering: null,
     };
 
-    this.onLogin = this.onLogin.bind(this);
-    this.onRegister = this.onRegister.bind(this);
-    this.onLogout = this.onLogout.bind(this);
+    this.doGetCourses = this.doGetCourses.bind(this);
+    this.doLogin = this.doLogin.bind(this);
+    this.doRegister = this.doRegister.bind(this);
+    this.doLogout = this.doLogout.bind(this);
+    this.goLanding = this.goLanding.bind(this);
   }
 
-  onLogin(obj) {
-    console.warn('This is onLogin, obj');
-
-    // api.post('/login', {
-    //   ...obj,
-    // });
-
-    this.setState({bimodalLoginHome: false});
+  doGetCourses() {
+    api.get(`/courses`, api.returnToken())
+      .then((response) => this.setState({courses: {...response}}))
+    ;
   }
 
-  onRegister() {
-    console.warn('This is onRegister');
-
-    // api.post('register', {
-    //   'first_name': 'test_name',
-    //   'last_name': 'test_last_name',
-    //   'email': 'test.user@mail.utoronto.ca',
-    //   'utorid': '1234567890',
-    //   'pass_hash': 'testtesttesttest',
-    // });
-    //
-    this.setState({bimodalLoginHome: false});
+  doLogin(loginData) {
+    api.post('/login', loginData)
+      .then((response)=>api.setToken(response.session_token))
+      .then(() => this.doGetCourses())
+      .then(() => this.goLanding())
+    ;
   }
 
-  onLogout() {
-    this.setState({bimodalLoginHome: true});
+  doRegister() {
+    console.warn('This is doRegister');
+  }
+
+  doLogout() {
+    this.setState({
+      bimodalLoginLanding: true,
+      courses: null,
+      questions: null,
+      answering: null,
+    });
+  }
+
+  goLanding() {
+    this.setState({bimodalLoginLanding: false});
   }
 
   render() {
+    console.warn('EntryPoint token is: ', api.returnToken().session_token, api.session_token());
+
     return (
-      this.state.bimodalLoginHome ?
+      this.state.bimodalLoginLanding ?
         <LoginScene
-          onCompleteLogin={this.onLogin}
-          onCompleteRegister={this.onRegister}
+          onCompleteLogin={this.doLogin}
+          onCompleteRegister={this.doRegister}
         /> :
-        <LandingScene onLogout={()=>this.onLogout()}/>
+        <LandingScene
+          doLogout={()=>this.doLogout()}
+          courses={this.state.courses}
+          questions={this.state.questions}
+          answering={this.state.answering}
+        />
     );
   }
 }
