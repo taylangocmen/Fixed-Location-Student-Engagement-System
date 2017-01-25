@@ -36,10 +36,8 @@ module.exports = {
     var username = req.body.username;
     var passHash = req.body.pass_hash;
 
-    var connection = database.connect();
-
     // Verify the user's credentials
-    connection.query(
+    database.pool.query(
         selectUserInfo,
         [username, username, passHash],
         function(err, rows, fields) {
@@ -75,7 +73,7 @@ module.exports = {
             var sessionTokenExpiry = now + 1000 * 60 * 60 * 24;
 
             // Query whether or not this session token is in use
-            connection.query(
+            database.pool.query(
                 selectSessionToken,
                 [sessionToken],
                 function(err, rows, fields) {
@@ -87,7 +85,7 @@ module.exports = {
 
                   if (rows.length === 0) {
                     // Update the user's session token
-                    connection.query(
+                    database.pool.query(
                         updateSessionToken,
                         [sessionToken, sessionTokenExpiry, id],
                         function(err, rows, fields) {

@@ -107,13 +107,10 @@ Response: {
 }
 ```
 
-#### GET /courses?username=*username*
+#### GET /courses?session_token=*session_token*
 ```
 Headers: {
 	"Authorization": "Bearer " + *session_token*,
-}
-Body: {
-	"username": string,
 }
 Response: {
 	"courses_registered": [
@@ -156,9 +153,6 @@ Response: {
 ```
 Headers: {
 	"Authorization": "Bearer " + *session_token*,
-}
-Body: {
-	"username": string,
 }
 Response: {
 	"course_id": int,

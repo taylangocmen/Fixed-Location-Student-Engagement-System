@@ -60,10 +60,8 @@ module.exports = {
       return;
     }
 
-    var connection = database.connect();
-
     // Check if the utorid is taken
-    connection.query(
+    database.pool.query(
       selectUtorID,
       [utorID],
       function(err, rows, fields) {
@@ -75,7 +73,7 @@ module.exports = {
 
         if (rows.length === 0) {
           // Check if the email is taken
-          connection.query(
+          database.pool.query(
             selectEmail,
             [email],
             function(err, rows, fields) {
@@ -87,7 +85,7 @@ module.exports = {
 
               if (rows.length === 0) {
                 // Insert the new user into the database
-                connection.query(
+                database.pool.query(
                   insertUser,
                   [passHash, firstName, lastName, email, utorID],
                   function(err, rows, fields) {
