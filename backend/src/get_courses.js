@@ -24,10 +24,8 @@ module.exports = {
     if (result.errors.length === 0) {
       auth.validateSessionToken(req.query.session_token)
         .then(function(user_id) {
-            var connection = database.connect();
-
             // Verify that the user is listed as the prof for this course
-            connection.query(
+            database.pool.query(
               getCoursesQuery,
               [user_id],
               function(err, rows, fields) {

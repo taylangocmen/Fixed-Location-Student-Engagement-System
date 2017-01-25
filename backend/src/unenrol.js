@@ -31,11 +31,10 @@ module.exports = {
                         return;
                     }
 
-                    var connection = database.connect();
                     var course_id = req.body.course_id;
 
                     //does the course exist?
-                    var query = connection.query(
+                    database.pool.query(
                         courseQuery, [course_id],
                         function(err, rows, fields) {
                             if (err) {
@@ -47,7 +46,7 @@ module.exports = {
                                 return;
                             } else {
                                 //is the user enrolled?
-                                connection.query(
+                                database.pool.query(
                                     userAlreadyEnrolledQuery, [user_id, course_id],
                                     function(err, rows, fields) {
                                         if (err) {
@@ -60,7 +59,7 @@ module.exports = {
                                             return;
                                         } else {
                                             //otherwise do the operation
-                                            connection.query(
+                                            database.pool.query(
                                                 removeLinkQuery, [user_id, course_id],
                                                 function(err, rows, fields) {
                                                     if (err) {
