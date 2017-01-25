@@ -17,6 +17,7 @@ export class RegisterCard extends Component {
         <View style={styles.rowContainer}>
           <TextInput
             autoFocus={false}
+            autoCorrect={false}
             placeholder="given name(s)"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
@@ -25,6 +26,7 @@ export class RegisterCard extends Component {
         <View style={styles.rowContainer}>
           <TextInput
             autoFocus={false}
+            autoCorrect={false}
             placeholder="last name(s)"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
@@ -33,6 +35,7 @@ export class RegisterCard extends Component {
         <View style={styles.rowContainer}>
           <TextInput
             autoFocus={false}
+            autoCorrect={false}
             placeholder="student #"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
@@ -41,6 +44,7 @@ export class RegisterCard extends Component {
         <View style={styles.rowContainer}>
           <TextInput
             autoFocus={false}
+            autoCorrect={false}
             placeholder="password"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
@@ -49,6 +53,7 @@ export class RegisterCard extends Component {
         <View style={styles.rowContainer}>
           <TextInput
             autoFocus={false}
+            autoCorrect={false}
             placeholder="confirm password"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
@@ -112,16 +117,18 @@ const styles = StyleSheet.create({
     height: 40,
   },
   buttonContainer: {
-    marginTop: 5,
+    marginTop: 4,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
   submitButton: {
     marginTop: 20,
-    marginBottom: 4,
-    marginHorizontal: 25,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
+    width: 200,
     backgroundColor: colors.secondaryCrimson,
     borderRadius: 16,
     shadowColor: colors.secondaryCocoaBrown,
@@ -131,7 +138,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colors.basicWhite,
     textAlign: 'center',
-    alignSelf: 'center',
     fontSize: 20,
     fontWeight: '800',
   },

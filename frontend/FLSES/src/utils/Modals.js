@@ -2,18 +2,18 @@ import * as colors from '../styling/Colors';
 
 export const flow = {
   a: {
-    left: 'logout',
-    right: 'menu',
+    left: 'close',
+    right: 'refresh',
     title: 'Courses',
   },
   b: {
     left: 'back',
-    right: 'menu',
+    right: 'refresh',
     title: 'Questions',
   },
   c: {
     left: 'back',
-    right: 'menu',
+    right: 'refresh',
     title: 'Answering',
   },
 };

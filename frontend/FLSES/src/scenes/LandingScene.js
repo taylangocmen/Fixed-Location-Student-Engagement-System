@@ -15,8 +15,8 @@ export class LandingScene extends Component {
     super(props);
     this.state = {
       //TODO: change this to flow.a at the end
-      title: flow.a.title,
-      content: flow.a,
+      title: flow.c.title,
+      content: flow.c,
     };
 
     this.goToCourses = this.goToCourses.bind(this);

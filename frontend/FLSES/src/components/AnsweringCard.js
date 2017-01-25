@@ -34,42 +34,43 @@ export class AnsweringCard extends Component {
       <View style={[styles.cardContainer, {borderColor}]}>
         <View style={styles.mainContainer}>
           <View style={styles.questionContainer}>
-            <Text style={[styles.questionText, {fontWeight}]}>
-              Is this a question, or is not a question, maybe that is the question itself?
-            </Text>
+            <View style={styles.bodyContainer}>
+              <Text style={[styles.bodyText, {fontWeight}]}>
+                Is this a question, or is not a question, maybe that is the question itself?
+              </Text>
+            </View>
+            <AnsweringOption
+              optionText="A. Yes"
+              status={this.props.status}
+              onPress={()=>this.chooseOption(0)}
+              chosen={this.state.optionChosen === 0}
+            />
+            <AnsweringOption
+              optionText="B. No"
+              status={this.props.status}
+              onPress={()=>this.chooseOption(1)}
+              chosen={this.state.optionChosen === 1}
+            />
+            <AnsweringOption
+              optionText="C. Maybe"
+              status={this.props.status}
+              onPress={()=>this.chooseOption(2)}
+              chosen={this.state.optionChosen === 2}
+            />
+            <AnsweringOption
+              optionText="D. Kappa"
+              status={this.props.status}
+              onPress={()=>this.chooseOption(3)}
+              chosen={this.state.optionChosen === 3}
+            />
           </View>
-          <AnsweringOption
-            optionText="A. Yes"
-            status={this.props.status}
-            onPress={()=>this.chooseOption(0)}
-            chosen={this.state.optionChosen === 0}
-          />
-          <AnsweringOption
-            optionText="B. No"
-            status={this.props.status}
-            onPress={()=>this.chooseOption(1)}
-            chosen={this.state.optionChosen === 1}
-          />
-          <AnsweringOption
-            optionText="C. Maybe"
-            status={this.props.status}
-            onPress={()=>this.chooseOption(2)}
-            chosen={this.state.optionChosen === 2}
-          />
-          <AnsweringOption
-            optionText="D. Kappa"
-            status={this.props.status}
-            onPress={()=>this.chooseOption(3)}
-            chosen={this.state.optionChosen === 3}
-          />
-          {this.props.status === 'active' ?
-            <Text>
-
-            </Text> :
-            <Text>
-
-            </Text>
-          }
+          <View style={styles.bottomContainer}>
+            <TouchableOpacity style={styles.submitButton}>
+              <Text style={styles.submitText}>
+                Submit
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -87,8 +88,17 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
-  questionContainer: {
+  questionContainer:{
+    flex: 1,
+  },
+  bodyContainer: {
     marginBottom: 15,
+  },
+  bottomContainer:{
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   optionButton: {
     borderRadius: 16,
@@ -97,10 +107,28 @@ const styles = StyleSheet.create({
     padding: 8,
     marginVertical: 4,
   },
-  questionText: {
+  bodyText: {
     fontSize: 24,
   },
   optionText: {
     fontSize: 20,
+  },
+  submitButton: {
+    borderRadius: 16,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.secondaryCocoaBrown,
+    backgroundColor: colors.secondaryCrimson,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width: 200,
+  },
+  submitText: {
+    color: colors.basicWhite,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontSize: 20,
+    fontWeight: '800',
   },
 });

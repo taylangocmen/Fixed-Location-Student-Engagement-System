@@ -34,3 +34,8 @@ export const NavigationLogout = ({style}) => <Image
   source={require('../material-design-icons/action/ios/ic_power_settings_new_white_48pt.imageset/ic_power_settings_new_white_48pt.png')}
   style={style}
 />;
+
+export const NavigationRefresh = ({style}) => <Image
+  source={require('../material-design-icons/action/ios/ic_cached_white_48pt.imageset/ic_cached_white_48pt.png')}
+  style={style}
+/>;

@@ -19,6 +19,7 @@ export class EntryPoint extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // TODO: make this true
       bimodalLoginHome: true,
     };
 
@@ -27,22 +28,28 @@ export class EntryPoint extends Component {
     this.onLogout = this.onLogout.bind(this);
   }
 
-  onLogin() {
+  onLogin(obj) {
+    console.warn('This is onLogin, obj');
+
+    // api.post('/login', {
+    //   ...obj,
+    // });
+
     this.setState({bimodalLoginHome: false});
   }
 
   onRegister() {
-    console.warn('This is on register');
+    console.warn('This is onRegister');
 
-    api.post('register', {
-      'first_name': 'test_name',
-      'last_name': 'test_last_name',
-      'email': 'test.user@mail.utoronto.ca',
-      'utorid': '1234567890',
-      'pass_hash': 'testtesttesttest',
-    });
-
-    // this.setState({bimodalLoginHome: false});
+    // api.post('register', {
+    //   'first_name': 'test_name',
+    //   'last_name': 'test_last_name',
+    //   'email': 'test.user@mail.utoronto.ca',
+    //   'utorid': '1234567890',
+    //   'pass_hash': 'testtesttesttest',
+    // });
+    //
+    this.setState({bimodalLoginHome: false});
   }
 
   onLogout() {
@@ -53,8 +60,8 @@ export class EntryPoint extends Component {
     return (
       this.state.bimodalLoginHome ?
         <LoginScene
-          onCompleteLogin={()=>this.onLogin()}
-          onCompleteRegister={()=>this.onRegister()}
+          onCompleteLogin={this.onLogin}
+          onCompleteRegister={this.onRegister}
         /> :
         <LandingScene onLogout={()=>this.onLogout()}/>
     );
