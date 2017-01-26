@@ -9,6 +9,7 @@ var wifiInfo = require('./wifi_info');
 var enrol = require('./enrol');
 var unenrol = require('./unenrol');
 var poseQuestion = require('./pose_question');
+var logout = require('./logout');
 
 var createCourse = require('./create_course');
 
@@ -39,6 +40,7 @@ app.post('/enrol', enrol.handle);
 app.post('/unenrol', unenrol.handle);
 app.post('/create_course', createCourse.handle);
 
+app.put('/logout', logout.handle);
 app.put('/question', poseQuestion.handle);
 
 // By default return a 404 Not Found
