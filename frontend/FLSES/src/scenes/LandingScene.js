@@ -42,7 +42,9 @@ export class LandingScene extends Component {
     });
   }
 
-  goToAnswering() {
+  goToAnswering(answering) {
+    this.props.doSetAnswering(answering);
+
     this.setState({
       title: flow.c.title,
       content: flow.c,
@@ -72,8 +74,8 @@ export class LandingScene extends Component {
   renderCourses() {
     return !!this.props.courses ?
       <CoursesScroller
-        onRightButtonPress={()=>this.goToQuestions()}
-        onActivePress={()=>this.goToAnswering()}
+        onRightButtonPress={this.goToQuestions}
+        onActivePress={this.goToAnswering}
         courses={this.props.courses}
       /> :
       <NavigationLoading />;
@@ -82,7 +84,7 @@ export class LandingScene extends Component {
   renderQuestions() {
     return !!this.props.questions ?
       <QuestionsScroller
-        onRightButtonPress={()=>this.goToAnswering()}
+        onRightButtonPress={this.goToAnswering}
         questions={this.props.questions}
       /> :
       <NavigationLoading />;
@@ -97,8 +99,6 @@ export class LandingScene extends Component {
   }
 
   render() {
-    console.warn('LandingScene token is: ', api.returnToken().session_token, api.token());
-
     return (
       <View style={styles.pageContainer}>
         <NavigationBar

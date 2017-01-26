@@ -28,6 +28,7 @@ export class CoursesScroller extends Component {
             />))
         }
         {
+          //TODO: do the expired courses
           (!!this.props.courses.courses_expired &&
             this.props.courses.courses_expired.map((course) => <CourseCard
               key={course.course_id}

@@ -6,6 +6,6 @@ export const storage = {
     apiToken: "apiToken",
   },
   getApiToken: () => AsyncStorage.getItem(storage.keys.apiToken),
-  setApiToken: token => AsyncStorage.setItem(storage.keys.apiToken, token),
+  setApiToken: (token) => AsyncStorage.setItem(storage.keys.apiToken, token),
   clearApiToken: () => AsyncStorage.removeItem(storage.keys.apiToken),
 };

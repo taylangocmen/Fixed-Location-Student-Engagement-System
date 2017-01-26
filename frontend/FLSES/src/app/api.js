@@ -1,5 +1,4 @@
 import {config} from '../../config';
-import {storage} from '../app/storage';
 
 export const apiUrl = `${config.apiBaseUrl}`;
 
@@ -16,15 +15,12 @@ export const api = {
       ...api.getAuthHeaders(),
     };
 
-
     let optionsArray = [];
     Object.keys(options).map((key, index) => {
       optionsArray.push(key + '=' + options[key]);
     });
 
     const optionsStringified = '?' + optionsArray.join('&');
-
-    // console.error('optionsStringified:', optionsStringified);
 
     return fetch(`${apiUrl}${path}${optionsStringified}`, {
       method: 'GET',
@@ -52,37 +48,34 @@ export const api = {
       .then(checkStatus)
       .then(response => response.json())
       .catch(e => console.warn('Error:', e));
-
   },
 
-  session_token: () => (
-    !!config.testUser ?
-      '':
-      session_token
-  ),
+  session_token: () => {
+    return !!config.testUser ?
+      config.testUser.token :
+      session_token;
+  },
 
 
   clearToken: () => {
     session_token = null;
-    return storage.clearApiToken();
   },
 
   setToken: (newToken) => {
     session_token = newToken;
-    storage.setApiToken(newToken);
   },
 
-  getToken: () => storage.getApiToken()
-    .then(storedToken => (session_token = storedToken)),
+  getToken: () => (session_token),
 
-  tokenExists: () => session_token !== null,
-
-
-  returnToken: () => api.getToken()
-    .then(() => ({session_token})),
+  getTokenObj: () => ({session_token}),
 
   getAuthHeaders: () => ({
-    "Authorization": `Bearer ${api.session_token()}`,
+    "Authorization": `Bearer ${api.getToken()}`,
   }),
 
+  sudo_post: () => new Promise(function (resolve, reject) {
+    const retObj = {session_token: api.session_token()};
+    resolve(retObj);
+    reject('error');
+  }).catch(e => console.warn('Error:', e)),
 };

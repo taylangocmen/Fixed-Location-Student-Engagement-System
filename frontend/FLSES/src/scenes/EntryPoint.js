@@ -22,21 +22,46 @@ export class EntryPoint extends Component {
       answering: null,
     };
 
+    this.doGetQuestions = this.doGetQuestions.bind(this);
+    this.doSetQuestions = this.doSetQuestions.bind(this);
     this.doGetCourses = this.doGetCourses.bind(this);
+    this.doSetCourses = this.doSetCourses.bind(this);
+    this.doSetAnswering = this.doSetAnswering.bind(this);
     this.doLogin = this.doLogin.bind(this);
     this.doRegister = this.doRegister.bind(this);
     this.doLogout = this.doLogout.bind(this);
     this.goLanding = this.goLanding.bind(this);
   }
 
+  doGetQuestions() {
+
+  }
+
+  doSetQuestions({questions}) {
+    this.setState({questions});
+  }
+
   doGetCourses() {
-    api.get(`/courses`, api.returnToken())
-      .then((response) => this.setState({courses: {...response}}))
+    api.get(`/courses`, api.getTokenObj())
+      .then((response) => this.setState({
+        courses: {...response},
+      }))
     ;
   }
 
+  doSetCourses(courses) {
+    this.setState({courses});
+  }
+
+  doSetAnswering(answering) {
+    this.setState({answering});
+  }
+
   doLogin(loginData) {
-    api.post('/login', loginData)
+
+    //TODO: fix this pretty much the commented out version
+    // api.post('/login', loginData)
+    api.sudo_post('/login', loginData)
       .then((response)=>api.setToken(response.session_token))
       .then(() => this.doGetCourses())
       .then(() => this.goLanding())
@@ -44,7 +69,7 @@ export class EntryPoint extends Component {
   }
 
   doRegister() {
-    console.warn('This is doRegister');
+    console.error('This is doRegister');
   }
 
   doLogout() {
@@ -61,8 +86,6 @@ export class EntryPoint extends Component {
   }
 
   render() {
-    console.warn('EntryPoint token is: ', api.returnToken().session_token, api.session_token());
-
     return (
       this.state.bimodalLoginLanding ?
         <LoginScene
@@ -70,7 +93,12 @@ export class EntryPoint extends Component {
           onCompleteRegister={this.doRegister}
         /> :
         <LandingScene
-          doLogout={()=>this.doLogout()}
+          doGetQuestions={this.doGetQuestions}
+          doSetQuestions={this.doSetQuestions}
+          doGetCourses={this.doGetCourses}
+          doSetCourses={this.doSetCourses}
+          doSetAnswering={this.doSetAnswering}
+          doLogout={this.doLogout}
           courses={this.state.courses}
           questions={this.state.questions}
           answering={this.state.answering}

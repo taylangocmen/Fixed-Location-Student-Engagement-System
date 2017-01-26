@@ -30,6 +30,7 @@ export class AnsweringCard extends Component {
 
     };
 
+    //TODO: make this from props
     return (
       <View style={[styles.cardContainer, {borderColor}]}>
         <View style={styles.mainContainer}>
