@@ -20,14 +20,18 @@ export class QuestionMiniCard extends Component {
       <View style={styles.cardContainer}>
         {
           this.props.status==='active' ?
-            (<View style={styles.questionContainer}>
-              <Text style={[styles.questionText, {fontWeight}]}>
-                Is this a question, or is not a question, maybe that is the question itself?
-              </Text>
-              <Text style={[styles.questionText, {fontWeight}]}>
-                A. Yes    B. No    C. Maybe     D. Kappa
-              </Text>
-            </View>):
+            (<TouchableOpacity
+              onPress={this.props.onActivePress}
+              >
+                <View style={styles.questionContainer}>
+                <Text style={[styles.questionText, {fontWeight}]}>
+                  Is this a question, or is not a question, maybe that is the question itself?
+                </Text>
+                <Text style={[styles.questionText, {fontWeight}]}>
+                  A. Yes    B. No    C. Maybe     D. Kappa
+                </Text>
+              </View>
+            </TouchableOpacity>):
             (<View style={styles.inactiveContainer}>
               <Text style={styles.inactiveText}>
                 No active questions for this course at this time.

@@ -15,11 +15,8 @@ export class Container extends Component {
   }
   
   render() {
-    const marginTop = (config.os === 'ios' ? 20: 0);
-    const style = {flex: 1, marginTop};
-
     return (
-      <View style={style}>
+      <View style={[this.props.style, styles.container]}>
         {this.props.children}
       </View>
     );
@@ -28,8 +25,8 @@ export class Container extends Component {
 
 Container.propTypes = propTypes;
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1
-//   },
-// });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+});

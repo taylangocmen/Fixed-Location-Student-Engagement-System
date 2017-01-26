@@ -1,4 +1,9 @@
 module.exports = {
+  GET: {
+    courses: {
+      validationError: {error: 'Could not validate get courses request'}
+    }
+  },
   POST: {
     login: {
       validationError: {error: 'Could not validate login request'},

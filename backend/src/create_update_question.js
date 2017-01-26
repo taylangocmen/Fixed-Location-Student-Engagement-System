@@ -26,9 +26,9 @@ var selectQuestionAskedQuery =
   'from ece496.questions ' +
   'where course_id=? and id=?';
 
-var handleUpdateQuestion = function(req, res, connection) {
+var handleUpdateQuestion = function(req, res) {
   // Lookup whether the question has been asked already
-  connection.query(
+  database.pool.query(
     selectQuestionAskedQuery,
     [req.body.course_id, req.body.question_id],
     function(err, rows, fields) {
@@ -43,7 +43,7 @@ var handleUpdateQuestion = function(req, res, connection) {
         // If the question has not been asked yet
         if (rows[0].asked === false) {
           // Update the question
-          connection.query(
+          database.pool.query(
             updateQuestionQuery,
             [req.body.timeout,
              req.body.question.title,
@@ -76,9 +76,9 @@ var handleUpdateQuestion = function(req, res, connection) {
   );
 };
 
-var handleCreateQuestion = function(req, res, connection) {
+var handleCreateQuestion = function(req, res) {
   // Insert the new question
-  connection.query(
+  database.pool.query(
     createQuestionQuery,
     [req.body.course_id,
      req.body.timeout,
@@ -116,10 +116,8 @@ module.exports = {
 
     auth.validateSessionToken(req.query.session_token)
       .then(function(user_id) {
-        var connection = database.connect();
-
         // Verify that the user is listed as the prof for this course
-        connection.query(
+        database.pool.query(
           verifyAuthorizedUserQuery,
           [req.body.course_id, user_id],
           function(err, rows, fields) {
@@ -133,9 +131,9 @@ module.exports = {
             if (rows.length == 1) {
               // Handle an update/create based on if question_id is present
               if (req.body.question_id !== undefined) {
-                handleUpdateQuestion(req, res, connection);
+                handleUpdateQuestion(req, res);
               } else {
-                handleCreateQuestion(req, res, connection);
+                handleCreateQuestion(req, res);
               }
             } else {
               res.send(errors.authorizationError);

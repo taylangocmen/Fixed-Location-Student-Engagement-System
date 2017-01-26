@@ -1,33 +1,43 @@
 import React, {Component} from 'react';
-import {Navigator, StyleSheet} from 'react-native';
-import {Provider} from 'react-redux';
+import {AppRegistry, StyleSheet, Text, View, Navigator, TouchableHighlight, StatusBar, TouchableOpacity} from 'react-native';
 
 import {config} from '../../config';
+import * as colors from '../styling/Colors';
+import {EntryPoint} from '../scenes/EntryPoint';
 import {Container} from '../components/Container';
-import {TestComponent} from '../components/TestComponent';
 
 
 export class FLSES extends Component {
+  //TODO: add the store
+  //TODO: remove test component add the commented out rendering system
+  //TODO: alert works
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      bimodalLoginHome: true,
+    };
+
+    this.onLogin = this.onLogin.bind(this);
+  }
+
+  onLogin() {
+    this.setState({bimodalLoginHome: false});
+  }
+
   render() {
-    //TODO: add the store
-    //TODO: remove test component add the commented out rendering system
-    //TODO: alert works
-    // return <Provider store={{}}>
-    //   <Navigator
-    //     style={styles.navigator}
-    //     renderScene={() =>
-    //       <TestComponent />
-    //     }
-    //   />
-    // </Provider>;
-    return <Container>
-      <TestComponent />
-    </Container>;
+    return (
+      <Container style={styles.container}>
+        <EntryPoint />
+      </Container>
+    );
   }
 }
 
 const styles = StyleSheet.create({
-  navigator: {
-    flex: 1
-  }
+  container: {
+    flex: 1,
+    marginTop: config.os === 'ios' ? 20: 0,
+    backgroundColor: colors.basicWhite,
+  },
 });

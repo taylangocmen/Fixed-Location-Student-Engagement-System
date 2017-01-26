@@ -15,10 +15,8 @@ module.exports = {
         return;
       }
 
-      var connection = database.connect();
-
       // Select the user that has the given session_token
-      connection.query(
+      database.pool.query(
         'select id, session_token_expiry from ece496.users where session_token=?',
         [sessionToken],
         function(err, rows, fields) {

@@ -4,6 +4,8 @@ var https = require('https');
 var express = require('express');
 var bodyParser = require('body-parser');
 
+var getCourses = require('./get_courses');
+
 var auth = require('./auth');
 var config = require('./config');
 var wifiInfo = require('./wifi_info');
@@ -36,6 +38,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // Handle each endpoint
+app.get('/courses', getCourses.handle);
+
 app.post('/login', auth.handleLogin);
 app.post('/register', auth.handleRegister);
 app.post('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
