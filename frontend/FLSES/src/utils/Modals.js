@@ -1,9 +1,21 @@
 import * as colors from '../styling/Colors';
 
 export const flow = {
-  a: 'Courses',
-  b: 'Questions',
-  c: 'Answering',
+  a: {
+    left: 'logout',
+    right: 'menu',
+    title: 'Courses',
+  },
+  b: {
+    left: 'back',
+    right: 'menu',
+    title: 'Questions',
+  },
+  c: {
+    left: 'back',
+    right: 'menu',
+    title: 'Answering',
+  },
 };
 
 export const courseStatusColors = {
@@ -28,4 +40,18 @@ export const questionStatusFontWeights = {
   active: "700",
   inactive: "400",
   other: "100",
+};
+
+export const scenesByIndex = [
+  'login',
+  'landing',
+  'questions',
+  'answer',
+];
+
+export const sceneNavBarTitles = {
+  login: null,
+  landing: 'Your Courses',
+  questions: 'Questions',
+  answer: 'Answer',
 };

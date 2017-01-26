@@ -2,7 +2,7 @@
 
 This document describes the backend API. Specifically, it defines the HTTP method, request, and response for each endpoint.
 
-## Use 
+## Use
 
 #### POST /registration
 ```
@@ -33,14 +33,29 @@ Headers: {
 
 }
 Body: {
-	"email": string,
+	"username": string,
+	// either utorid or email
 	"pass_hash": string,
 }
 Response: {
 	"session_token": string,
 }
 ```
+#### POST /enrol
 
+```
+Headers: {
+	"Accept": "application/json",
+	"Content-Type": "application/json",
+	"Authorization": "Bearer "+ *session_token*
+}
+Body: {
+	"course_id": int
+}
+Response: {
+	"Error OR Success": string
+}
+```
 #### POST /answer
 
 This endpoint is used by students to answer questions.
@@ -106,15 +121,10 @@ Response: {
 }
 ```
 
-#### GET /courses
+#### GET /courses?session_token=*session_token*
 ```
 Headers: {
-	"Accept": "application/json",
-	"Content-Type": "application/json",
 	"Authorization": "Bearer " + *session_token*,
-}
-Body: {
-	"email": string,
 }
 Response: {
 	"courses_registered": [
@@ -123,6 +133,7 @@ Response: {
 			"course_name": string,
 			"course_desc": string,
 			"active_questions": [
+			// only the active questions here not the inactive ones
 				{
 					"question_id": int,
 					"type": string, // valid types need to be decided, lets accept multiple choice for now
@@ -142,15 +153,6 @@ Response: {
 				},
 				...
 			]
-			"inactive_questions": {
-				*question_id*: {
-					...
-					"answer": {
-						*correct_option*: string
-					}
-				}
-				...
-			}
 		},
 		...
 	],
@@ -160,3 +162,57 @@ Response: {
 }
 ```
 
+#### PUT /logout
+```
+Headers: {
+	"Accept": "application/json",
+	"Content-Type": "application/json",
+	"Authorization": "Bearer " + *session_token*,
+}
+Body: {}
+Response: {
+	"Error OR Success": string
+}
+```
+
+#### GET /questions?course_id=*course_id*
+```
+Headers: {
+	"Authorization": "Bearer " + *session_token*,
+}
+Response: {
+	"course_id": int,
+	"course_name": string,
+	"course_desc": string,
+	"active_questions": [
+		{
+			"question_id": int,
+			"type": string, // valid types need to be decided, lets accept multiple choice for now
+			"date": string,
+			"body": string,
+			"options": {
+				//this is the example for the multiple choice question
+				"a": string
+				"b": string
+				"c": string
+				"d": string
+				...
+			},
+			"answer": {
+				//this should be empty for an active question
+			}
+		},
+		...
+	]
+	"inactive_questions": [
+		{
+			*question_id*: {
+				...
+			"answer": {
+				*correct_option*: string
+			}
+		},
+		...
+	]
+}
+```

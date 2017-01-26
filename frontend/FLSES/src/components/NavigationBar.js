@@ -3,7 +3,7 @@ import {AppRegistry, StyleSheet, Text, View, TextInput, TouchableOpacity} from '
 
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
-import {NavigationArrowBack, NavigationClose, NavigationMenu} from '../images/Icons';
+import {NavigationArrowBack, NavigationClose, NavigationMenu, NavigationLogout} from '../components/NavigationComponents';
 
 
 export class NavigationBar extends Component {
@@ -13,20 +13,27 @@ export class NavigationBar extends Component {
   }
 
   renderIcon(icon) {
-    return (icon === 'back' ?
-      <NavigationArrowBack style={styles.icon}/>:
-      (icon === 'close' ?
-          <NavigationClose style={styles.icon}/>:
-          (icon === 'menu' ?
-              <NavigationMenu style={styles.icon}/>:
-              <View />
-          )));
+    switch (icon) {
+      case 'back':
+        return <NavigationArrowBack style={styles.icon}/>;
+      case 'close':
+        return <NavigationClose style={styles.icon}/>;
+      case 'menu':
+        return <NavigationMenu style={styles.icon}/>;
+      case 'logout':
+        return <NavigationLogout style={styles.icon}/>;
+      default:
+        return <View />;
+    }
   }
 
   render() {
     return (
       <View style={styles.navigationBarContainer}>
-        <TouchableOpacity style={styles.leftContainer}>
+        <TouchableOpacity
+          style={styles.leftContainer}
+          onPress={this.props.onPressLeft}
+        >
           {this.renderIcon(this.props.left)}
         </TouchableOpacity>
         <View style={styles.titleContainer}>
@@ -34,7 +41,10 @@ export class NavigationBar extends Component {
             {this.props.title}
           </Text>
         </View>
-        <TouchableOpacity style={styles.rightContainer}>
+        <TouchableOpacity
+          style={styles.rightContainer}
+          onPress={this.props.onPressRight}
+        >
           {this.renderIcon(this.props.right)}
         </TouchableOpacity>
       </View>

@@ -1,4 +1,9 @@
 module.exports = {
+  GET: {
+    courses: {
+      validationError: {error: 'Could not validate get courses request'}
+    }
+  },
   POST: {
     login: {
       validationError: {error: 'Could not validate login request'},
@@ -41,6 +46,7 @@ module.exports = {
       userAlreadyEnrolledError: {error: 'The user you specified is already enrolled in this course'},
       authorizationError: {error: 'Authorization failed. Are you sure you have permissions for this action?'},
       schemaError: {error: 'The arguments you provided do not match expected. Please refer to API.md'}
+	  userNotEnrolledError: {error: 'The user you specified is not enrolled in this course'}
     },
 	answer: {
       unknownError: {error: 'An internal error occurred, please try again'},
@@ -50,6 +56,8 @@ module.exports = {
 	  enrolmentError: {error: 'You are not enrolled in the course you are attempting to submit an answer for.'}
 	  sqlError: {error: 'There was an unknown error in executing the SQL query'},
 	  notAcceptingError: {error: 'The question that you attempted to answer is not currently accepting answers!'}
+      schemaError: {error: 'The arguments you provided do not match expected. Please refer to API.md'},
+      userNotEnrolledError: {error: 'The user you specified is not enrolled in this course'}
     }
   },
   PUT: {
@@ -59,6 +67,9 @@ module.exports = {
       invalidQuestionError: {error: 'Invalid question'},
       posingAskedQuestion: {error: 'Cannot pose a question that has already been asked'},
       authorizationError: {error: 'You are not authorized to pose questions in this course'}
+    },
+    logout: {
+      unknownError: {error: 'An internal error occurred, please try again'}
     }
   }
 };

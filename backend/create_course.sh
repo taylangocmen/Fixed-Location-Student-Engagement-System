@@ -8,7 +8,8 @@ SESSION_TOKEN=$(curl -s -X POST 'https://localhost:8443/login' \
 URL='https://localhost:8443/create_course?session_token='$SESSION_TOKEN
 
 COURSE_REQUEST='{
-  "course_name":"ece496"
+  "course_name":"ece496",
+	"course_desc":"Fantastic course"
 }'
 echo $SESSION_TOKEN
 curl -X POST $URL \

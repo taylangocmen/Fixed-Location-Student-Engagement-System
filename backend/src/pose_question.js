@@ -30,10 +30,8 @@ module.exports = {
         // Validate the request body
         var result = validate(req.body, schema);
         if (result.errors.length === 0) {
-          var connection = database.connect();
-
           // Verify that the user is listed as the prof for this course
-          connection.query(
+          database.pool.query(
             verifyAuthorizedUserQuery,
             [req.body.course_id, user_id],
             function(err, rows, fields) {
@@ -46,7 +44,7 @@ module.exports = {
               // If the user is authorized
               if (rows.length == 1) {
                 // Determine whether the question exists and has been asked yet
-                connection.query(
+                database.pool.query(
                   selectQuestionAskedQuery,
                   [req.body.course_id, req.body.question_id],
                   function(err, rows, fields) {
@@ -61,7 +59,7 @@ module.exports = {
                       if (rows[0].asked === 0) {
                         var timeout = rows[0].timeout;
                         // Update the question to have asked=true
-                        connection.query(
+                        database.pool.query(
                           poseQuestionQuery,
                           [req.body.course_id, req.body.question_id],
                           function(err, rows, fields) {

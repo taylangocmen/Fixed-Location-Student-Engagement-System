@@ -59,9 +59,8 @@ var handleResponses = function(err, rows, fields) {
 
 module.exports = {
   verify: function(course_id, question_id) {
-    var connection = database.connect();
     // Fetch the data from the database
-    connection.query(
+    database.pool.query(
       selectResponsesQuery,
       [course_id, question_id],
       handleResponses

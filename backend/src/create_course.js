@@ -13,8 +13,8 @@ var verifyAuthorizedUserQuery =
 
 var createCourseQuery =
   'insert into ece496.courses ' +
-  '(prof_id, sizeof, course_name) ' +
-  'values (?, 0, ?)';
+  '(prof_id, course_name, course_desc) ' +
+  'values (?, ?, ?)';
 
 module.exports = {
   // Question handler
@@ -28,10 +28,8 @@ module.exports = {
 
     auth.validateSessionToken(req.query.session_token)
       .then(function(user_id) {
-        var connection = database.connect();
-
         // Verify that the user has permission to create new courses
-        connection.query(
+        database.pool.query(
           verifyAuthorizedUserQuery,
           [user_id],
           function(err, rows, fields) {
@@ -43,10 +41,11 @@ module.exports = {
 
             // If the user is authorized to create new courses
             if (rows.length == 1) {
-              connection.query(
+              database.pool.query(
                 createCourseQuery,
                 [user_id,
-                 req.body.course_name],
+                 req.body.course_name,
+                 req.body.course_desc],
                 function(err, rows, fields) {
                   if (err) {
                     console.log(err);

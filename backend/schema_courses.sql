@@ -1,8 +1,9 @@
 CREATE TABLE IF NOT EXISTS ece496.courses (
   id INTEGER PRIMARY KEY AUTO_INCREMENT, # id of the section
   prof_id INTEGER NOT NULL, # prof id
-  sizeof INTEGER NOT NULL, # number of students in the class
-  course_name VARCHAR(30), #classes should have names, right?
+  course_name VARCHAR(30) NOT NULL, #classes should have names, right?
+  course_desc VARCHAR(255) NOT NULL,
+  active BOOLEAN NOT NULL DEFAULT TRUE, # Whether the course is active
   time_created TIMESTAMP,
   time_loc TIMESTAMP, #time when the location was last updated
   radius FLOAT,
