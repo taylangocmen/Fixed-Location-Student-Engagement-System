@@ -19,7 +19,7 @@ var selectQuestionAskedQuery =
 
 var poseQuestionQuery =
   'update ece496.questions ' +
-  'set asked=true ' +
+  'set asked=true, time_opened=NOW() ' +
   'where course_id=? and id=?';
 
 module.exports = {
@@ -57,7 +57,8 @@ module.exports = {
                     }
 
                     if (rows.length === 1) {
-                      if (rows[0].asked === false) {
+                      // If the question has not yet been asked
+                      if (rows[0].asked === 0) {
                         var timeout = rows[0].timeout;
                         // Update the question to have asked=true
                         connection.query(
@@ -77,6 +78,7 @@ module.exports = {
 
                             // TODO if we eventually use websockets, dispatch an event to all users
                             // in this class that the question was just asked
+                            res.send({});
                           }
                         );
                       } else {

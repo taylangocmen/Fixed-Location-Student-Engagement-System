@@ -90,6 +90,10 @@ module.exports = {
           'required': true,
           'additionalProperties': false,
           'properties': {
+            'title': {
+              'type': 'string',
+              'required': true
+            },
             'text': {
               'type': 'string',
               'required': true
