@@ -7,7 +7,7 @@ var errors = require('../../common/errors').PUT.logout;
 
 var invalidateTokenQuery =
   'update ece496.users ' +
-  'set session_token_expiry=? '
+  'set session_token_expiry=?, session_token=? '
   'where id=?';
 
 module.exports = {
@@ -15,10 +15,9 @@ module.exports = {
     auth.validateSessionToken(req.query.session_token)
       .then(function(user_id) {
           //do not need to validate body since there is none
-          var now = (new Date()).getTime();
           database.pool.query(
             invalidateTokenQuery,
-            [now, user_id],
+            [null, null, user_id],
             function(err, rows, fields) {
               if(err) {
                 console.log(err);
@@ -26,7 +25,7 @@ module.exports = {
                 return;
               }
               else {
-                res.send({"Success": "Logout successful"});
+                res.send({});
                 return;
               }
             }

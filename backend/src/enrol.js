@@ -68,9 +68,7 @@ module.exports = {
                                                         res.send(errors.unknownError);
                                                         return;
                                                     } else {
-                                                        res.send({
-                                                            "success": "Enrollment successful"
-                                                        });
+                                                        res.send({});
                                                         console.log(res);
                                                         return;
                                                     }
