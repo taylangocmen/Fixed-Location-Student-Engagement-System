@@ -2,7 +2,7 @@
 
 This document describes the backend API. Specifically, it defines the HTTP method, request, and response for each endpoint.
 
-## Use 
+## Use
 
 #### POST /registration
 ```
@@ -41,7 +41,21 @@ Response: {
 	"session_token": string,
 }
 ```
+#### POST /enrol
 
+```
+Headers: {
+	"Accept": "application/json",
+	"Content-Type": "application/json",
+	"Authorization": "Bearer "+ *session_token*
+}
+Body: {
+	"course_id": int
+}
+Response: {
+	"Error OR Success": string
+}
+```
 #### POST /answer
 
 This endpoint is used by students to answer questions.
@@ -148,6 +162,18 @@ Response: {
 }
 ```
 
+#### PUT /logout
+```
+Headers: {
+	"Accept": "application/json",
+	"Content-Type": "application/json",
+	"Authorization": "Bearer " + *session_token*,
+}
+Body: {}
+Response: {
+	"Error OR Success": string
+}
+```
 
 #### GET /questions?course_id=*course_id*
 ```
