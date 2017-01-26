@@ -56,7 +56,7 @@ module.exports = {
       invalidQuestionError: {error: 'Invalid question'},
       posingAskedQuestion: {error: 'Cannot pose a question that has already been asked'},
       authorizationError: {error: 'You are not authorized to pose questions in this course'}
-    }
+    },
     logout: {
       unknownError: {error: 'An internal error occurred, please try again'}
     }

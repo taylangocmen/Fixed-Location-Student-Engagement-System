@@ -6,11 +6,11 @@ var auth = require('./auth');
 var errors = require('../../common/errors').PUT.logout;
 
 var invalidateTokenQuery =
-  'update Users ' +
-  'set session_token_expiry = ? '
-  'where id = ?';
+  'update ece496.users ' +
+  'set session_token_expiry=? '
+  'where id=?';
 
-module.exports {
+module.exports = {
   handle: function(req, res) {
     auth.validateSessionToken(req.query.session_token)
       .then(function(user_id) {
