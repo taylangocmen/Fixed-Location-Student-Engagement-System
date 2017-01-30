@@ -5,6 +5,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var getCourses = require('./get_courses');
+var getQuestions = require('./get_questions');
 
 var auth = require('./auth');
 var config = require('./config');
@@ -39,6 +40,7 @@ app.use(bodyParser.json())
 
 // Handle each endpoint
 app.get('/courses', getCourses.handle);
+app.get('/questions', getQuestions.handle);
 
 app.post('/login', auth.handleLogin);
 app.post('/register', auth.handleRegister);
