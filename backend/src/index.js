@@ -13,6 +13,7 @@ var enrol = require('./enrol');
 var unenrol = require('./unenrol');
 var createUpdateQuestion = require('./create_update_question');
 var poseQuestion = require('./pose_question');
+var logout = require('./logout');
 
 var createCourse = require('./create_course');
 
@@ -47,6 +48,7 @@ app.post('/unenrol', unenrol.handle);
 app.post('/question', createUpdateQuestion.handle);
 app.post('/create_course', createCourse.handle);
 
+app.put('/logout', logout.handle);
 app.put('/question', poseQuestion.handle);
 
 // By default return a 404 Not Found
