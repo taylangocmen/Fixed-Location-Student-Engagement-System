@@ -8,12 +8,12 @@ export const flow = {
   },
   b: {
     left: 'back',
-    right: 'refresh',
+    right: 'menu',
     title: 'Questions',
   },
   c: {
     left: 'back',
-    right: 'refresh',
+    right: 'menu',
     title: 'Answering',
   },
 };
@@ -21,7 +21,7 @@ export const flow = {
 export const courseStatusColors = {
   active: colors.secondaryCrimson,
   inactive: colors.secondaryBondiBlue,
-  expired: colors.basicLime,
+  expired: colors.secondaryCreamBrulee,
   other: colors.basicBlack,
 };
 

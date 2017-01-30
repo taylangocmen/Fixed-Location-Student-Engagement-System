@@ -37,7 +37,8 @@ export class EntryPoint extends Component {
 
   }
 
-  doSetQuestions({questions}) {
+  //TODO: do a get request with questions
+  doSetQuestions(questions, course_id) {
     this.setState({questions});
   }
 
@@ -53,7 +54,7 @@ export class EntryPoint extends Component {
     this.setState({courses});
   }
 
-  doSetAnswering(answering) {
+  doSetAnswering(answering, question_id) {
     this.setState({answering});
   }
 
@@ -86,6 +87,8 @@ export class EntryPoint extends Component {
   }
 
   render() {
+    console.warn("EntryPoint state    :    ", this.state);
+
     return (
       this.state.bimodalLoginLanding ?
         <LoginScene

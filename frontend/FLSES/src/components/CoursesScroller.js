@@ -14,6 +14,7 @@ export class CoursesScroller extends Component {
 
   render() {
     // console.warn('CoursesScroller, courses', this.props.courses);
+    //TODO: do the expired courses right now its just the regular current courses, and status is inactive
 
     return (
       <ScrollView style={styles.scrollView}>
@@ -28,14 +29,24 @@ export class CoursesScroller extends Component {
             />))
         }
         {
-          //TODO: do the expired courses
-          (!!this.props.courses.courses_expired &&
-            this.props.courses.courses_expired.map((course) => <CourseCard
-              key={course.course_id}
-              status={'expired'}
-              onRightButtonPress={null}
-              onActivePress={null}
-            />))
+          // (!!this.props.courses.courses_registered &&
+          //   this.props.courses.courses_registered.map((course) => <CourseCard
+          //     key={course.course_id}
+          //     course={course}
+          //     status={'inactive'}
+          //     onRightButtonPress={null}
+          //     onActivePress={null}
+          //   />))
+        }
+        {
+          // (!!this.props.courses.courses_registered &&
+          // this.props.courses.courses_registered.map((course) => <CourseCard
+          //   key={course.course_id}
+          //   course={course}
+          //   status={'expired'}
+          //   onRightButtonPress={null}
+          //   onActivePress={null}
+          // />))
         }
       </ScrollView>
     );

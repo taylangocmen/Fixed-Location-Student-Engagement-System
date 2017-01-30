@@ -5,6 +5,7 @@ import {config} from '../../config';
 import * as colors from '../styling/Colors';
 import {CardLeftColorBar, NavigationChevronRight} from './NavigationComponents';
 import {questionStatusColors, questionStatusFontWeights} from '../utils/Modals';
+import {alphabet} from '../utils/Functions';
 
 
 export class QuestionCard extends Component {
@@ -12,6 +13,12 @@ export class QuestionCard extends Component {
     super(props);
     this.state = {
     };
+
+    this.renderAnswers = this.renderAnswers.bind(this);
+  }
+
+  renderAnswers(answers) {
+    return answers.map((answer, index) => (alphabet(index) + ') ' + answer)).join('    ');
   }
 
   render() {
@@ -22,32 +29,18 @@ export class QuestionCard extends Component {
         <CardLeftColorBar backgroundColor={backgroundColor} width={4}/>
         <View style={styles.mainContainer}>
           <Text style={[styles.questionText, {fontWeight}]}>
-            Is this a question, or is not a question, maybe that is the question itself?
+            {this.props.question.title}
+          </Text>
+          <Text style={[styles.questionText, {fontWeight}]}>
+            {this.props.question.body}
           </Text>
           <Text style={[styles.optionText, {fontWeight}]}>
-            A. Yes
+            {this.renderAnswers(this.props.question.answers)}
           </Text>
-          <Text style={[styles.optionText, {fontWeight}]}>
-            B. No
-          </Text>
-          <Text style={[styles.optionText, {fontWeight}]}>
-            C. Maybe
-          </Text>
-          <Text style={[styles.optionText, {fontWeight}]}>
-            D. Kappa
-          </Text>
-          {this.props.status === 'active' ?
-            <Text>
-
-            </Text> :
-            <Text>
-
-            </Text>
-          }
         </View>
         <TouchableOpacity
           style={[styles.rightButton, {backgroundColor}]}
-          onPress={this.props.onRightButtonPress}
+          onPress={()=>this.props.onRightButtonPress(this.props.question, this.props.question.question_id)}
         >
           <NavigationChevronRight backgroundColor={backgroundColor} width={24}/>
         </TouchableOpacity>

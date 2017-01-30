@@ -40,11 +40,17 @@ export class QuestionMiniCard extends Component {
                 {this.renderAnswers(this.props.question.answers)}
               </Text>
             </TouchableOpacity>):
-            (<View style={styles.inactiveContainer}>
-              <Text style={styles.inactiveText}>
-                No active questions for this course at this time.
-              </Text>
-            </View>)
+            this.props.status==='inactive' ?
+              (<View style={styles.inactiveContainer}>
+                <Text style={styles.inactiveText}>
+                  No active questions for this course at this time.
+                </Text>
+              </View>):
+              (<View style={styles.inactiveContainer}>
+                <Text style={styles.inactiveText}>
+                  This course has expired.
+                </Text>
+              </View>)
         }
       </View>
     );

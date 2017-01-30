@@ -16,11 +16,22 @@ export class QuestionsScroller extends Component {
     return (
       <ScrollView style={styles.scrollView}>
         {
-
-          // <View>
-          //   <QuestionCard status='active' onRightButtonPress={this.props.onRightButtonPress}/>
-          //   <QuestionCard status='inactive' onRightButtonPress={null}/>
-          // </View>
+          (!!this.props.questions.active_questions &&
+            this.props.questions.active_questions.map((question)=> <QuestionCard
+              key={question.question_id}
+              question={question}
+              status={'active'}
+              onRightButtonPress={this.props.onRightButtonPress}
+            />))
+        }
+        {
+          (!!this.props.questions.inactive_questions &&
+          this.props.questions.inactive_questions.map((question)=> <QuestionCard
+            key={question.question_id}
+            question={question}
+            status={'inactive'}
+            onRightButtonPress={this.props.onRightButtonPress}
+          />))
         }
       </ScrollView>
     );
@@ -31,10 +42,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     margin: 1,
-    // padding: 6,
     paddingHorizontal: 6,
-    // borderColor: colors.secondaryCocoaBrown,
-    // borderWidth: StyleSheet.hairlineWidth,
     backgroundColor: colors.basicWhite,
   },
 });

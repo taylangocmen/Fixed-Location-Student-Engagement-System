@@ -35,15 +35,17 @@ export class LandingScene extends Component {
     });
   }
 
-  goToQuestions() {
+  goToQuestions(questions, course_id) {
+    this.props.doSetQuestions(questions, course_id);
+
     this.setState({
       title: flow.b.title,
       content: flow.b,
     });
   }
 
-  goToAnswering(answering) {
-    this.props.doSetAnswering(answering);
+  goToAnswering(answering, question_id) {
+    this.props.doSetAnswering(answering, question_id);
 
     this.setState({
       title: flow.c.title,
@@ -103,17 +105,17 @@ export class LandingScene extends Component {
       <View style={styles.pageContainer}>
         <NavigationBar
           left={this.state.content.left}
-          onPressLeft={()=>this.getOnPressLeft()}
+          onPressLeft={this.getOnPressLeft}
           right={this.state.content.right}
-          onPressRight={()=>this.getOnPressRight()}
+          onPressRight={this.getOnPressRight}
           title={this.state.content.title}
         />
         {
           (this.state.title === flow.a.title ?
-            this.renderCourses():
+            this.renderCourses() :
             (this.state.title === flow.b.title ?
-              this.renderQuestions():
-              this.renderAnswering()
+                this.renderQuestions() :
+                this.renderAnswering()
             ))
         }
       </View>
