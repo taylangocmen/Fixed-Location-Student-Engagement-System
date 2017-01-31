@@ -9,6 +9,20 @@ module.exports = {
           'required': true
         }
       }
+    },
+    questions: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'session_token': {
+          'type': 'string',
+          'required': true
+        },
+        'course_id': {
+          'type': 'string',
+          'required': true
+        }
+      }
     }
   },
   POST: {
@@ -127,6 +141,44 @@ module.exports = {
               }
             }
           }
+        }
+      }
+    },
+    answer: {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'course_id': {
+          'type': 'integer',
+          'required': true
+        },
+        'question_id': {
+          'type': 'integer',
+          'required': true
+        },
+        'time': {
+          'type': 'integer',
+          'required': true
+        },
+        'answer': {
+          'type': 'string',
+          'required': true,
+        },
+        'ans_type': {
+          'type': 'integer',
+          'required': true,
+        },
+        'neighbours': {
+          'type': 'array',
+          'required': true
+        },
+        'items': {
+          'type': 'string',
+          'minItems': 0
+        },
+        'device_id': {
+          'type': 'string',
+          'required': true
         }
       }
     }
