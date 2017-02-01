@@ -13,16 +13,31 @@ export class CoursesScroller extends Component {
   }
 
   render() {
+    // console.warn('CoursesScroller, courses', this.props.courses);
+    //TODO: do the expired courses right now its just the regular current courses, and status is inactive
+
     return (
       <ScrollView style={styles.scrollView}>
-        <CourseCard status='active' onRightButtonPress={this.props.onRightButtonPress} onActivePress={this.props.onActivePress}/>
-        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
-        <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>
+        {
+          (!!this.props.courses.courses_registered &&
+            this.props.courses.courses_registered.map((course) => <CourseCard
+              key={course.course_id}
+              course={course}
+              status={(!!course.active_questions) && (course.active_questions.length > 0) ? 'active': 'inactive'}
+              onRightButtonPress={this.props.onRightButtonPress}
+              onActivePress={this.props.onActivePress}
+            />))
+        }
+        {
+          (!!this.props.courses.courses_expired &&
+            this.props.courses.courses_expired.map((course) => <CourseCard
+              key={course.course_id}
+              course={course}
+              status={'expired'}
+              onRightButtonPress={null}
+              onActivePress={null}
+            />))
+        }
       </ScrollView>
     );
   }
@@ -32,10 +47,10 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     margin: 1,
-    // padding: 6,
     paddingHorizontal: 6,
-    // borderColor: colors.secondaryCocoaBrown,
-    // borderWidth: StyleSheet.hairlineWidth,
     backgroundColor: colors.basicWhite,
   },
 });
+
+// <CourseCard status='active' onRightButtonPress={this.props.onRightButtonPress} onActivePress={this.props.onActivePress}/>
+// <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>

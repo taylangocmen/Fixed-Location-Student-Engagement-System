@@ -2,8 +2,8 @@ import * as colors from '../styling/Colors';
 
 export const flow = {
   a: {
-    left: 'logout',
-    right: 'menu',
+    left: 'close',
+    right: 'refresh',
     title: 'Courses',
   },
   b: {
@@ -21,13 +21,15 @@ export const flow = {
 export const courseStatusColors = {
   active: colors.secondaryCrimson,
   inactive: colors.secondaryBondiBlue,
-  other: colors.basicLime,
+  expired: colors.secondaryCreamBrulee,
+  other: colors.basicBlack,
 };
 
 export const courseStatusFontWeights = {
   active: "700",
   inactive: "400",
-  other: "100",
+  expired: "100",
+  other: "900",
 };
 
 export const questionStatusColors = {
@@ -41,13 +43,6 @@ export const questionStatusFontWeights = {
   inactive: "400",
   other: "100",
 };
-
-export const scenesByIndex = [
-  'login',
-  'landing',
-  'questions',
-  'answer',
-];
 
 export const sceneNavBarTitles = {
   login: null,

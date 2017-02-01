@@ -10,66 +10,67 @@ import {AnsweringOption} from '../components/AnsweringOption'
 export class AnsweringCard extends Component {
   constructor(props) {
     super(props);
+
+    // TODO: When index is fixed remove answer-1
+    const optionChosen = !!props.answering.answer_accepted ? (props.answering.answer-1): -1;
+
     this.state = {
-      optionChosen: -1,
+      optionChosen,
     };
 
     this.chooseOption = this.chooseOption.bind(this);
   }
 
-  chooseOption(optionChosen) {
+  chooseOption(newOptionChosen) {
+    let optionChosen = newOptionChosen;
+
+    if(newOptionChosen === this.state.optionChosen)
+      optionChosen = -1;
+
     this.setState({
       optionChosen,
     });
   }
 
   render() {
-    const borderColor = opacity(questionStatusColors[this.props.status], 0.6);
+    //TODO: do  the inactive questions and answered questions
     const fontWeight = questionStatusFontWeights[this.props.status];
-    const optionStyles = {
 
-    };
+    // console.warn('AnsweringCard: ', this.props.answering);
 
+    // TODO: When index is fixed remove answer-1
     return (
-      <View style={[styles.cardContainer, {borderColor}]}>
+      <View style={styles.cardContainer}>
         <View style={styles.mainContainer}>
           <View style={styles.questionContainer}>
-            <Text style={[styles.questionText, {fontWeight}]}>
-              Is this a question, or is not a question, maybe that is the question itself?
-            </Text>
+            <View style={styles.bodyContainer}>
+              <Text style={[styles.bodyText, {fontWeight}]}>
+                {this.props.answering.title}
+              </Text>
+              <Text style={[styles.bodyText, {fontWeight}]}>
+                {this.props.answering.body}
+              </Text>
+            </View>
+            {
+              this.props.answering.answers.map((option, index)=><AnsweringOption
+                key={index}
+                optionText={option}
+                status={this.props.status}
+                onPress={()=>this.chooseOption(index)}
+                chosenAnswer={this.state.optionChosen === index}
+                submittedAnswer={!!this.props.answering.answer_accepted && ((this.props.answering.answer-1) === index)}
+                correctAnswer={!!this.props.answering.correct_answer && ((this.props.answering.correct_answer-1) === index)}
+                disabled={!!this.props.answering.correct_answer}
+              />)
+            }
           </View>
-          <AnsweringOption
-            optionText="A. Yes"
-            status={this.props.status}
-            onPress={()=>this.chooseOption(0)}
-            chosen={this.state.optionChosen === 0}
-          />
-          <AnsweringOption
-            optionText="B. No"
-            status={this.props.status}
-            onPress={()=>this.chooseOption(1)}
-            chosen={this.state.optionChosen === 1}
-          />
-          <AnsweringOption
-            optionText="C. Maybe"
-            status={this.props.status}
-            onPress={()=>this.chooseOption(2)}
-            chosen={this.state.optionChosen === 2}
-          />
-          <AnsweringOption
-            optionText="D. Kappa"
-            status={this.props.status}
-            onPress={()=>this.chooseOption(3)}
-            chosen={this.state.optionChosen === 3}
-          />
-          {this.props.status === 'active' ?
-            <Text>
-
-            </Text> :
-            <Text>
-
-            </Text>
-          }
+          <View style={styles.bottomContainer}>
+            <TouchableOpacity style={styles.submitButton}>
+              <Text style={styles.submitText}>
+                Submit
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -80,15 +81,23 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     flexDirection: 'row',
-    // borderWidth: 6,
     borderWidth: 1,
     padding: 16,
   },
   mainContainer: {
     flex: 1,
   },
-  questionContainer: {
+  questionContainer:{
+    flex: 1,
+  },
+  bodyContainer: {
     marginBottom: 15,
+  },
+  bottomContainer:{
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   optionButton: {
     borderRadius: 16,
@@ -97,10 +106,28 @@ const styles = StyleSheet.create({
     padding: 8,
     marginVertical: 4,
   },
-  questionText: {
+  bodyText: {
     fontSize: 24,
   },
   optionText: {
     fontSize: 20,
+  },
+  submitButton: {
+    borderRadius: 16,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.secondaryCocoaBrown,
+    backgroundColor: colors.secondaryCrimson,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width: 200,
+  },
+  submitText: {
+    color: colors.basicWhite,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontSize: 20,
+    fontWeight: '800',
   },
 });

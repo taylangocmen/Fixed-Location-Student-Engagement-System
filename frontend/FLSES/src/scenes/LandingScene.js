@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, Text, View, TextInput, ScrollView} from 'react-native';
 
 import {config} from '../../config';
+import {api} from '../app/api';
 import * as colors from '../styling/Colors';
 import {flow} from '../utils/Modals';
 import {NavigationBar} from '../components/NavigationBar';
 import {CoursesScroller} from '../components/CoursesScroller';
 import {QuestionsScroller} from '../components/QuestionsScroller';
 import {AnsweringCard} from '../components/AnsweringCard';
+import {NavigationLoading} from '../components/NavigationComponents';
 
 
 export class LandingScene extends Component {
@@ -15,6 +17,7 @@ export class LandingScene extends Component {
     super(props);
     this.state = {
       //TODO: change this to flow.a at the end
+      prev: flow.a.title,
       title: flow.a.title,
       content: flow.a,
     };
@@ -27,21 +30,31 @@ export class LandingScene extends Component {
   }
 
   goToCourses() {
+    const prev = this.state.title;
     this.setState({
+      prev,
       title: flow.a.title,
       content: flow.a,
     });
   }
 
-  goToQuestions() {
+  goToQuestions(course_id, keep) {
+    !keep && this.props.doGetQuestions(course_id);
+
+    const prev = this.state.title;
     this.setState({
+      prev,
       title: flow.b.title,
       content: flow.b,
     });
   }
 
-  goToAnswering() {
+  goToAnswering(answering) {
+    this.props.doSetAnswering(answering);
+
+    const prev = this.state.title;
     this.setState({
+      prev,
       title: flow.c.title,
       content: flow.c,
     });
@@ -56,7 +69,9 @@ export class LandingScene extends Component {
         this.goToCourses();
         break;
       case flow.c.title:
-        this.goToQuestions();
+        this.state.prev === flow.a.title ?
+          this.goToCourses():
+          this.goToQuestions({}, true);
         break;
       default:
         return null;
@@ -64,7 +79,34 @@ export class LandingScene extends Component {
   }
 
   getOnPressRight() {
+    console.warn("this is getOnPressRight");
+  }
 
+  renderCourses() {
+    return !!this.props.courses ?
+      <CoursesScroller
+        onRightButtonPress={this.goToQuestions}
+        onActivePress={this.goToAnswering}
+        courses={this.props.courses}
+      /> :
+      <NavigationLoading />;
+  }
+
+  renderQuestions() {
+    return !!this.props.questions ?
+      <QuestionsScroller
+        onRightButtonPress={this.goToAnswering}
+        questions={this.props.questions}
+      /> :
+      <NavigationLoading />;
+  }
+
+  renderAnswering() {
+    return !!this.props.answering ?
+      <AnsweringCard
+        answering={this.props.answering}
+      /> :
+      <NavigationLoading />;
   }
 
   render() {
@@ -72,20 +114,18 @@ export class LandingScene extends Component {
       <View style={styles.pageContainer}>
         <NavigationBar
           left={this.state.content.left}
-          onPressLeft={()=>this.getOnPressLeft()}
+          onPressLeft={this.getOnPressLeft}
           right={this.state.content.right}
-          onPressRight={()=>this.getOnPressRight()}
+          onPressRight={this.getOnPressRight}
           title={this.state.content.title}
         />
         {
-          (this.state.title === flow.a.title?
-            <CoursesScroller
-              onRightButtonPress={()=>this.goToQuestions()}
-              onActivePress={()=>this.goToAnswering()}
-            /> :
-            (this.state.title === flow.b.title?
-              <QuestionsScroller onRightButtonPress={()=>this.goToAnswering()} />:
-              <AnsweringCard status='active'/>))
+          (this.state.title === flow.a.title ?
+            this.renderCourses() :
+            (this.state.title === flow.b.title ?
+                this.renderQuestions() :
+                this.renderAnswering()
+            ))
         }
       </View>
     );
@@ -106,5 +146,5 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'stretch',
     backgroundColor: colors.basicWhite,
-  }
+  },
 });
