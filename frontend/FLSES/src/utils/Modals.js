@@ -44,13 +44,6 @@ export const questionStatusFontWeights = {
   other: "100",
 };
 
-export const scenesByIndex = [
-  'login',
-  'landing',
-  'questions',
-  'answer',
-];
-
 export const sceneNavBarTitles = {
   login: null,
   landing: 'Your Courses',

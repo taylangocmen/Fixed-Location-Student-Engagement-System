@@ -10,60 +10,59 @@ import {AnsweringOption} from '../components/AnsweringOption'
 export class AnsweringCard extends Component {
   constructor(props) {
     super(props);
+
+    // TODO: When index is fixed remove answer-1
+    const optionChosen = !!props.answering.answer_accepted ? (props.answering.answer-1): -1;
+
     this.state = {
-      optionChosen: -1,
+      optionChosen,
     };
 
     this.chooseOption = this.chooseOption.bind(this);
   }
 
-  chooseOption(optionChosen) {
+  chooseOption(newOptionChosen) {
+    let optionChosen = newOptionChosen;
+
+    if(newOptionChosen === this.state.optionChosen)
+      optionChosen = -1;
+
     this.setState({
       optionChosen,
     });
   }
 
   render() {
-    const borderColor = opacity(questionStatusColors[this.props.status], 0.6);
+    //TODO: do  the inactive questions and answered questions
     const fontWeight = questionStatusFontWeights[this.props.status];
-    const optionStyles = {
 
-    };
+    // console.warn('AnsweringCard: ', this.props.answering);
 
-    //TODO: make this from props
+    // TODO: When index is fixed remove answer-1
     return (
-      <View style={[styles.cardContainer, {borderColor}]}>
+      <View style={styles.cardContainer}>
         <View style={styles.mainContainer}>
           <View style={styles.questionContainer}>
             <View style={styles.bodyContainer}>
               <Text style={[styles.bodyText, {fontWeight}]}>
-                Is this a question, or is not a question, maybe that is the question itself?
+                {this.props.answering.title}
+              </Text>
+              <Text style={[styles.bodyText, {fontWeight}]}>
+                {this.props.answering.body}
               </Text>
             </View>
-            <AnsweringOption
-              optionText="A. Yes"
-              status={this.props.status}
-              onPress={()=>this.chooseOption(0)}
-              chosen={this.state.optionChosen === 0}
-            />
-            <AnsweringOption
-              optionText="B. No"
-              status={this.props.status}
-              onPress={()=>this.chooseOption(1)}
-              chosen={this.state.optionChosen === 1}
-            />
-            <AnsweringOption
-              optionText="C. Maybe"
-              status={this.props.status}
-              onPress={()=>this.chooseOption(2)}
-              chosen={this.state.optionChosen === 2}
-            />
-            <AnsweringOption
-              optionText="D. Kappa"
-              status={this.props.status}
-              onPress={()=>this.chooseOption(3)}
-              chosen={this.state.optionChosen === 3}
-            />
+            {
+              this.props.answering.answers.map((option, index)=><AnsweringOption
+                key={index}
+                optionText={option}
+                status={this.props.status}
+                onPress={()=>this.chooseOption(index)}
+                chosenAnswer={this.state.optionChosen === index}
+                submittedAnswer={!!this.props.answering.answer_accepted && ((this.props.answering.answer-1) === index)}
+                correctAnswer={!!this.props.answering.correct_answer && ((this.props.answering.correct_answer-1) === index)}
+                disabled={!!this.props.answering.correct_answer}
+              />)
+            }
           </View>
           <View style={styles.bottomContainer}>
             <TouchableOpacity style={styles.submitButton}>
@@ -82,7 +81,6 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     flexDirection: 'row',
-    // borderWidth: 6,
     borderWidth: 1,
     padding: 16,
   },

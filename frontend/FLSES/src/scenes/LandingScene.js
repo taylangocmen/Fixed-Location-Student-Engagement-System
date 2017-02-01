@@ -17,6 +17,7 @@ export class LandingScene extends Component {
     super(props);
     this.state = {
       //TODO: change this to flow.a at the end
+      prev: flow.a.title,
       title: flow.a.title,
       content: flow.a,
     };
@@ -29,25 +30,31 @@ export class LandingScene extends Component {
   }
 
   goToCourses() {
+    const prev = this.state.title;
     this.setState({
+      prev,
       title: flow.a.title,
       content: flow.a,
     });
   }
 
-  goToQuestions(questions, course_id) {
-    this.props.doSetQuestions(questions, course_id);
+  goToQuestions(course_id, keep) {
+    !keep && this.props.doGetQuestions(course_id);
 
+    const prev = this.state.title;
     this.setState({
+      prev,
       title: flow.b.title,
       content: flow.b,
     });
   }
 
-  goToAnswering(answering, question_id) {
-    this.props.doSetAnswering(answering, question_id);
+  goToAnswering(answering) {
+    this.props.doSetAnswering(answering);
 
+    const prev = this.state.title;
     this.setState({
+      prev,
       title: flow.c.title,
       content: flow.c,
     });
@@ -62,7 +69,9 @@ export class LandingScene extends Component {
         this.goToCourses();
         break;
       case flow.c.title:
-        this.goToQuestions();
+        this.state.prev === flow.a.title ?
+          this.goToCourses():
+          this.goToQuestions({}, true);
         break;
       default:
         return null;
@@ -70,7 +79,7 @@ export class LandingScene extends Component {
   }
 
   getOnPressRight() {
-
+    console.warn("this is getOnPressRight");
   }
 
   renderCourses() {

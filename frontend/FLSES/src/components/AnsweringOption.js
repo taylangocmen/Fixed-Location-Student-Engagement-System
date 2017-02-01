@@ -14,17 +14,33 @@ export class AnsweringOption extends Component {
 
   render() {
     const fontWeight = questionStatusFontWeights[this.props.status];
-    const optionStyle = this.props.chosen? styles.optionChosen: styles.optionFree;
+
+    const optionStyle = !!this.props.correctAnswer ?
+        styles.optionCorrect :
+        !!this.props.submittedAnswer ?
+          styles.optionSubmitted:
+          !!this.props.chosenAnswer ?
+            styles.optionChosen :
+            styles.optionFree;
 
     return (
-      <TouchableOpacity
-        style={optionStyle}
-        onPress={this.props.onPress}
+      <View
+        style={[styles.optionBaseStyle, optionStyle]}
       >
-        <Text style={[styles.optionText, {fontWeight}]}>
-          {this.props.optionText}
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={this.props.onPress}
+          disabled={this.props.disabled}
+        >
+          <View>
+            <Text style={[styles.optionText, {fontWeight}]}>
+              {this.props.optionText}
+            </Text>
+            <View>
+
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
@@ -33,7 +49,7 @@ const styles = StyleSheet.create({
   questionContainer: {
     marginBottom: 15,
   },
-  optionFree: {
+  optionBaseStyle: {
     borderRadius: 16,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.secondaryCocoaBrown,
@@ -41,14 +57,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginVertical: 4,
   },
-optionChosen: {
-    borderRadius: 16,
-    borderWidth: 2,
-    borderColor: colors.secondaryCocoaBrown,
-    backgroundColor: opacity(colors.basicGreen, 0.1),
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    marginVertical: 4,
+  optionCorrect: {
+    backgroundColor: opacity(colors.accentFrostee, 0.5),
+  },
+  optionSubmitted: {
+    backgroundColor: opacity(colors.accentJordyBlue, 0.5),
+  },
+  optionChosen: {
+    backgroundColor: opacity(colors.accentGreyNurse, 0.5),
+  },
+  optionFree: {
   },
   questionText: {
     fontSize: 24,

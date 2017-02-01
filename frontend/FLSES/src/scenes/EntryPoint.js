@@ -5,8 +5,6 @@ import {Provider} from 'react-redux';
 import {config} from '../../config';
 import {api} from '../app/api';
 import * as colors from '../styling/Colors';
-import {scenesByIndex} from '../utils/Modals';
-import {opacity} from '../utils/Functions';
 import {LoginScene} from '../scenes/LoginScene';
 import {LandingScene} from '../scenes/LandingScene';
 
@@ -33,33 +31,32 @@ export class EntryPoint extends Component {
     this.goLanding = this.goLanding.bind(this);
   }
 
-  doGetQuestions() {
-
-  }
-
-  //TODO: do a get request with questions
-  doSetQuestions(questions, course_id) {
-    this.setState({questions});
+  doGetQuestions(course_id) {
+    api.get(`/questions`, {...api.getTokenObj(), course_id})
+      .then(this.doSetQuestions)
+    ;
   }
 
   doGetCourses() {
     api.get(`/courses`, api.getTokenObj())
-      .then((response) => this.setState({
-        courses: {...response},
-      }))
+      .then(this.doSetCourses)
     ;
+  }
+
+  //TODO: do a get request with questions
+  doSetQuestions(questions) {
+    this.setState({questions});
   }
 
   doSetCourses(courses) {
     this.setState({courses});
   }
 
-  doSetAnswering(answering, question_id) {
+  doSetAnswering(answering) {
     this.setState({answering});
   }
 
   doLogin(loginData) {
-
     //TODO: fix this pretty much the commented out version
     // api.post('/login', loginData)
     api.sudo_post('/login', loginData)
@@ -87,7 +84,10 @@ export class EntryPoint extends Component {
   }
 
   render() {
-    console.warn("EntryPoint state    :    ", this.state);
+    // console.warn('EntryPoint');
+    // for(let key in this.state){
+    //   console.warn(key, this.state[key]);
+    // }
 
     return (
       this.state.bimodalLoginLanding ?

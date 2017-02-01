@@ -77,5 +77,6 @@ export const api = {
     const retObj = {session_token: api.session_token()};
     resolve(retObj);
     reject('error');
-  }).catch(e => console.warn('Error:', e)),
+  })
+    .catch(e => console.warn('Error:', e)),
 };

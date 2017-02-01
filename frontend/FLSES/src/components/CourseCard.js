@@ -39,7 +39,7 @@ export class CourseCard extends Component {
         <TouchableOpacity
           style={[styles.rightButton, {backgroundColor}]}
                                                                           //TODO: fix this
-          onPress={()=>this.props.onRightButtonPress({active_questions: this.props.course.active_questions}, this.props.course.course_id)}
+          onPress={()=>this.props.onRightButtonPress(this.props.course.course_id)}
         >
           <NavigationChevronRight backgroundColor={backgroundColor} width={24}/>
         </TouchableOpacity>

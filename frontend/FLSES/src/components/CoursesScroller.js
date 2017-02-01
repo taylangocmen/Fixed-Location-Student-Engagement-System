@@ -29,24 +29,14 @@ export class CoursesScroller extends Component {
             />))
         }
         {
-          // (!!this.props.courses.courses_registered &&
-          //   this.props.courses.courses_registered.map((course) => <CourseCard
-          //     key={course.course_id}
-          //     course={course}
-          //     status={'inactive'}
-          //     onRightButtonPress={null}
-          //     onActivePress={null}
-          //   />))
-        }
-        {
-          // (!!this.props.courses.courses_registered &&
-          // this.props.courses.courses_registered.map((course) => <CourseCard
-          //   key={course.course_id}
-          //   course={course}
-          //   status={'expired'}
-          //   onRightButtonPress={null}
-          //   onActivePress={null}
-          // />))
+          (!!this.props.courses.courses_expired &&
+            this.props.courses.courses_expired.map((course) => <CourseCard
+              key={course.course_id}
+              course={course}
+              status={'expired'}
+              onRightButtonPress={null}
+              onActivePress={null}
+            />))
         }
       </ScrollView>
     );
