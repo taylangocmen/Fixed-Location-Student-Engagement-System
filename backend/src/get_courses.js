@@ -93,9 +93,9 @@ module.exports = {
         .catch(function(err) {
           res.send(err);
         });
-      } else {
-        res.send(errors.validationError);
-      }
+    } else {
+      res.send(errors.validationError);
+    }
   },
 };
 
