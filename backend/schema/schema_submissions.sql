@@ -6,10 +6,8 @@ CREATE TABLE IF NOT EXISTS ece496.submissions (
   user_id INTEGER,
   device_id VARCHAR(255),
   device_list LONGTEXT,
-  answer_type INTEGER,
-  answer_mc INTEGER, # stores the multiple choice number selected (2-8)
-  answer_text VARCHAR(255), # for text based answers
-  accepted BOOLEAN, # whether or not the answer was rejected based on location at the time recieved
+  answer INTEGER, # stores the multiple choice number selected (2-8)
+  accepted BOOLEAN DEFAULT FALSE, # whether or not the answer was rejected based on location at the time recieved
   
   FOREIGN KEY(course_id) REFERENCES ece496.courses(id),
   FOREIGN KEY(question_id) REFERENCES ece496.questions(id),

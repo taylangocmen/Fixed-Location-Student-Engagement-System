@@ -156,25 +156,17 @@ module.exports = {
           'type': 'integer',
           'required': true
         },
-        'time': {
-          'type': 'integer',
-          'required': true
-        },
         'answer': {
-          'type': 'string',
-          'required': true,
-        },
-        'ans_type': {
           'type': 'integer',
           'required': true,
         },
         'neighbours': {
           'type': 'array',
-          'required': true
-        },
-        'items': {
-          'type': 'string',
-          'minItems': 0
+          'required': true,
+          'items': {
+            'type': 'string',
+            'minItems': 0
+          }
         },
         'device_id': {
           'type': 'string',
