@@ -53,7 +53,7 @@ describe("Unenrol", function() {
       //specifies behavior for the first call of mockdb.query
       //i.e. calls the second (counting from zero) argument of mockdb.query
       //and supplies it with the information specified
-      mockdb.query.onCall(0).callsArgWith(2, 0, [], 0);
+      mockdb.pool.query.onCall(0).callsArgWith(2, 0, [], 0);
 
       unenrol.handle(req, res);
 
@@ -65,8 +65,8 @@ describe("Unenrol", function() {
       var req = validEnrolInfo;
       var res = { send: sinon.spy() };
 
-      mockdb.query.onCall(0).callsArgWith(2, null, [{"id": 1}], null);
-      mockdb.query.onCall(1).callsArgWith(2, null, [], 0);
+      mockdb.pool.query.onCall(0).callsArgWith(2, null, [{"id": 1}], null);
+      mockdb.pool.query.onCall(1).callsArgWith(2, null, [], 0);
 
       unenrol.handle(req, res);
 

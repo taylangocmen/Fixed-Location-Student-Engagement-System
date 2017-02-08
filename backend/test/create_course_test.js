@@ -40,7 +40,7 @@ describe('Create Course', function() {
       var res = { send: sinon.spy() };
 
       // Return that the user is unauthorized to create questions for this class
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [], null);
 
       createCourse.handle(req, res);
@@ -58,11 +58,11 @@ describe('Create Course', function() {
       var res = { send: sinon.spy() };
 
       // Return that the user is authorized to create questions for this class
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [{id: 5}], null);
 
       // When the new course gets inserted, return that its id is 100
-      mockdb.query.onCall(1)
+      mockdb.pool.query.onCall(1)
                   .callsArgWith(2, null, {insertId: 100}, null);
 
       createCourse.handle(req, res);

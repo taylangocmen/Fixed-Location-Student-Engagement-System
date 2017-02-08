@@ -186,7 +186,7 @@ describe('Get Courses', function() {
 
       // When the database is queried for the course and question data, return
       // the specified rowData
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, rowData, null);
 
       getCourses.handle(req, res);

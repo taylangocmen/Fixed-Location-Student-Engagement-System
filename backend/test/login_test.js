@@ -47,7 +47,7 @@ describe('Login', function() {
       var res = { send: sinon.spy() };
 
       // The first database query returns an empty list
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [], null);
 
       login.handle(req, res);
@@ -63,11 +63,11 @@ describe('Login', function() {
       var res = { send: sinon.spy() };
 
       // The first database call returns a valid user
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [validUserInfo], null);
       // The second database call returns that the session token has
       // already been assigned
-      mockdb.query.onCall(1)
+      mockdb.pool.query.onCall(1)
                   .callsArgWith(2, null, [validSessionToken], null); 
 
       login.handle(req, res);
@@ -83,15 +83,15 @@ describe('Login', function() {
       var res = { send: sinon.spy() };
 
       // The first database call returns a valid user
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [validUserInfo], null);
       // The second database call returns that the session token hasn't
       // already been assigned
-      mockdb.query.onCall(1)
+      mockdb.pool.query.onCall(1)
                   .callsArgWith(2, null, [], null); 
       // The third database call returns that there were no errors updating
       // the database with the session token
-      mockdb.query.onCall(2)
+      mockdb.pool.query.onCall(2)
                   .callsArgWith(2, null, null, null); 
 
       login.handle(req, res);
