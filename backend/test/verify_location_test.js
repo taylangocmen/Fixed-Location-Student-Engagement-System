@@ -46,7 +46,7 @@ describe('Verify Location', function() {
     });
 
     it('handles missing parameters', function() {
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, testData, null);
       verifyLocation.verify(1, 2);
     });

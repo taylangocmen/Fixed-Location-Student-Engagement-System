@@ -5,58 +5,107 @@ import {Provider} from 'react-redux';
 import {config} from '../../config';
 import {api} from '../app/api';
 import * as colors from '../styling/Colors';
-import {scenesByIndex} from '../utils/Modals';
-import {opacity} from '../utils/Functions';
 import {LoginScene} from '../scenes/LoginScene';
 import {LandingScene} from '../scenes/LandingScene';
 
 
 export class EntryPoint extends Component {
-  //TODO: add the store
-  //TODO: remove test component add the commented out rendering system
-  //TODO: alert works
-
   constructor(props) {
     super(props);
     this.state = {
-      bimodalLoginHome: true,
+      // TODO: make this true
+      bimodalLoginLanding: true,
+      courses: null,
+      questions: null,
+      answering: null,
     };
 
-    this.onLogin = this.onLogin.bind(this);
-    this.onRegister = this.onRegister.bind(this);
-    this.onLogout = this.onLogout.bind(this);
+    this.doGetQuestions = this.doGetQuestions.bind(this);
+    this.doSetQuestions = this.doSetQuestions.bind(this);
+    this.doGetCourses = this.doGetCourses.bind(this);
+    this.doSetCourses = this.doSetCourses.bind(this);
+    this.doSetAnswering = this.doSetAnswering.bind(this);
+    this.doLogin = this.doLogin.bind(this);
+    this.doRegister = this.doRegister.bind(this);
+    this.doLogout = this.doLogout.bind(this);
+    this.goLanding = this.goLanding.bind(this);
   }
 
-  onLogin() {
-    this.setState({bimodalLoginHome: false});
+  doGetQuestions(course_id) {
+    api.get(`/questions`, {...api.getTokenObj(), course_id})
+      .then(this.doSetQuestions)
+    ;
   }
 
-  onRegister() {
-    console.warn('This is on register');
+  doGetCourses() {
+    api.get(`/courses`, api.getTokenObj())
+      .then(this.doSetCourses)
+    ;
+  }
 
-    api.post('register', {
-      'first_name': 'test_name',
-      'last_name': 'test_last_name',
-      'email': 'test.user@mail.utoronto.ca',
-      'utorid': '1234567890',
-      'pass_hash': 'testtesttesttest',
+  //TODO: do a get request with questions
+  doSetQuestions(questions) {
+    this.setState({questions});
+  }
+
+  doSetCourses(courses) {
+    this.setState({courses});
+  }
+
+  doSetAnswering(answering) {
+    this.setState({answering});
+  }
+
+  doLogin(loginData) {
+    //TODO: fix this pretty much the commented out version
+    // api.post('/login', loginData)
+    api.sudo_post('/login', loginData)
+      .then((response)=>api.setToken(response.session_token))
+      .then(() => this.doGetCourses())
+      .then(() => this.goLanding())
+    ;
+  }
+
+  doRegister() {
+    console.error('This is doRegister');
+  }
+
+  doLogout() {
+    this.setState({
+      bimodalLoginLanding: true,
+      courses: null,
+      questions: null,
+      answering: null,
     });
-
-    // this.setState({bimodalLoginHome: false});
   }
 
-  onLogout() {
-    this.setState({bimodalLoginHome: true});
+  goLanding() {
+    this.setState({bimodalLoginLanding: false});
   }
 
   render() {
+    // console.warn('EntryPoint');
+    // for(let key in this.state){
+    //   console.warn(key, this.state[key]);
+    // }
+
     return (
-      this.state.bimodalLoginHome ?
+      this.state.bimodalLoginLanding ?
         <LoginScene
-          onCompleteLogin={()=>this.onLogin()}
-          onCompleteRegister={()=>this.onRegister()}
+          onCompleteLogin={this.doLogin}
+          onCompleteRegister={this.doRegister}
         /> :
-        <LandingScene onLogout={()=>this.onLogout()}/>
+        <LandingScene
+          doGetQuestions={this.doGetQuestions}
+          doSetQuestions={this.doSetQuestions}
+          doGetCourses={this.doGetCourses}
+          doSetCourses={this.doSetCourses}
+          doSetAnswering={this.doSetAnswering}
+          doLogout={this.doLogout}
+          courses={this.state.courses}
+          questions={this.state.questions}
+          answering={this.state.answering}
+        />
     );
   }
 }

@@ -30,7 +30,7 @@ describe('SessionToken', function() {
       var token = 'token';
 
       // The database returns no data matching the session token
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [], null);
 
       var promise = sessionToken.validate(token);
@@ -45,7 +45,7 @@ describe('SessionToken', function() {
       var token = 'token';
 
       // The database returns an error
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, 'database error', null, null);
 
       var promise = sessionToken.validate(token);
@@ -60,7 +60,7 @@ describe('SessionToken', function() {
       var token = 'token';
 
       // The database returns invalid data matching the session token
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [{}], null);
 
       var promise = sessionToken.validate(token);
@@ -81,7 +81,7 @@ describe('SessionToken', function() {
 
       // The database returns valid data matching the session token
       // The data indicates that the session token is expired
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, databaseResponse, null);
 
       var promise = sessionToken.validate(token);
@@ -102,7 +102,7 @@ describe('SessionToken', function() {
 
       // The database returns valid data matching the session token
       // The data indicates that the session token is not expired
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, databaseResponse, null);
 
       var promise = sessionToken.validate(token);

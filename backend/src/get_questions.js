@@ -50,8 +50,8 @@ module.exports = {
 
                     // Add the user's answer if it exists
                     if (rows[i].answer_mc !== null && rows[i].accepted !== null) {
-                      response.answer = rows[i].answer_mc;
-                      response.answer_accepted= rows[i].accepted;
+                      question_details.answer = rows[i].answer_mc;
+                      question_details.answer_accepted = rows[i].accepted === 1;
                     }
 
                     // Add the question to active/inactive questions

@@ -4,6 +4,7 @@ import {AppRegistry, StyleSheet, Text, View, TextInput, ScrollView, TouchableOpa
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
 import {questionStatusFontWeights} from '../utils/Modals';
+import {alphabet} from '../utils/Functions';
 
 
 export class QuestionMiniCard extends Component {
@@ -12,6 +13,11 @@ export class QuestionMiniCard extends Component {
     this.state = {
     };
 
+    this.renderAnswers = this.renderAnswers.bind(this);
+  }
+
+  renderAnswers(answers) {
+    return answers.map((answer, index) => (alphabet(index) + ') ' + answer)).join('    ');
   }
 
   render() {
@@ -21,22 +27,30 @@ export class QuestionMiniCard extends Component {
         {
           this.props.status==='active' ?
             (<TouchableOpacity
-              onPress={this.props.onActivePress}
-              >
-                <View style={styles.questionContainer}>
-                <Text style={[styles.questionText, {fontWeight}]}>
-                  Is this a question, or is not a question, maybe that is the question itself?
-                </Text>
-                <Text style={[styles.questionText, {fontWeight}]}>
-                  A. Yes    B. No    C. Maybe     D. Kappa
-                </Text>
-              </View>
-            </TouchableOpacity>):
-            (<View style={styles.inactiveContainer}>
-              <Text style={styles.inactiveText}>
-                No active questions for this course at this time.
+              style={styles.questionContainer}
+              onPress={()=>this.props.onActivePress(this.props.question)}
+            >
+              <Text style={[styles.questionText, {fontWeight}]}>
+                {this.props.question.title}
               </Text>
-            </View>)
+              <Text style={[styles.questionText, {fontWeight}]}>
+                {this.props.question.body}
+              </Text>
+              <Text style={[styles.questionText, {fontWeight}]}>
+                {this.renderAnswers(this.props.question.answers)}
+              </Text>
+            </TouchableOpacity>):
+            this.props.status==='inactive' ?
+              (<View style={styles.inactiveContainer}>
+                <Text style={styles.inactiveText}>
+                  No active questions for this course at this time.
+                </Text>
+              </View>):
+              (<View style={styles.inactiveContainer}>
+                <Text style={styles.inactiveText}>
+                  This course has expired.
+                </Text>
+              </View>)
         }
       </View>
     );
@@ -47,12 +61,14 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
     marginHorizontal: -6,
   },
   questionContainer:{
     flex: 1,
     padding: 6,
+    marginTop: 10,
     flexDirection: 'column',
     justifyContent: 'center',
     borderWidth: StyleSheet.hairlineWidth,

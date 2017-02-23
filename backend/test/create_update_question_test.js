@@ -55,11 +55,11 @@ describe('Create/Update Question', function() {
       var res = { send: sinon.spy() };
 
       // Return that the user is authorized to create questions for this class
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [{id: 5}], null);
 
       // When the new question gets inserted, return that its id is 100
-      mockdb.query.onCall(1)
+      mockdb.pool.query.onCall(1)
                   .callsArgWith(2, null, {insertId: 100}, null);
 
       createUpdateQuestion.handle(req, res);
@@ -79,11 +79,11 @@ describe('Create/Update Question', function() {
       req.body.question_id = 10;
 
       // Return that the user is authorized to create questions for this class
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [{id: 5}], null);
 
       // When the question_id gets checked, return that it is invalid
-      mockdb.query.onCall(1)
+      mockdb.pool.query.onCall(1)
                   .callsArgWith(2, null, [], null);
 
       createUpdateQuestion.handle(req, res);
@@ -103,11 +103,11 @@ describe('Create/Update Question', function() {
       req.body.question_id = 10;
 
       // Return that the user is authorized to create questions for this class
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [{id: 5}], null);
 
       // When the question_id gets checked, return that it has already been asked
-      mockdb.query.onCall(1)
+      mockdb.pool.query.onCall(1)
                   .callsArgWith(2, null, [{asked: true}], null);
 
 
@@ -128,15 +128,15 @@ describe('Create/Update Question', function() {
       req.body.question_id = 10;
 
       // Return that the user is authorized to create questions for this class
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [{id: 5}], null);
 
       // When the question_id gets checked, return that it hasn't been asked
-      mockdb.query.onCall(1)
+      mockdb.pool.query.onCall(1)
                   .callsArgWith(2, null, [{asked: false}], null);
 
       // When the question gets updated, return success
-      mockdb.query.onCall(2)
+      mockdb.pool.query.onCall(2)
                   .callsArgWith(2, null, null, null);
 
       createUpdateQuestion.handle(req, res);
@@ -154,7 +154,7 @@ describe('Create/Update Question', function() {
       var res = { send: sinon.spy() };
 
       // Return that the user is unauthorized to create questions for this class
-      mockdb.query.onCall(0)
+      mockdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [], null);
 
       createUpdateQuestion.handle(req, res);

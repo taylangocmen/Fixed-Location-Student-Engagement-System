@@ -18,24 +18,28 @@ export class CourseCard extends Component {
   render() {
     const backgroundColor = courseStatusColors[this.props.status];
     const fontWeight = courseStatusFontWeights[this.props.status];
+
+    //TODO: fix this at line 41 do sth
     return (
       <View style={styles.cardContainer}>
         <CardLeftColorBar backgroundColor={backgroundColor} width={4}/>
         <View style={styles.mainContainer}>
           <Text style={[styles.courseText, {fontWeight}]}>
-            Winter-2017-CNH123S-H1
+            {this.props.course.course_name}
           </Text>
           <Text style={[styles.courseText, {fontWeight}]}>
-            Course Description Here
+            {this.props.course.course_desc}
           </Text>
           <QuestionMiniCard
             onActivePress={this.props.onActivePress}
             status={this.props.status}
+            question={this.props.status === 'active' ? this.props.course.active_questions[0]: null}
           />
         </View>
         <TouchableOpacity
           style={[styles.rightButton, {backgroundColor}]}
-          onPress={this.props.onRightButtonPress}
+                                                                          //TODO: fix this
+          onPress={()=>this.props.onRightButtonPress(this.props.course.course_id)}
         >
           <NavigationChevronRight backgroundColor={backgroundColor} width={24}/>
         </TouchableOpacity>
@@ -47,7 +51,7 @@ export class CourseCard extends Component {
 const styles = StyleSheet.create({
   cardContainer: {
     marginVertical: 4,
-    height: (config.window.height/4.3),
+    minHeight: (config.window.height/4.3),
     borderColor: colors.secondaryCocoaBrown,
     borderWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
@@ -56,6 +60,8 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
@@ -66,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   courseText: {
-    marginVertical: 5,
+    marginTop: 5,
     fontSize: 20,
     color: colors.secondaryCocoaBrown,
   }

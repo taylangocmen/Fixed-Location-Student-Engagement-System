@@ -3,7 +3,7 @@ import {AppRegistry, StyleSheet, Text, View, TextInput, TouchableOpacity} from '
 
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
-import {NavigationArrowBack, NavigationClose, NavigationMenu, NavigationLogout} from '../components/NavigationComponents';
+import {NavigationArrowBack, NavigationClose, NavigationMenu, NavigationLogout, NavigationRefresh} from '../components/NavigationComponents';
 
 
 export class NavigationBar extends Component {
@@ -22,6 +22,8 @@ export class NavigationBar extends Component {
         return <NavigationMenu style={styles.icon}/>;
       case 'logout':
         return <NavigationLogout style={styles.icon}/>;
+      case 'refresh':
+        return <NavigationRefresh style={styles.icon}/>;
       default:
         return <View />;
     }
@@ -78,6 +80,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     backgroundColor: colors.officialPrussianBlue,
+    // backgroundColor: colors.basicRed,
     width: 32,
     height: 32,
   }
