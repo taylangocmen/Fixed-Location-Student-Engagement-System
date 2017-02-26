@@ -38,14 +38,13 @@ module.exports = {
                 if (err) throw err;
                 else {
                   student_id = rows.insertId;
-                  emitter.emit('do_courses', prof_id, student_id);
+                  emitter.emit('do_courses_and_questions', prof_id, student_id);
                 }
               }
             );
           }
         }
       );
-      console.log("exiting create_instructor");
       return;
   }
 }

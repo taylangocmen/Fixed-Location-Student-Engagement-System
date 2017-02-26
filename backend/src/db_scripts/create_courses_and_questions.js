@@ -20,6 +20,11 @@ var insertQuestionNoAnswerQuery =
   '(course_id, title, question_text, num_answers, answers_array, asked, completed) ' +
   'values (?, ?, ?, ?, ?, ?, ?)';
 
+var insertAnswerQuery =
+  'insert into ece496.submissions ' +
+  '(course_id, question_id, user_id, answer_type, answer_mc, accepted) '+
+  'values(?, ?, ?, ?, ?, ?)';
+
 var genericAnswer = {
   'course_id': 0,
   'question_id': 0,
@@ -28,7 +33,7 @@ var genericAnswer = {
   'device_id': 12345
 };
 
-function questionWithCallback(emitter, course_id, asked, completed, correct_answer) {
+function questionWithCallback(emitter, course_id, user_id, asked, completed, correct_answer, make_answer, answer) {
   //TODO: Add question ids to these answers? is that necessary when they're attached
   //to the questions?
   var answer1 = Object.assign({}, genericAnswer);
@@ -48,6 +53,9 @@ function questionWithCallback(emitter, course_id, asked, completed, correct_answ
           throw err;
         }
         else {
+          if(make_answer) {
+            createAnswer(emitter, course_id, rows.insertId, user_id, answer);
+          }
           emitter.emit('finished_question');
         }
       }
@@ -63,6 +71,9 @@ function questionWithCallback(emitter, course_id, asked, completed, correct_answ
           throw err;
         }
         else {
+          if(make_answer) {
+            createAnswer(emitter, course_id, rows.insertId, user_id, answer);
+          }
           emitter.emit('finished_question');
         }
       }
@@ -70,18 +81,31 @@ function questionWithCallback(emitter, course_id, asked, completed, correct_answ
   }
 }
 
+function createAnswer(emitter, course_id, question_id, user_id, answer_mc) {
+  database.pool.query(
+    insertAnswerQuery,
+    [course_id, question_id, user_id, 1, answer_mc, 1],
+    function(err, rows, fields) {
+      if (err) throw err;
+      else {
+        emitter.emit('finished_answer');
+      }
+    }
+  )
+}
+
 module.exports = {
-  run: function(emitter, prof_id) {
+  run: function(emitter, prof_id, user_id) {
     database.pool.query(
       insertCourseQuery,
       [prof_id, "Generic Engineering Course", "This is a generic engineering course.", 1],
       function(err, rows, fields) {
         if (err) throw err;
         else {
-          questionWithCallback(emitter, rows.insertId, 1, 0, null);
-          questionWithCallback(emitter, rows.insertId, 1, 0, null);
-          questionWithCallback(emitter, rows.insertId, 1, 0, null);
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 0, null, false, 0);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 0, null, true, 1);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 0, null, true, 2);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 3);
         }
         return;
       }
@@ -93,10 +117,10 @@ module.exports = {
       function(err, rows, fields) {
         if (err) throw err;
         else {
-          questionWithCallback(emitter, rows.insertId, 1, 0, null);
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 0, null, false, 0);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 1);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 1);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 2);
         }
         return;
       }
@@ -108,10 +132,11 @@ module.exports = {
       function(err, rows, fields) {
         if (err) throw err;
         else {
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 1);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 2);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 1);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 3);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 4);
         }
         return;
       }
@@ -123,10 +148,11 @@ module.exports = {
       function(err, rows, fields) {
         if (err) throw err;
         else {
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
-          questionWithCallback(emitter, rows.insertId, 1, 1, 1);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 1);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 2);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 2);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 3);
+          questionWithCallback(emitter, rows.insertId, user_id, 1, 1, 1, true, 4);
         }
         return;
       }
