@@ -54,7 +54,7 @@ module.exports = {
     answer: {
       unknownError: {error: 'An internal error occurred, please try again'},
       validationError: {error: 'Could not validate answer request'},
-      invalidQuestionError: {error: 'Answer question'},
+      invalidQuestionError: {error: 'Invalid question'},
       locationError: {error: 'You are not located within the classroom'},
       enrolmentError: {error: 'You are not enrolled in the course you are attempting to submit an answer for.'},
       sqlError: {error: 'There was an unknown error in executing the SQL query'},

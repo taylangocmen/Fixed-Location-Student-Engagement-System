@@ -5,13 +5,17 @@ SESSION_TOKEN=$(curl -s -X POST 'https://localhost:8443/login' \
      -H 'Content-Type: application/json' \
      --cacert ca/certs/ca.cert.pem | sed -e 's/.*session_token.*"\(.*\)".*/\1/')
 
-ENROL_URL='https://localhost:8443/enrol?session_token='$SESSION_TOKEN
+ANSWER_URL='https://localhost:8443/answer?session_token='$SESSION_TOKEN
 
-ENROL_REQUEST='{
-  "course_id": 1
+ANSWER_REQUEST='{
+  "course_id": 1,
+	"question_id": 1,
+  "answer": 1,
+	"neighbours": [],
+	"device_id": "mydevice"
 }'
 
-curl -X POST $ENROL_URL \
-     -d "$ENROL_REQUEST" \
+curl -X POST $ANSWER_URL \
+     -d "$ANSWER_REQUEST" \
      -H 'Content-Type: application/json' \
      --cacert ca/certs/ca.cert.pem

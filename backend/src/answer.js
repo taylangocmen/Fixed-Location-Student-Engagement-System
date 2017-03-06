@@ -9,7 +9,7 @@ var schema = require('../../common/schemas').POST.answer;
 // Verify that the user exists and is enrolled in the course
 var verifyUserQuery =
   'SELECT user_id ' +
-  'FROM ece496.enrol ' +
+  'FROM ece496.users_courses ' +
   'WHERE user_id = ? AND course_id = ?';
 
 // TODO dont do select *
@@ -23,21 +23,21 @@ var selectQuestionQuery =
 // Check to see if an answer from the submitting user already exists
 var alreadyAnsweredQuery =
   'SELECT * ' +
-  'FROM submissions ' +
+  'FROM ece496.submissions ' +
   'WHERE user_id = ? AND course_id = ? AND question_id = ?';
 
 var updateAnswerQuery =
   'UPDATE ece496.submissions ' +
-  'SET answer=?, device_id=?, device_list=?, time_recieved = NOW() ' +
+  'SET answer_mc=?, device_id=?, device_list=?, time_received = NOW() ' +
   'WHERE course_id=? AND user_id=? AND question_id=?';
 
 var createAnswerQuery =
-  'INSERT INTO ece496.questions ' +
-  '(time_recieved, course_id, question_id, user_id, device_id, ' +
-  ' device_list, answer) ' +
-  'VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT INTO ece496.submissions ' +
+  '(time_received, course_id, question_id, user_id, device_id, ' +
+  ' device_list, answer_mc) ' +
+  'VALUES (NOW(), ?, ?, ?, ?, ?, ?)';
 
-var handleUpdateAns = function(req, res, user_id) {
+var handleUpdateAnswer = function(req, res, user_id) {
   // We already know from the handler that the user has already answered the question
   // we must then seek to update the answer with a new answer.
   database.pool.query(
@@ -120,30 +120,33 @@ module.exports = {
                     return;
                   }
 
-                  // TODO you need to check whether there were rows returned using rows.length
-                  // this will give you another error case to handle - errors.invalidQuestion
-                  // there should be exactly one row returned. then you can access 'asked' using rows[0].asked
-                  if(rows.asked === 1 && rows.completed === 0) {
-                    // Determine if the user has already answered
-                    database.pool.query(
-                      alreadyAnsweredQuery,
-                      [user_id, req.body.course_id, req.body.question_id],
-                      function(err, rows, fields) {
-                        if (err) {
-                          console.log(err);
-                          res.send(errors.sqlError);
-                          return;
-                        }
+                  if (rows.length === 1) {
+                    // TODO you need to check whether there were rows returned using rows.length
+                    // this will give you another error case to handle - errors.invalidQuestion
+                    // there should be exactly one row returned. then you can access 'asked' using rows[0].asked
+                    if(rows[0].asked === 1 && rows[0].completed === 0) {
+                      // Determine if the user has already answered
+                      database.pool.query(
+                        alreadyAnsweredQuery,
+                        [user_id, req.body.course_id, req.body.question_id],
+                        function(err, rows, fields) {
+                          if (err) {
+                            console.log(err);
+                            res.send(errors.sqlError);
+                            return;
+                          }
 
-                        // TODO you need to check whether there were rows returned using rows.length
-                        if (rows) {
-                          handleUpdateAnswer(req, res, user_id);
-                        } else {
-                          handleCreateAnswer(req, res, user_id);
-                        }
-                      });
+                          if (rows.length === 1) {
+                            handleUpdateAnswer(req, res, user_id);
+                          } else {
+                            handleCreateAnswer(req, res, user_id);
+                          }
+                        });
+                    } else {
+                      res.send(errors.notAcceptingError);
+                    }
                   } else {
-                    res.send(errors.notAcceptingError);
+                    res.send(errors.invalidQuestionError);
                   }
                 }
               );

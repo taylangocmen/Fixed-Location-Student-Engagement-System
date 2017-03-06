@@ -17,6 +17,7 @@ var poseQuestion = require('./pose_question');
 var logout = require('./logout');
 
 var createCourse = require('./create_course');
+var answer = require('./answer');
 
 // Handle the SSL certificate settings
 var privateKey  = fs.readFileSync(config.server.privateKey, 'utf8');
@@ -49,6 +50,7 @@ app.post('/enrol', enrol.handle);
 app.post('/unenrol', unenrol.handle);
 app.post('/question', createUpdateQuestion.handle);
 app.post('/create_course', createCourse.handle);
+app.post('/answer', answer.handle);
 
 app.put('/logout', logout.handle);
 app.put('/question', poseQuestion.handle);

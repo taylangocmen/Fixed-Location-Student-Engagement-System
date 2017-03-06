@@ -69,7 +69,6 @@ module.exports = {
                                                         return;
                                                     } else {
                                                         res.send({});
-                                                        console.log(res);
                                                         return;
                                                     }
                                                 }
