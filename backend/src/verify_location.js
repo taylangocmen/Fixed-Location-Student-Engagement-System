@@ -1,3 +1,5 @@
+var undefsafe = require('undefsafe');
+
 var database = require('./database');
 
 var selectResponsesQuery =
@@ -43,23 +45,28 @@ module.exports = {
         // Build a map of device_id -> index into adj
         var deviceToIndex = {};
         for (var i = 0; i < rows.length; i++) {
+          rows[i].device_list = JSON.parse(rows[i].device_list);
           // Create the columns of adj, filling them with 0s
           adj[i] = Array.apply(null, Array(rows.length))
                         .map(Boolean.prototype.valueOf, false);
 
           // Initialize the deviceToIndex map
-          deviceToIndex[rows[i].device_id] = i;
+          if (undefsafe(rows[i], 'device_id')) {
+            deviceToIndex[rows[i].device_id] = i;
+          }
         }
 
         // For each user
         for (var i = 0; i < rows.length; i++) {
-          // For each device in this user's device list
-          for (var j = 0; j < rows[i].device_list.length; j++) {
-            // Get the index of the adj column that corresponds to the device
-            var index = deviceToIndex[rows[i].device_list[j]];
-            // If the device belongs to another student in the class
-            if (index !== undefined) {
-              adj[i][index] = true;
+          if (undefsafe(rows[i], 'device_list')) {
+            // For each device in this user's device list
+            for (var j = 0; j < rows[i].device_list.length; j++) {
+              // Get the index of the adj column that corresponds to the device
+              var index = deviceToIndex[rows[i].device_list[j]];
+              // If the device belongs to another student in the class
+              if (index !== undefined) {
+                adj[i][index] = true;
+              }
             }
           }
         }
@@ -83,7 +90,7 @@ module.exports = {
 
           // TODO Figure out what heuristic to use here. Right now use that the number
           // of incoming connections must be at least half of the class
-          if (incoming >= rows.length / 2) {
+          if (incoming >= Math.floor(rows.length / 2)) {
             acceptAnswer(course_id, question_id, rows[i].user_id);
           }
         }

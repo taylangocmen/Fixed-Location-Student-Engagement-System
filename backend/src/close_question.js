@@ -3,6 +3,7 @@ var validate = require('jsonschema').validate;
 
 var auth = require('./auth');
 var database = require('./database');
+var verifyLocation = require('./verify_location');
 var config = require('./config');
 var errors = require('../../common/errors').PUT.question;
 var schema = require('../../common/schemas').PUT.question;
@@ -34,7 +35,7 @@ var closeQuestion = function(req, res) {
         return;
       }
 
-      // TODO determine who was in the classroom and who wasn't and assign grades
+      verifyLocation.verify(req.body.course_id, req.body.question_id);
 
       res.send({});
     }
