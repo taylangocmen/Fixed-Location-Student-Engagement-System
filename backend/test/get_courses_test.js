@@ -2,12 +2,12 @@ var assert = require('assert');
 var rewire = require('rewire');
 var sinon = require('sinon');
 
-var mockdb = require('./mockdb');
+var stubdb = require('./stubdb');
 var mockSessionToken = require('./mock_session_token');
 var errors = require('../../common/errors').GET.courses;
 
 var getCourses = rewire('../src/get_courses');
-getCourses.__set__('database', mockdb);
+getCourses.__set__('database', stubdb);
 getCourses.__set__('auth.validateSessionToken', mockSessionToken);
 
 var rowData = [
@@ -161,7 +161,7 @@ describe('Get Courses', function() {
   describe('#handle()', function() {
     // Reset the database before each test
     beforeEach(function() {
-      mockdb.reset();
+      stubdb.reset();
     });
 
     it('handles missing parameters', function() {
@@ -186,7 +186,7 @@ describe('Get Courses', function() {
 
       // When the database is queried for the course and question data, return
       // the specified rowData
-      mockdb.pool.query.onCall(0)
+      stubdb.pool.query.onCall(0)
                   .callsArgWith(2, null, rowData, null);
 
       getCourses.handle(req, res);

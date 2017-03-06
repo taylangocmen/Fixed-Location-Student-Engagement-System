@@ -2,11 +2,11 @@ var assert = require('assert');
 var rewire = require('rewire');
 var sinon = require('sinon');
 
-var mockdb = require('./mockdb');
+var stubdb = require('./stubdb');
 var errors = require('../../common/errors').POST.register;
 
 var register = rewire('../src/register');
-register.__set__('database', mockdb);
+register.__set__('database', stubdb);
 
 // TODO: write tests to make sure each field gets tested
 var validUserInfo = {
@@ -21,7 +21,7 @@ describe('Register', function() {
   describe('#handle()', function() {
     // Reset the database before each test
     beforeEach(function() {
-      mockdb.reset();
+      stubdb.reset();
     });
 
     it('handles missing parameters', function() {

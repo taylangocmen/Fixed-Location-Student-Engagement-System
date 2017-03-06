@@ -2,13 +2,13 @@ var assert = require('assert');
 var rewire = require('rewire');
 var sinon = require('sinon');
 
-var mockdb = require('./mockdb');
+var stubdb = require('./stubdb');
 var mocktoken = require('./mock_session_token');
 var errors = require('../../common/errors').POST.enrol;
 
 var enrol = rewire('../src/enrol');
 
-enrol.__set__('database', mockdb);
+enrol.__set__('database', stubdb);
 enrol.__set__('auth.validateSessionToken', mocktoken);
 
 var validUserInfo = {
@@ -51,17 +51,17 @@ describe("Enrol", function() {
   describe("#handle", function(){
 
     beforeEach(function(){
-      mockdb.reset();
+      stubdb.reset();
     });
 
     it('does not recognize an invalid course', function() {
       var req = validEnrolInfo;
       var res = { send: sinon.spy() };
 
-      //specifies behavior for the first call of mockdb.query
-      //i.e. calls the second (counting from zero) argument of mockdb.query
+      //specifies behavior for the first call of stubdb.query
+      //i.e. calls the second (counting from zero) argument of stubdb.query
       //and supplies it with the information specified
-      mockdb.pool.query.onCall(0).callsArgWith(2, 0, [], 0);
+      stubdb.pool.query.onCall(0).callsArgWith(2, 0, [], 0);
 
       enrol.handle(req, res);
 
@@ -73,8 +73,8 @@ describe("Enrol", function() {
       var req = validEnrolInfo;
       var res = { send: sinon.spy() };
 
-      mockdb.pool.query.onCall(0).callsArgWith(2, null, [{"id":1}], null);
-      mockdb.pool.query.onCall(1).callsArgWith(2, null, [{"stuff": "nonsense"}], 0);
+      stubdb.pool.query.onCall(0).callsArgWith(2, null, [{"id":1}], null);
+      stubdb.pool.query.onCall(1).callsArgWith(2, null, [{"stuff": "nonsense"}], 0);
 
       enrol.handle(req, res);
 

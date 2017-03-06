@@ -2,17 +2,17 @@ var assert = require('assert');
 var rewire = require('rewire');
 var sinon = require('sinon');
 
-var mockdb = require('./mockdb');
+var stubdb = require('./stubdb');
 var errors = require('../../common/errors').POST.session_token;
 
 var sessionToken = rewire('../src/session_token');
-sessionToken.__set__('database', mockdb);
+sessionToken.__set__('database', stubdb);
 
 describe('SessionToken', function() {
   describe('#validate()', function() {
     // Reset the database before each test
     beforeEach(function() {
-      mockdb.reset();
+      stubdb.reset();
     });
 
     it('handles missing parameters', function() {
@@ -30,7 +30,7 @@ describe('SessionToken', function() {
       var token = 'token';
 
       // The database returns no data matching the session token
-      mockdb.pool.query.onCall(0)
+      stubdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [], null);
 
       var promise = sessionToken.validate(token);
@@ -45,7 +45,7 @@ describe('SessionToken', function() {
       var token = 'token';
 
       // The database returns an error
-      mockdb.pool.query.onCall(0)
+      stubdb.pool.query.onCall(0)
                   .callsArgWith(2, 'database error', null, null);
 
       var promise = sessionToken.validate(token);
@@ -60,7 +60,7 @@ describe('SessionToken', function() {
       var token = 'token';
 
       // The database returns invalid data matching the session token
-      mockdb.pool.query.onCall(0)
+      stubdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [{}], null);
 
       var promise = sessionToken.validate(token);
@@ -81,7 +81,7 @@ describe('SessionToken', function() {
 
       // The database returns valid data matching the session token
       // The data indicates that the session token is expired
-      mockdb.pool.query.onCall(0)
+      stubdb.pool.query.onCall(0)
                   .callsArgWith(2, null, databaseResponse, null);
 
       var promise = sessionToken.validate(token);
@@ -102,7 +102,7 @@ describe('SessionToken', function() {
 
       // The database returns valid data matching the session token
       // The data indicates that the session token is not expired
-      mockdb.pool.query.onCall(0)
+      stubdb.pool.query.onCall(0)
                   .callsArgWith(2, null, databaseResponse, null);
 
       var promise = sessionToken.validate(token);

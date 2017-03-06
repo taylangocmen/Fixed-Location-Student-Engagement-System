@@ -2,12 +2,12 @@ var assert = require('assert');
 var rewire = require('rewire');
 var sinon = require('sinon');
 
-var mockdb = require('./mockdb');
+var stubdb = require('./stubdb');
 var mockSessionToken = require('./mock_session_token');
 var errors = require('../../common/errors').POST.answer;
 
 var answer = rewire('../src/answer');
-answer.__set__('database', mockdb);
+answer.__set__('database', stubdb);
 answer.__set__('auth.validateSessionToken', mockSessionToken);
 
 var validRequest = {
@@ -25,7 +25,7 @@ describe('Answer', function() {
   describe('#handle()', function() {
     // Reset the database before each test
     beforeEach(function() {
-      mockdb.reset();
+      stubdb.reset();
     });
 
     it('handles missing parameters', function() {
@@ -47,7 +47,7 @@ describe('Answer', function() {
 
       // When the database is queried for whether the user is enrolled,
       // return an empty result
-      mockdb.pool.query.onCall(0)
+      stubdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [], null);
 
       answer.handle(req, res);

@@ -2,11 +2,11 @@ var assert = require('assert');
 var rewire = require('rewire');
 var sinon = require('sinon');
 
-var mockdb = require('./mockdb');
+var stubdb = require('./stubdb');
 var errors = require('../../common/errors').POST.login;
 
 var login = rewire('../src/login');
-login.__set__('database', mockdb);
+login.__set__('database', stubdb);
 
 // TODO: write tests to make sure each field gets tested
 var validUserInfo = {
@@ -26,7 +26,7 @@ describe('Login', function() {
   describe('#handle()', function() {
     // Reset the database before each test
     beforeEach(function() {
-      mockdb.reset();
+      stubdb.reset();
     });
 
     it('handles missing parameters', function() {
@@ -47,7 +47,7 @@ describe('Login', function() {
       var res = { send: sinon.spy() };
 
       // The first database query returns an empty list
-      mockdb.pool.query.onCall(0)
+      stubdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [], null);
 
       login.handle(req, res);
@@ -63,11 +63,11 @@ describe('Login', function() {
       var res = { send: sinon.spy() };
 
       // The first database call returns a valid user
-      mockdb.pool.query.onCall(0)
+      stubdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [validUserInfo], null);
       // The second database call returns that the session token has
       // already been assigned
-      mockdb.pool.query.onCall(1)
+      stubdb.pool.query.onCall(1)
                   .callsArgWith(2, null, [validSessionToken], null); 
 
       login.handle(req, res);
@@ -83,15 +83,15 @@ describe('Login', function() {
       var res = { send: sinon.spy() };
 
       // The first database call returns a valid user
-      mockdb.pool.query.onCall(0)
+      stubdb.pool.query.onCall(0)
                   .callsArgWith(2, null, [validUserInfo], null);
       // The second database call returns that the session token hasn't
       // already been assigned
-      mockdb.pool.query.onCall(1)
+      stubdb.pool.query.onCall(1)
                   .callsArgWith(2, null, [], null); 
       // The third database call returns that there were no errors updating
       // the database with the session token
-      mockdb.pool.query.onCall(2)
+      stubdb.pool.query.onCall(2)
                   .callsArgWith(2, null, null, null); 
 
       login.handle(req, res);
