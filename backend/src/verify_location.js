@@ -71,16 +71,20 @@ module.exports = {
         for (var i = 0; i < rows.length; i++) {
           var outgoing = 0, incoming = 0;
           for (var j = 0; j < rows.length; j++) {
+            // Outgoing edge exists
             if (adj[i][j]) {
               outgoing++;
             }
+            // Incoming edge exists
             if (adj[j][i]) {
               incoming++;
             }
           }
 
-          if (outgoing === incoming) {
-            acceptAnswer();
+          // TODO Figure out what heuristic to use here. Right now use that the number
+          // of incoming connections must be at least half of the class
+          if (incoming >= rows.length / 2) {
+            acceptAnswer(course_id, question_id, rows[i].user_id);
           }
         }
       }
