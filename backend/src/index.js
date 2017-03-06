@@ -14,6 +14,7 @@ var enrol = require('./enrol');
 var unenrol = require('./unenrol');
 var createUpdateQuestion = require('./create_update_question');
 var poseQuestion = require('./pose_question');
+var closeQuestion = require('./close_question');
 var logout = require('./logout');
 
 var createCourse = require('./create_course');
@@ -54,6 +55,7 @@ app.post('/answer', answer.handle);
 
 app.put('/logout', logout.handle);
 app.put('/question', poseQuestion.handle);
+app.put('/close_question', closeQuestion.handle);
 
 // By default return a 404 Not Found
 app.use(function(req, res){

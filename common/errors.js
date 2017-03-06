@@ -66,10 +66,11 @@ module.exports = {
   PUT: {
     question: {
       unknownError: {error: 'An internal error occurred, please try again'},
-      validationError: {error: 'Could not validate question pose request'},
+      validationError: {error: 'Could not validate question pose/close request'},
       invalidQuestionError: {error: 'Invalid question'},
       posingAskedQuestion: {error: 'Cannot pose a question that has already been asked'},
-      authorizationError: {error: 'You are not authorized to pose questions in this course'}
+      closingUnaskedQuestion: {error: 'Cannot close a question that has not yet been asked'},
+      authorizationError: {error: 'You are not authorized to pose/close questions in this course'}
     },
     logout: {
       unknownError: {error: 'An internal error occurred, please try again'}
