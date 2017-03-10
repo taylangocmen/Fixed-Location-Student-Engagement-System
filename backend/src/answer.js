@@ -14,7 +14,7 @@ var verifyUserQuery =
 
 // Check to see whether or not the question exists and is accepting answers
 var selectQuestionQuery =
-  'SELECT id ' +
+  'SELECT asked, completed ' +
   'FROM ece496.questions ' +
   'WHERE course_id=? AND id=?';
 
