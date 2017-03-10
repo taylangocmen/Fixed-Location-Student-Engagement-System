@@ -196,7 +196,9 @@ describe('Register', function() {
       register.handle(req, res);
 
       // Verify that an empty response was returned
+
       assert.equal(res.send.calledWith({ }));
+	  
     });
 
     // TODO: Add tests for query() returning an err at each stage
