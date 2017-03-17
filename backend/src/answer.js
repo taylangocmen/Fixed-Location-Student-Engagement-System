@@ -94,7 +94,7 @@ module.exports = {
       return;
     }
 
-    auth.validateSessionToken(req.query.session_token)
+    auth.validateSessionToken(req)
       .then(function(user_id) {
         // Verify that the user is enrolled in the course
         database.pool.query(

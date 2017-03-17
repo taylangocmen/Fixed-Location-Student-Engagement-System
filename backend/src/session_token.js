@@ -4,11 +4,30 @@ var undefsafe = require('undefsafe');
 var database = require('./database');
 var errors = require('../../common/errors').POST.session_token;
 
-// TODO: Write tests to exercise each error and a successful validation
+var parseAuthorizationHeader = function(req) {
+  var header = req.get("Authorization");
+
+  if (header === undefined || header === null) {
+    return null;
+  }
+
+  // Extract the session token from the Authorization header
+  var matches = /Bearer ([a-fA-F0-9]+)/.exec(header);
+  // If there was a session token present
+  if (matches !== null && matches.length > 1) {
+    // Convert it to lower case and return it
+    return matches[1].toLowerCase();
+  }
+
+  // No authentication token
+  return null;
+};
+
 module.exports = {
-  validate: function(sessionToken) {
+  validate: function(req) {
     // Return a promise for whether or not the session token is valid
     return new Promise(function(resolve, reject) {
+      var sessionToken = parseAuthorizationHeader(req);
       // Verify that the sessionToken exists
       if (sessionToken == undefined || sessionToken == null || sessionToken == '') {
         reject(errors.missingSessionTokenError);
@@ -23,7 +42,7 @@ module.exports = {
           // A mysql error occurred
           if (err) {
             console.log(err);
-            reject(errors.validateSessionTokenError);
+            reject(errors.unknownError);
             return;
           }
 

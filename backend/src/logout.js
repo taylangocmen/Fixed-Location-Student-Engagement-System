@@ -12,7 +12,7 @@ var invalidateTokenQuery =
 
 module.exports = {
   handle: function(req, res) {
-    auth.validateSessionToken(req.query.session_token)
+    auth.validateSessionToken(req)
       .then(function(user_id) {
           //do not need to validate body since there is none
           database.pool.query(

@@ -11,7 +11,6 @@ answer.__set__('database', stubdb);
 answer.__set__('auth.validateSessionToken', mockSessionToken);
 
 var validRequest = {
-  query: { session_token: '' },
   body: {
     course_id: 496,
     question_id: 1,

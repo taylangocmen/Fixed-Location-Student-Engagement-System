@@ -35,7 +35,6 @@ describe('Create/Update Question', function() {
 
     it('handles missing parameters', function() {
       var req = {
-        query: { session_token: '' },
         body: { }
       };
       var res = { send: sinon.spy() };
@@ -49,7 +48,6 @@ describe('Create/Update Question', function() {
 
     it('handles create question', function() {
       var req = {
-        query: { session_token: '' },
         body: JSON.parse(JSON.stringify(newQuestionBody))
       };
       var res = { send: sinon.spy() };
@@ -71,7 +69,6 @@ describe('Create/Update Question', function() {
 
     it('handles update invalid question', function() {
       var req = {
-        query: { session_token: '' },
         body: JSON.parse(JSON.stringify(newQuestionBody))
       };
       var res = { send: sinon.spy() };
@@ -95,7 +92,6 @@ describe('Create/Update Question', function() {
 
     it('handles update asked question', function() {
       var req = {
-        query: { session_token: '' },
         body: JSON.parse(JSON.stringify(newQuestionBody))
       };
       var res = { send: sinon.spy() };
@@ -120,7 +116,6 @@ describe('Create/Update Question', function() {
 
     it('handles update question', function() {
       var req = {
-        query: { session_token: '' },
         body: JSON.parse(JSON.stringify(newQuestionBody))
       };
       var res = { send: sinon.spy() };
@@ -148,7 +143,6 @@ describe('Create/Update Question', function() {
 
     it('handles unauthorized users', function() {
       var req = {
-        query: { session_token: '' },
         body: JSON.parse(JSON.stringify(newQuestionBody))
       };
       var res = { send: sinon.spy() };

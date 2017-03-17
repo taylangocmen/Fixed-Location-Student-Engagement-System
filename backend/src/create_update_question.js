@@ -114,7 +114,7 @@ module.exports = {
       return;
     }
 
-    auth.validateSessionToken(req.query.session_token)
+    auth.validateSessionToken(req)
       .then(function(user_id) {
         // Verify that the user is listed as the prof for this course
         database.pool.query(

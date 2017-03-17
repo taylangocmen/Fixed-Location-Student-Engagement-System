@@ -19,7 +19,6 @@ describe('Create Course', function() {
 
     it('handles missing parameters', function() {
       var req = {
-        query: { session_token: '' },
         body: { }
       };
       var res = { send: sinon.spy() };
@@ -34,7 +33,6 @@ describe('Create Course', function() {
 
     it('handles unauthorized users', function() {
       var req = {
-        query: { session_token: '' },
         body: { course_name: 'ece496', course_desc: 'hello!' }
       };
       var res = { send: sinon.spy() };
@@ -52,7 +50,6 @@ describe('Create Course', function() {
 
     it('handles create course', function() {
       var req = {
-        query: { session_token: '' },
         body: { course_name: 'ece496', course_desc: 'hello!' }
       };
       var res = { send: sinon.spy() };

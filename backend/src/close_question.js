@@ -45,7 +45,7 @@ var closeQuestion = function(req, res) {
 module.exports = {
   // Pose question handler
   handle: function(req, res) {
-    auth.validateSessionToken(req.query.session_token)
+    auth.validateSessionToken(req)
       .then(function(user_id) {
         // Validate the request body
         var result = validate(req.body, schema);

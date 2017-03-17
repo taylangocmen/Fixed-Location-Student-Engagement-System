@@ -25,8 +25,8 @@ module.exports = {
     },
     session_token: {
       unknownError: {error: 'An internal error occured, please try again'},
-      missingSessionTokenError: {error: 'Missing session_token'},
-      validateSessionTokenError: {error: 'Could not validate session_token'},
+      missingSessionTokenError: {error: 'Missing session token'},
+      validateSessionTokenError: {error: 'Could not validate session token'},
       expiredSessionTokenError: {error: 'Expired session token'},
       invalidSessionTokenError: {error: 'Invalid session token'}
     },

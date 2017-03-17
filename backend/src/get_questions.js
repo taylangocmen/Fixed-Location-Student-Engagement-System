@@ -22,7 +22,7 @@ module.exports = {
     // Validate the request query
     var result = validate(req.query, schema);
     if (result.errors.length === 0) {
-      auth.validateSessionToken(req.query.session_token)
+      auth.validateSessionToken(req)
         .then(function(user_id) {
           database.pool.query(
               getQuestionsQuery,
@@ -50,8 +50,11 @@ module.exports = {
                     };
 
                     // Add the user's answer if it exists
-                    if (rows[i].answer_mc !== null && rows[i].accepted !== null) {
+                    if (rows[i].answer_mc !== null) {
                       question_details.answer = rows[i].answer_mc;
+                    }
+
+                    if (rows[i].accepted !== null) {
                       question_details.answer_accepted = rows[i].accepted === 1;
                     }
 
