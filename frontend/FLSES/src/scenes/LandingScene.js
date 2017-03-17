@@ -49,8 +49,8 @@ export class LandingScene extends Component {
     });
   }
 
-  goToAnswering(answering) {
-    this.props.doSetAnswering(answering);
+  goToAnswering(answering, course_id) {
+    this.props.doSetAnswering(answering, course_id);
 
     const prev = this.state.title;
     this.setState({
@@ -97,6 +97,7 @@ export class LandingScene extends Component {
       <QuestionsScroller
         onRightButtonPress={this.goToAnswering}
         questions={this.props.questions}
+        course_id={this.props.course_id}
       /> :
       <NavigationLoading />;
   }
@@ -104,12 +105,16 @@ export class LandingScene extends Component {
   renderAnswering() {
     return !!this.props.answering ?
       <AnsweringCard
+        doAnswer={this.props.doAnswer}
         answering={this.props.answering}
+        course_id={this.props.course_id}
       /> :
       <NavigationLoading />;
   }
 
   render() {
+    // console.warn("this.props.questions: ", this.props.questions);
+
     return (
       <View style={styles.pageContainer}>
         <NavigationBar

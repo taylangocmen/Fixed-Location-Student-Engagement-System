@@ -40,7 +40,7 @@ export class QuestionCard extends Component {
         </View>
         <TouchableOpacity
           style={[styles.rightButton, {backgroundColor}]}
-          onPress={()=>this.props.onRightButtonPress(this.props.question, this.props.question.question_id)}
+          onPress={()=>this.props.onRightButtonPress(this.props.question, this.props.course_id)}
         >
           <NavigationChevronRight backgroundColor={backgroundColor} width={24}/>
         </TouchableOpacity>

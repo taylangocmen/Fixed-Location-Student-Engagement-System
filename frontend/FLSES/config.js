@@ -8,6 +8,6 @@ export const config = {
   testUser: {
     username: "blah",
     pass_hash: "1234",
-    token: '8866dc3c469d1d5d3fcc8f684519ba35f0f059d777f6281f314d5373ababc07a'
+    token: '29f47c51cff22333914c11122e5f8a3547bbe5adffb43f8192e079cb5b9e6a2f'
   }
 };

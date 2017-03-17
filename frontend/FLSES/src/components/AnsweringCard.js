@@ -17,9 +17,11 @@ export class AnsweringCard extends Component {
     this.state = {
       optionChosen,
     };
-
     this.chooseOption = this.chooseOption.bind(this);
+    this.doAnswer = this.doAnswer.bind(this);
+    
   }
+  
 
   chooseOption(newOptionChosen) {
     let optionChosen = newOptionChosen;
@@ -32,11 +34,24 @@ export class AnsweringCard extends Component {
     });
   }
 
+  //TODO: check if answer is chosen -1
+  doAnswer() {
+    const answerObj = {
+      course_id: this.props.course_id,
+      question_id: this.props.answering.question_id,
+      answer: this.state.optionChosen,
+      neighbours: [],
+      device_id: "lollercopter",
+    };
+
+    this.props.doAnswer(answerObj);
+  }
+
   render() {
     //TODO: do  the inactive questions and answered questions
     const fontWeight = questionStatusFontWeights[this.props.status];
 
-    // console.warn('AnsweringCard: ', this.props.answering);
+    console.warn('AnsweringCard: ', this.props.answering);
 
     // TODO: When index is fixed remove answer-1
     return (
@@ -65,7 +80,10 @@ export class AnsweringCard extends Component {
             }
           </View>
           <View style={styles.bottomContainer}>
-            <TouchableOpacity style={styles.submitButton}>
+            <TouchableOpacity
+              onPress={this.doAnswer}
+              style={styles.submitButton}
+            >
               <Text style={styles.submitText}>
                 Submit
               </Text>

@@ -34,7 +34,8 @@ export const courseStatusFontWeights = {
 
 export const questionStatusColors = {
   active: colors.secondaryCrimson,
-  inactive: colors.secondaryCreamBrulee,
+  inactive: colors.secondaryBondiBlue,
+  expired: colors.secondaryCreamBrulee,
   other: colors.basicLime,
 };
 

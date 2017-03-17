@@ -18,6 +18,7 @@ export class EntryPoint extends Component {
       courses: null,
       questions: null,
       answering: null,
+      course_id: null,
     };
 
     this.doGetQuestions = this.doGetQuestions.bind(this);
@@ -29,45 +30,54 @@ export class EntryPoint extends Component {
     this.doRegister = this.doRegister.bind(this);
     this.doLogout = this.doLogout.bind(this);
     this.goLanding = this.goLanding.bind(this);
+    this.doAnswer = this.doAnswer.bind(this);
   }
 
   doGetQuestions(course_id) {
-    api.get(`/questions`, {...api.getTokenObj(), course_id})
-      .then(this.doSetQuestions)
+    api.get(`/questions`, {course_id})
+      .then((questions)=>this.doSetQuestions(questions, course_id))
     ;
   }
 
   doGetCourses() {
-    api.get(`/courses`, api.getTokenObj())
+    api.get(`/courses`)
       .then(this.doSetCourses)
     ;
   }
 
   //TODO: do a get request with questions
-  doSetQuestions(questions) {
-    this.setState({questions});
+  doSetQuestions(questions, course_id) {
+    // console.warn('doSetQuestions: course_id:', course_id, 'questions:', questions);
+    this.setState({questions, course_id});
   }
 
   doSetCourses(courses) {
-    this.setState({courses});
+    // console.warn('doSetCourses');
+    this.setState({courses, course_id: null});
   }
 
-  doSetAnswering(answering) {
-    this.setState({answering});
+  doSetAnswering(answering, course_id) {
+    // console.warn('doSetAnswering: course_id:', course_id, 'answering:', answering);
+    this.setState({answering, course_id});
   }
 
   doLogin(loginData) {
     //TODO: fix this pretty much the commented out version
-    // api.post('/login', loginData)
-    api.sudo_post('/login', loginData)
+    api.post('/login', loginData)
+    // api.sudo_post('/login', loginData)
       .then((response)=>api.setToken(response.session_token))
       .then(() => this.doGetCourses())
       .then(() => this.goLanding())
     ;
   }
 
-  doRegister() {
-    console.error('This is doRegister');
+  doRegister(registerData) {
+    //TODO: do login after register
+    api.post('/register', registerData)
+      .then((response)=>console.error('Register response:', response));
+      // .then((response)=>api.setToken(response.session_token))
+      // .then()
+    // console.error('This is doRegister: ', registerData);
   }
 
   doLogout() {
@@ -83,7 +93,14 @@ export class EntryPoint extends Component {
     this.setState({bimodalLoginLanding: false});
   }
 
+  //TODO: do the answering
+  doAnswer(answerData) {
+    api.post('/answer', answerData)
+      .then((response)=>console.warn('Posted answer, response was:', response, 'answerData:', answerData));
+  }
+
   render() {
+    // console.warn('This is entry point', 'courxse_id was:', this.state.course_id);
     // console.warn('EntryPoint');
     // for(let key in this.state){
     //   console.warn(key, this.state[key]);
@@ -102,9 +119,11 @@ export class EntryPoint extends Component {
           doSetCourses={this.doSetCourses}
           doSetAnswering={this.doSetAnswering}
           doLogout={this.doLogout}
+          doAnswer={this.doAnswer}
           courses={this.state.courses}
           questions={this.state.questions}
           answering={this.state.answering}
+          course_id={this.state.course_id}
         />
     );
   }

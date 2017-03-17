@@ -8,7 +8,29 @@ import * as colors from '../styling/Colors';
 export class RegisterCard extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      first_name: "prof",
+      last_name: "smart",
+      email: "prof.smart@mail.utoronto.ca",
+      utorid: "utorid",
+      pass_hash: "password",
+      pass_hash_confirm: "password"
+    };
+
+    this.doRegister = this.doRegister.bind(this);
+  }
+
+  doRegister() {
+    //TODO: check register stuff
+    const registerData = {
+      first_name: this.state.first_name,
+      last_name: this.state.last_name,
+      email: this.state.email,
+      utorid: this.state.utorid,
+      pass_hash: this.state.pass_hash
+    };
+
+    this.props.register(registerData);
   }
 
   render() {
@@ -16,8 +38,11 @@ export class RegisterCard extends Component {
       <View style={styles.cardContainer}>
         <View style={styles.rowContainer}>
           <TextInput
+            value={this.state.first_name}
+            onChange={(e) => this.setState({first_name: e.nativeEvent.text})}
             autoFocus={false}
             autoCorrect={false}
+            secureTextEntry={false}
             placeholder="given name(s)"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
@@ -25,8 +50,11 @@ export class RegisterCard extends Component {
         </View>
         <View style={styles.rowContainer}>
           <TextInput
+            value={this.state.last_name}
+            onChange={(e) => this.setState({last_name: e.nativeEvent.text})}
             autoFocus={false}
             autoCorrect={false}
+            secureTextEntry={false}
             placeholder="last name(s)"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
@@ -34,17 +62,35 @@ export class RegisterCard extends Component {
         </View>
         <View style={styles.rowContainer}>
           <TextInput
+            value={this.state.email}
+            onChange={(e) => this.setState({email: e.nativeEvent.text})}
             autoFocus={false}
             autoCorrect={false}
-            placeholder="student #"
+            secureTextEntry={false}
+            placeholder="email"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
           />
         </View>
         <View style={styles.rowContainer}>
           <TextInput
+            value={this.state.utorid}
+            onChange={(e) => this.setState({utorid: e.nativeEvent.text})}
             autoFocus={false}
             autoCorrect={false}
+            secureTextEntry={false}
+            placeholder="utorid"
+            placeholderTextColor={colors.secondaryBondiBlue}
+            style={styles.cardInput}
+          />
+        </View>
+        <View style={styles.rowContainer}>
+          <TextInput
+            value={this.state.pass_hash}
+            onChange={(e) => this.setState({pass_hash: e.nativeEvent.text})}
+            autoFocus={false}
+            autoCorrect={false}
+            secureTextEntry={true}
             placeholder="password"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
@@ -52,8 +98,11 @@ export class RegisterCard extends Component {
         </View>
         <View style={styles.rowContainer}>
           <TextInput
+            value={this.state.pass_hash_confirm}
+            onChange={(e) => this.setState({pass_hash_confirm: e.nativeEvent.text})}
             autoFocus={false}
             autoCorrect={false}
+            secureTextEntry={true}
             placeholder="confirm password"
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
@@ -61,7 +110,7 @@ export class RegisterCard extends Component {
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            onPress={this.props.register}
+            onPress={()=>this.doRegister()}
             style={styles.submitButton}
           >
             <Text style={styles.buttonText}>

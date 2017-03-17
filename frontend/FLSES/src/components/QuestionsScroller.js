@@ -22,6 +22,7 @@ export class QuestionsScroller extends Component {
               question={question}
               status={'active'}
               onRightButtonPress={this.props.onRightButtonPress}
+              course_id={this.props.course_id}
             />))
         }
         {
@@ -31,6 +32,7 @@ export class QuestionsScroller extends Component {
             question={question}
             status={'inactive'}
             onRightButtonPress={this.props.onRightButtonPress}
+            course_id={this.props.course_id}
           />))
         }
       </ScrollView>

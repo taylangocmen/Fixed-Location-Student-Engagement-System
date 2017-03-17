@@ -16,11 +16,15 @@ export const api = {
     };
 
     let optionsArray = [];
-    Object.keys(options).map((key, index) => {
-      optionsArray.push(key + '=' + options[key]);
-    });
+    if(options !== undefined) {
+      Object.keys(options).map((key, index) => {
+        optionsArray.push(key + '=' + options[key]);
+      });
+    }
 
     const optionsStringified = '?' + optionsArray.join('&');
+
+    // console.warn('trying to do a get at:', `${apiUrl}${path}${optionsStringified}`);
 
     return fetch(`${apiUrl}${path}${optionsStringified}`, {
       method: 'GET',
@@ -28,7 +32,7 @@ export const api = {
     })
       .then(checkStatus)
       .then(response => response.json())
-      .catch(e => console.warn('Error:', e));
+      .catch(e => console.warn('Get error:', e));
   },
 
   post: (path, data) => {
@@ -40,6 +44,9 @@ export const api = {
 
     const body = JSON.stringify(data);
 
+    // console.warn('trying to do a post at:', `${apiUrl}${path}`, 'body is:', body);
+
+
     return fetch(`${apiUrl}${path}`, {
       method: 'POST',
       headers,
@@ -47,7 +54,7 @@ export const api = {
     })
       .then(checkStatus)
       .then(response => response.json())
-      .catch(e => console.warn('Error:', e));
+      .catch(e => console.warn('Post error:', e));
   },
 
   session_token: () => {
@@ -70,9 +77,10 @@ export const api = {
   getTokenObj: () => ({session_token}),
 
   getAuthHeaders: () => ({
-    "Authorization": `Bearer ${api.getToken()}`,
+    'Authorization': `Bearer ${api.getToken()}`,
   }),
 
+  //TODO: get rid of sudo post
   sudo_post: () => new Promise(function (resolve, reject) {
     const retObj = {session_token: api.session_token()};
     resolve(retObj);

@@ -28,7 +28,7 @@ export class QuestionMiniCard extends Component {
           this.props.status==='active' ?
             (<TouchableOpacity
               style={styles.questionContainer}
-              onPress={()=>this.props.onActivePress(this.props.question)}
+              onPress={()=>this.props.onActivePress(this.props.question, this.props.course_id)}
             >
               <Text style={[styles.questionText, {fontWeight}]}>
                 {this.props.question.title}

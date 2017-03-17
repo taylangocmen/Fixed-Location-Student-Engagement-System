@@ -33,6 +33,7 @@ export class CourseCard extends Component {
           <QuestionMiniCard
             onActivePress={this.props.onActivePress}
             status={this.props.status}
+            course_id={this.props.course.course_id}
             question={this.props.status === 'active' ? this.props.course.active_questions[0]: null}
           />
         </View>
