@@ -13,8 +13,8 @@ var getQuestionsQuery =
   '       b.answer_mc, b.accepted ' +
   'from ece496.questions a ' +
   'left join ece496.submissions b ' +
-  'on a.id=b.question_id ' +
-  'where a.course_id=? and b.user_id=?';
+  'on a.id=b.question_id and b.user_id=? ' +
+  'where a.course_id=?';
 
 module.exports = {
   // Get courses handler
@@ -26,7 +26,7 @@ module.exports = {
         .then(function(user_id) {
           database.pool.query(
               getQuestionsQuery,
-              [req.query.course_id, user_id],
+              [user_id, req.query.course_id],
               function(err, rows, fields) {
                 if (err) {
                   console.log(err);
