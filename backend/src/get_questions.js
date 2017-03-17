@@ -13,7 +13,8 @@ var getQuestionsQuery =
   '       b.answer_mc, b.accepted ' +
   'from ece496.questions a ' +
   'left join ece496.submissions b ' +
-  'on a.course_id=? and b.user_id=? and a.id=b.question_id';
+  'on a.id=b.question_id ' +
+  'where a.course_id=? and b.user_id=?';
 
 module.exports = {
   // Get courses handler
