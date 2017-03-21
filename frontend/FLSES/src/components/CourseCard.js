@@ -19,10 +19,9 @@ export class CourseCard extends Component {
     const backgroundColor = courseStatusColors[this.props.status];
     const fontWeight = courseStatusFontWeights[this.props.status];
 
-    //TODO: fix this at line 41 do sth
     return (
       <View style={styles.cardContainer}>
-        <CardLeftColorBar backgroundColor={backgroundColor} width={4}/>
+        <CardLeftColorBar style={[styles.leftBar, {backgroundColor}]}/>
         <View style={styles.mainContainer}>
           <Text style={[styles.courseText, {fontWeight}]}>
             {this.props.course.course_name}
@@ -39,10 +38,9 @@ export class CourseCard extends Component {
         </View>
         <TouchableOpacity
           style={[styles.rightButton, {backgroundColor}]}
-                                                                          //TODO: fix this
           onPress={()=>this.props.onRightButtonPress(this.props.course.course_id)}
         >
-          <NavigationChevronRight backgroundColor={backgroundColor} width={24}/>
+          <NavigationChevronRight style={[styles.chevron, {backgroundColor}]}/>
         </TouchableOpacity>
       </View>
     );
@@ -76,5 +74,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 20,
     color: colors.secondaryCocoaBrown,
+  },
+  chevron: {
+    width: 24
+  },
+  leftBar: {
+    width: 4
   }
 });

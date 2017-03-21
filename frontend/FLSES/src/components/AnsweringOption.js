@@ -3,7 +3,8 @@ import {AppRegistry, StyleSheet, Text, View, TextInput, ScrollView, TouchableOpa
 
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
-import {questionStatusColors, questionStatusFontWeights} from '../utils/Modals';
+import * as indicator from '../components/IndicatorIcons';
+import {answerStatusColors, answerStatusFontWeight} from '../utils/Modals';
 import {opacity} from '../utils/Functions';
 
 
@@ -13,31 +14,47 @@ export class AnsweringOption extends Component {
   }
 
   render() {
-    const fontWeight = questionStatusFontWeights[this.props.status];
+    const mode =
+      this.props.correctAnswer ? 'correct' :
+        this.props.submittedAnswer ? 'submitted' :
+          this.props.chosenAnswer ? 'chosen' : 'free';
 
-    const optionStyle = !!this.props.correctAnswer ?
-        styles.optionCorrect :
-        !!this.props.submittedAnswer ?
-          styles.optionSubmitted:
-          !!this.props.chosenAnswer ?
-            styles.optionChosen :
-            styles.optionFree;
+    const fontWeight = answerStatusFontWeight[mode];
+    const backgroundColor = answerStatusColors[mode];
 
     return (
       <View
-        style={[styles.optionBaseStyle, optionStyle]}
+        style={[styles.optionBaseStyle, {backgroundColor}]}
       >
         <TouchableOpacity
           onPress={this.props.onPress}
           disabled={this.props.disabled}
+          style={styles.optionButtonStyle}
         >
-          <View>
-            <Text style={[styles.optionText, {fontWeight}]}>
-              {this.props.optionText}
-            </Text>
-            <View>
+          <Text style={[styles.optionText, {fontWeight}]}>
+            {this.props.optionText}
+          </Text>
+          <View style={styles.indicatorsContainerContainer}>
+            {!this.props.submittedAnswer && this.props.chosenAnswer && !this.props.disabled &&
+              <View style={styles.indicatorsContainer}>{indicator.TickWhite(styles.indicatorStyle)}</View>}
 
-            </View>
+            {!this.props.submittedAnswer && this.props.chosenAnswer && !this.props.disabled &&
+              <View style={styles.indicatorsContainer}>{indicator.BtBadWhite(styles.indicatorStyle)}</View>}
+
+            {!this.props.submittedAnswer && this.props.chosenAnswer && !this.props.disabled &&
+              <View style={styles.indicatorsContainer}>{indicator.BtGoodWhite(styles.indicatorStyle)}</View>}
+
+            {this.props.submittedAnswer && !this.props.disabled &&
+              <View style={styles.indicatorsContainer}>{indicator.DoubleTickWhite(styles.indicatorStyle)}</View>}
+
+            {this.props.submittedAnswer && !this.props.correctAnswer && this.props.disabled &&
+              <View style={styles.indicatorsContainer}>{indicator.MinusWhite(styles.indicatorStyle)}</View>}
+
+            {this.props.submittedAnswer && this.props.correctAnswer && this.props.disabled &&
+              <View style={styles.indicatorsContainer}>{indicator.PlusWhite(styles.indicatorStyle)}</View>}
+
+            {this.props.correctAnswer &&
+              <View style={styles.indicatorsContainer}>{indicator.StarWhite(styles.indicatorStyle)}</View>}
           </View>
         </TouchableOpacity>
       </View>
@@ -50,28 +67,47 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   optionBaseStyle: {
+    flexDirection: 'column',
+    justifyContent: 'center',
     borderRadius: 16,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.secondaryCocoaBrown,
     paddingVertical: 8,
     paddingHorizontal: 12,
     marginVertical: 4,
+    minHeight: 60,
   },
-  optionCorrect: {
-    backgroundColor: opacity(colors.accentFrostee, 0.5),
-  },
-  optionSubmitted: {
-    backgroundColor: opacity(colors.accentJordyBlue, 0.5),
-  },
-  optionChosen: {
-    backgroundColor: opacity(colors.accentGreyNurse, 0.5),
-  },
-  optionFree: {
+  optionButtonStyle: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   questionText: {
     fontSize: 24,
   },
   optionText: {
     fontSize: 20,
+    flex: 1,
   },
+  indicatorsContainerContainer: {
+    minWidth: 22,
+    marginRight: -8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  indicatorsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderColor: opacity(colors.secondaryCocoaBrown, 0.5),
+    borderRadius: 22,
+    borderWidth: StyleSheet.hairlineWidth,
+    padding: 1,
+  },
+  indicatorStyle: {
+    width: 20,
+    height: 20,
+  }
 });

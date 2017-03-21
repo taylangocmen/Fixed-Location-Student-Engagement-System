@@ -13,12 +13,6 @@ export class QuestionCard extends Component {
     super(props);
     this.state = {
     };
-
-    this.renderAnswers = this.renderAnswers.bind(this);
-  }
-
-  renderAnswers(answers) {
-    return answers.map((answer, index) => (alphabet(index) + ') ' + answer)).join('    ');
   }
 
   render() {
@@ -26,7 +20,7 @@ export class QuestionCard extends Component {
     const fontWeight = questionStatusFontWeights[this.props.status];
     return (
       <View style={styles.cardContainer}>
-        <CardLeftColorBar backgroundColor={backgroundColor} width={4}/>
+        <CardLeftColorBar style={[styles.leftBar, {backgroundColor}]}/>
         <View style={styles.mainContainer}>
           <Text style={[styles.questionText, {fontWeight}]}>
             {this.props.question.title}
@@ -34,15 +28,21 @@ export class QuestionCard extends Component {
           <Text style={[styles.questionText, {fontWeight}]}>
             {this.props.question.body}
           </Text>
-          <Text style={[styles.optionText, {fontWeight}]}>
-            {this.renderAnswers(this.props.question.answers)}
-          </Text>
+          <View>
+            {this.props.question.answers
+              .map((e, i) =>
+                (alphabet(i) + ') ' + e))
+              .map((e, i) => <Text style={[styles.optionText, {fontWeight}]} key={i} numberOfLines={1} ellipseMode='tail'>
+                  {e}
+                </Text>)
+            }
+          </View>
         </View>
         <TouchableOpacity
           style={[styles.rightButton, {backgroundColor}]}
           onPress={()=>this.props.onRightButtonPress(this.props.question, this.props.course_id)}
         >
-          <NavigationChevronRight backgroundColor={backgroundColor} width={24}/>
+          <NavigationChevronRight style={[styles.chevron, {backgroundColor}]}/>
         </TouchableOpacity>
       </View>
     );
@@ -52,7 +52,7 @@ export class QuestionCard extends Component {
 const styles = StyleSheet.create({
   cardContainer: {
     marginVertical: 4,
-    height: (config.window.height/3.0),
+    minHeight: (config.window.height/4.5),
     borderColor: colors.secondaryCocoaBrown,
     borderWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
@@ -77,7 +77,13 @@ const styles = StyleSheet.create({
   },
   optionText: {
     marginVertical: 1,
-    fontSize: 18,
+    fontSize: 16,
     color: colors.secondaryCocoaBrown,
+  },
+  chevron: {
+    width: 24
+  },
+  leftBar: {
+    width: 4
   }
 });

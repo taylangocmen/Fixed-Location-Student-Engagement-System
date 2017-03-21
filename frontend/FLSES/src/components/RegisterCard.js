@@ -9,28 +9,51 @@ export class RegisterCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      first_name: "prof",
-      last_name: "smart",
-      email: "prof.smart@mail.utoronto.ca",
-      utorid: "utorid",
-      pass_hash: "password",
-      pass_hash_confirm: "password"
+      first_name: '',
+      last_name: '',
+      email: '',
+      utorid: '',
+      pass_hash: '',
+      pass_hash_confirm: '',
     };
-
     this.doRegister = this.doRegister.bind(this);
   }
 
   doRegister() {
-    //TODO: check register stuff
-    const registerData = {
-      first_name: this.state.first_name,
-      last_name: this.state.last_name,
-      email: this.state.email,
-      utorid: this.state.utorid,
-      pass_hash: this.state.pass_hash
-    };
+    if (this.state.first_name === '')
+      this.props.showError('Error: Cannot leave given name(s) empty.');
 
-    this.props.register(registerData);
+    else if (this.state.last_name === '')
+      this.props.showError('Error: Cannot leave last name empty.');
+
+    else if (this.state.email === '')
+      this.props.showError('Error: Cannot leave email empty.');
+
+    else if (this.state.utorid === '')
+      this.props.showError('Error: Cannot leave utorid empty.');
+
+    else if (this.state.pass_hash === '')
+      this.props.showError('Error: Cannot leave password empty.');
+
+    else if (this.state.pass_hash_confirm === '')
+      this.props.showError('Error: Cannot leave confirm password empty.');
+
+    else if(this.state.pass_hash === this.state.pass_hash_confirm)
+      this.props.showError('Error: Passwords do not match.');
+
+    else if(this.state.pass_hash.length < 8)
+      this.props.showError('Error: Password cannot be less than 8 character.');
+
+    else {
+      const registerData = {
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        email: this.state.email,
+        utorid: this.state.utorid,
+        pass_hash: this.state.pass_hash
+      };
+      this.props.register(registerData);
+    }
   }
 
   render() {
@@ -43,7 +66,7 @@ export class RegisterCard extends Component {
             autoFocus={false}
             autoCorrect={false}
             secureTextEntry={false}
-            placeholder="given name(s)"
+            placeholder='given name(s)'
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
           />
@@ -55,7 +78,7 @@ export class RegisterCard extends Component {
             autoFocus={false}
             autoCorrect={false}
             secureTextEntry={false}
-            placeholder="last name(s)"
+            placeholder='last name(s)'
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
           />
@@ -67,7 +90,7 @@ export class RegisterCard extends Component {
             autoFocus={false}
             autoCorrect={false}
             secureTextEntry={false}
-            placeholder="email"
+            placeholder='email'
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
           />
@@ -79,7 +102,7 @@ export class RegisterCard extends Component {
             autoFocus={false}
             autoCorrect={false}
             secureTextEntry={false}
-            placeholder="utorid"
+            placeholder='utorid'
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
           />
@@ -91,7 +114,7 @@ export class RegisterCard extends Component {
             autoFocus={false}
             autoCorrect={false}
             secureTextEntry={true}
-            placeholder="password"
+            placeholder='password'
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
           />
@@ -103,7 +126,7 @@ export class RegisterCard extends Component {
             autoFocus={false}
             autoCorrect={false}
             secureTextEntry={true}
-            placeholder="confirm password"
+            placeholder='confirm password'
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
           />
@@ -118,6 +141,7 @@ export class RegisterCard extends Component {
             </Text>
           </TouchableOpacity>
         </View>
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={this.props.alternateBimodal}

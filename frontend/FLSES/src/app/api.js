@@ -24,8 +24,6 @@ export const api = {
 
     const optionsStringified = '?' + optionsArray.join('&');
 
-    // console.warn('trying to do a get at:', `${apiUrl}${path}${optionsStringified}`);
-
     return fetch(`${apiUrl}${path}${optionsStringified}`, {
       method: 'GET',
       headers,
@@ -43,9 +41,6 @@ export const api = {
     };
 
     const body = JSON.stringify(data);
-
-    // console.warn('trying to do a post at:', `${apiUrl}${path}`, 'body is:', body);
-
 
     return fetch(`${apiUrl}${path}`, {
       method: 'POST',
@@ -79,12 +74,4 @@ export const api = {
   getAuthHeaders: () => ({
     'Authorization': `Bearer ${api.getToken()}`,
   }),
-
-  //TODO: get rid of sudo post
-  sudo_post: () => new Promise(function (resolve, reject) {
-    const retObj = {session_token: api.session_token()};
-    resolve(retObj);
-    reject('error');
-  })
-    .catch(e => console.warn('Error:', e)),
 };

@@ -13,12 +13,12 @@ export class EntryPoint extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // TODO: make this true
       bimodalLoginLanding: true,
       courses: null,
       questions: null,
       answering: null,
       course_id: null,
+      responseError: 'Error: Something went wrong.',
     };
 
     this.doGetQuestions = this.doGetQuestions.bind(this);
@@ -28,9 +28,11 @@ export class EntryPoint extends Component {
     this.doSetAnswering = this.doSetAnswering.bind(this);
     this.doLogin = this.doLogin.bind(this);
     this.doRegister = this.doRegister.bind(this);
+    this.invalidateError = this.invalidateError.bind(this);
     this.doLogout = this.doLogout.bind(this);
     this.goLanding = this.goLanding.bind(this);
     this.doAnswer = this.doAnswer.bind(this);
+    this.doUpdateAnswering = this.doUpdateAnswering.bind(this);
   }
 
   doGetQuestions(course_id) {
@@ -40,45 +42,60 @@ export class EntryPoint extends Component {
   }
 
   doGetCourses() {
+    this.setState({courses: null});
+
     api.get(`/courses`)
       .then(this.doSetCourses)
-    ;
-  }
-
-  //TODO: do a get request with questions
-  doSetQuestions(questions, course_id) {
-    // console.warn('doSetQuestions: course_id:', course_id, 'questions:', questions);
-    this.setState({questions, course_id});
-  }
-
-  doSetCourses(courses) {
-    // console.warn('doSetCourses');
-    this.setState({courses, course_id: null});
-  }
-
-  doSetAnswering(answering, course_id) {
-    // console.warn('doSetAnswering: course_id:', course_id, 'answering:', answering);
-    this.setState({answering, course_id});
-  }
-
-  doLogin(loginData) {
-    //TODO: fix this pretty much the commented out version
-    api.post('/login', loginData)
-    // api.sudo_post('/login', loginData)
-      .then((response)=>api.setToken(response.session_token))
-      .then(() => this.doGetCourses())
       .then(() => this.goLanding())
     ;
   }
 
-  doRegister(registerData) {
-    //TODO: do login after register
-    api.post('/register', registerData)
-      .then((response)=>console.error('Register response:', response));
-      // .then((response)=>api.setToken(response.session_token))
-      // .then()
-    // console.error('This is doRegister: ', registerData);
+  doSetCourses(courses) {
+    this.setState({courses, course_id: null});
   }
+
+  doSetQuestions(questions, course_id) {
+    this.setState({questions, course_id});
+  }
+
+  doSetAnswering(answering, course_id) {
+    this.setState({answering, course_id});
+  }
+
+  doLogin(loginData) {
+    api.post('/login', loginData)
+      .then((response) => {
+        if(response.session_token !== undefined) {
+          api.setToken(response.session_token);
+          this.doGetCourses();
+        } else if(response.error !== undefined){
+          const responseError = 'Error: ' +  response.error + '.';
+          this.setState({responseError, showError: true});
+        } else {
+          const responseError = 'Error: Could not login.';
+          this.setState({responseError, showError: true});
+        }
+      })
+    ;
+  }
+
+  doRegister(registerData) {
+    api.post('/register', registerData)
+      .then((response) => {
+        if(response.error !== undefined){
+          const responseError = 'Error: ' +  response.error + '.';
+          this.setState({responseError, showError: true});
+        } else {
+          this.doLogin({username: registerData.utorid, pass_hash: registerData.pass_hash});
+        }
+      })
+    ;
+  }
+
+  invalidateError() {
+    this.setState({showError: false});
+  }
+
 
   doLogout() {
     this.setState({
@@ -87,30 +104,38 @@ export class EntryPoint extends Component {
       questions: null,
       answering: null,
     });
+
+    api.clearToken();
   }
 
   goLanding() {
     this.setState({bimodalLoginLanding: false});
   }
 
-  //TODO: do the answering
   doAnswer(answerData) {
     api.post('/answer', answerData)
-      .then((response)=>console.warn('Posted answer, response was:', response, 'answerData:', answerData));
+      .then(()=>this.doGetQuestions(answerData.course_id))
+      .then(()=>this.doUpdateAnswering(answerData))
+    ;
+  }
+
+  doUpdateAnswering(answerData) {
+    for(let i = 0; i < this.state.questions.active_questions.length; i++){
+      if(this.state.questions.active_questions[i].question_id === answerData.question_id) {
+        this.doSetAnswering({...this.state.questions.active_questions[i], answer: answerData.answer}, answerData.course_id);
+      }
+    }
   }
 
   render() {
-    // console.warn('This is entry point', 'courxse_id was:', this.state.course_id);
-    // console.warn('EntryPoint');
-    // for(let key in this.state){
-    //   console.warn(key, this.state[key]);
-    // }
-
     return (
       this.state.bimodalLoginLanding ?
         <LoginScene
           onCompleteLogin={this.doLogin}
           onCompleteRegister={this.doRegister}
+          responseError={this.state.responseError}
+          showError={this.state.showError}
+          invalidateError={this.invalidateError}
         /> :
         <LandingScene
           doGetQuestions={this.doGetQuestions}

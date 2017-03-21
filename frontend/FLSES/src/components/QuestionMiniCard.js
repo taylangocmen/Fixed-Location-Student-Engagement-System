@@ -10,8 +10,7 @@ import {alphabet} from '../utils/Functions';
 export class QuestionMiniCard extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
 
     this.renderAnswers = this.renderAnswers.bind(this);
   }
@@ -31,14 +30,13 @@ export class QuestionMiniCard extends Component {
               onPress={()=>this.props.onActivePress(this.props.question, this.props.course_id)}
             >
               <Text style={[styles.questionText, {fontWeight}]}>
-                {this.props.question.title}
+                {this.props.question.title}{' - '}{this.props.question.body}
               </Text>
-              <Text style={[styles.questionText, {fontWeight}]}>
-                {this.props.question.body}
-              </Text>
-              <Text style={[styles.questionText, {fontWeight}]}>
-                {this.renderAnswers(this.props.question.answers)}
-              </Text>
+              {
+                // <Text style={[styles.questionText, {fontWeight}]}>
+                //   {this.renderAnswers(this.props.question.answers)}
+                // </Text>
+              }
             </TouchableOpacity>):
             this.props.status==='inactive' ?
               (<View style={styles.inactiveContainer}>

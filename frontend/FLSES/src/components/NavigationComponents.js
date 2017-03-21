@@ -4,14 +4,13 @@ import {ActivityIndicator, AppRegistry, StyleSheet, Text, View, TextInput, Scrol
 import * as colors from '../styling/Colors';
 
 
-//TODO: change this to style like the one below
-export const CardLeftColorBar = ({backgroundColor, width}) => <View
-  style={{backgroundColor, width}}
+export const CardLeftColorBar = ({style}) => <View
+  style={style}
 />;
 
-export const NavigationChevronRight = ({backgroundColor, width}) => <Image
+export const NavigationChevronRight = ({style}) => <Image
   source={require('../material-design-icons/navigation/ios/ic_chevron_right_white_48pt.imageset/ic_chevron_right_white_48pt.png')}
-  style={{backgroundColor, width}}
+  style={style}
 />;
 
 export const NavigationClose = ({style}) => <Image
