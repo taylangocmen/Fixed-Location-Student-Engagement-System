@@ -26,7 +26,7 @@ module.exports = {
       return;
     }
 
-    auth.validateSessionToken(req.query.session_token)
+    auth.validateSessionToken(req)
       .then(function(user_id) {
         // Verify that the user has permission to create new courses
         database.pool.query(

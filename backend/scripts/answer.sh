@@ -5,7 +5,7 @@ SESSION_TOKEN=$(curl -s -X POST 'https://localhost:8443/login' \
      -H 'Content-Type: application/json' \
      --cacert ca/certs/ca.cert.pem | sed -e 's/.*session_token.*"\(.*\)".*/\1/')
 
-ANSWER_URL='https://localhost:8443/answer?session_token='$SESSION_TOKEN
+ANSWER_URL='https://localhost:8443/answer'
 
 ANSWER_REQUEST='{
   "course_id": 1,
@@ -18,4 +18,5 @@ ANSWER_REQUEST='{
 curl -X POST $ANSWER_URL \
      -d "$ANSWER_REQUEST" \
      -H 'Content-Type: application/json' \
+     -H 'Authorization: Bearer '$SESSION_TOKEN \
      --cacert ca/certs/ca.cert.pem

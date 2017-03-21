@@ -23,7 +23,7 @@ var removeLinkQuery =
 //EXPECTED REQUEST BODY: course_id
 module.exports = {
     handle: function(req, res) {
-        auth.validateSessionToken(req.query.session_token)
+        auth.validateSessionToken(req)
             .then(function(user_id) {
                     var result = validate(req.body, schema);
                     if (result.errors.length !== 0) {
@@ -66,9 +66,7 @@ module.exports = {
                                                         res.send(errors.unknownError);
                                                         return;
                                                     } else {
-                                                        res.send({
-                                                            "success": "Unenrollment successful"
-                                                        });
+                                                        res.send({});
                                                         return;
                                                     }
                                                 }

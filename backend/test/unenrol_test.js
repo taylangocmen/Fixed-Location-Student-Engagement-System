@@ -14,18 +14,12 @@ unenrol.__set__('auth.validateSessionToken', mocktoken);
 var validEnrolInfo = {
   "body": {
     "course_id": 1
-  },
-  "query": {
-    "session_token":"atoken"
   }
 }
 
 var wrongFormatEnrolInfo = {
   "body": {
     "badfield": "this input is in the wrong format"
-  },
-  "query": {
-    "session_token":"atoken"
   }
 }
 
@@ -33,9 +27,6 @@ var tooManyArgsEnrolInfo = {
   "body": {
     "course_id":1,
     "badfield": "this input shouldn't be here"
-  },
-  "query": {
-    "session_token":"atoken"
   }
 }
 

@@ -5,7 +5,7 @@ SESSION_TOKEN=$(curl -s -X POST 'https://localhost:8443/login' \
      -H 'Content-Type: application/json' \
      --cacert ca/certs/ca.cert.pem | sed -e 's/.*session_token.*"\(.*\)".*/\1/')
 
-ENROL_URL='https://localhost:8443/enrol?session_token='$SESSION_TOKEN
+ENROL_URL='https://localhost:8443/enrol'
 
 ENROL_REQUEST='{
   "course_id": 1
@@ -14,4 +14,5 @@ ENROL_REQUEST='{
 curl -X POST $ENROL_URL \
      -d "$ENROL_REQUEST" \
      -H 'Content-Type: application/json' \
+     -H 'Authorization: Bearer '$SESSION_TOKEN \
      --cacert ca/certs/ca.cert.pem

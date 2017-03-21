@@ -13,7 +13,8 @@ var getQuestionsQuery =
   '       b.answer_mc, b.accepted ' +
   'from ece496.questions a ' +
   'left join ece496.submissions b ' +
-  'on a.course_id=? and b.user_id=? and a.id=b.question_id';
+  'on a.id=b.question_id and b.user_id=? ' +
+  'where a.course_id=?';
 
 module.exports = {
   // Get courses handler
@@ -21,11 +22,11 @@ module.exports = {
     // Validate the request query
     var result = validate(req.query, schema);
     if (result.errors.length === 0) {
-      auth.validateSessionToken(req.query.session_token)
+      auth.validateSessionToken(req)
         .then(function(user_id) {
           database.pool.query(
               getQuestionsQuery,
-              [req.query.course_id, user_id],
+              [user_id, req.query.course_id],
               function(err, rows, fields) {
                 if (err) {
                   console.log(err);
@@ -49,8 +50,11 @@ module.exports = {
                     };
 
                     // Add the user's answer if it exists
-                    if (rows[i].answer_mc !== null && rows[i].accepted !== null) {
+                    if (rows[i].answer_mc !== null) {
                       question_details.answer = rows[i].answer_mc;
+                    }
+
+                    if (rows[i].accepted !== null) {
                       question_details.answer_accepted = rows[i].accepted === 1;
                     }
 

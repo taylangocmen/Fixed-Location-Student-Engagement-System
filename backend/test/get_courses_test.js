@@ -164,22 +164,8 @@ describe('Get Courses', function() {
       stubdb.reset();
     });
 
-    it('handles missing parameters', function() {
-      var req = {
-        query: { }
-      };
-      var res = { send: sinon.spy() };
-
-      getCourses.handle(req, res);
-
-      assert.equal(res.send.args.length, 1);
-      assert.equal(res.send.args[0].length, 1);
-      assert.equal(res.send.args[0][0], errors.validationError);
-    });
-
     it('handles valid data from the database', function() {
       var req = {
-        query: { session_token: '' },
         body: { course_name: 'ece496', course_desc: 'hello!' }
       };
       var res = { send: sinon.spy() };

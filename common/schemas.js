@@ -4,20 +4,12 @@ module.exports = {
       'type': 'object',
       'additionalProperties': false,
       'properties': {
-        'session_token': {
-          'type': 'string',
-          'required': true
-        }
       }
     },
     questions: {
       'type': 'object',
       'additionalProperties': false,
       'properties': {
-        'session_token': {
-          'type': 'string',
-          'required': true
-        },
         'course_id': {
           'type': 'string',
           'required': true
