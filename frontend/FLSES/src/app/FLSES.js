@@ -8,10 +8,6 @@ import {Container} from '../components/Container';
 
 
 export class FLSES extends Component {
-  //TODO: add the store
-  //TODO: remove test component add the commented out rendering system
-  //TODO: alert works
-
   constructor(props) {
     super(props);
     this.state = {

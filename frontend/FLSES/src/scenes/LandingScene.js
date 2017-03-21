@@ -16,7 +16,6 @@ export class LandingScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      //TODO: change this to flow.a at the end
       prev: flow.a.title,
       title: flow.a.title,
       content: flow.a,
@@ -49,8 +48,8 @@ export class LandingScene extends Component {
     });
   }
 
-  goToAnswering(answering) {
-    this.props.doSetAnswering(answering);
+  goToAnswering(answering, course_id) {
+    this.props.doSetAnswering(answering, course_id);
 
     const prev = this.state.title;
     this.setState({
@@ -63,7 +62,7 @@ export class LandingScene extends Component {
   getOnPressLeft() {
     switch (this.state.title) {
       case flow.a.title:
-        this.props.onLogout();
+        this.props.doLogout();
         break;
       case flow.b.title:
         this.goToCourses();
@@ -79,7 +78,21 @@ export class LandingScene extends Component {
   }
 
   getOnPressRight() {
-    console.warn("this is getOnPressRight");
+    switch (this.state.title) {
+      case flow.a.title:
+        this.props.doGetCourses();
+        break;
+      case flow.b.title:
+        // this.goToCourses();
+        break;
+      case flow.c.title:
+        // this.state.prev === flow.a.title ?
+        //   this.goToCourses():
+        //   this.goToQuestions({}, true);
+        break;
+      default:
+        return null;
+    }
   }
 
   renderCourses() {
@@ -97,6 +110,7 @@ export class LandingScene extends Component {
       <QuestionsScroller
         onRightButtonPress={this.goToAnswering}
         questions={this.props.questions}
+        course_id={this.props.course_id}
       /> :
       <NavigationLoading />;
   }
@@ -104,7 +118,9 @@ export class LandingScene extends Component {
   renderAnswering() {
     return !!this.props.answering ?
       <AnsweringCard
+        doAnswer={this.props.doAnswer}
         answering={this.props.answering}
+        course_id={this.props.course_id}
       /> :
       <NavigationLoading />;
   }

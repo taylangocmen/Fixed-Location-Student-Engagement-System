@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View, TextInput} from 'react-native';
+import {AppRegistry, StyleSheet, Text, View, TextInput, Animated} from 'react-native';
 
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
+import {opacity} from '../utils/Functions';
 import {Uoft1024} from '../images/Images';
 import {LoginCard} from '../components/LoginCard';
 import {RegisterCard} from '../components/RegisterCard';
@@ -12,10 +13,13 @@ export class LoginScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bimodalLoginRegister: true
+      bimodalLoginRegister: true,
+      fadeAnim: new Animated.Value(0),
+      error: 'Error: Default error message.'
     };
 
     this.alternateBimodal = this.alternateBimodal.bind(this);
+    this.showError = this.showError.bind(this);
   }
 
   alternateBimodal() {
@@ -24,6 +28,19 @@ export class LoginScene extends Component {
     this.setState({
       bimodalLoginRegister
     });
+  }
+
+  showError(error) {
+    this.setState({error});
+    setTimeout(() => Animated.timing(this.state.fadeAnim, {toValue: 1}).start(), 1000);
+    setTimeout(() => Animated.timing(this.state.fadeAnim, {toValue: 0}).start(), 6000);
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.showError === true){
+      this.showError(nextProps.responseError);
+      this.props.invalidateError();
+    }
   }
 
   render() {
@@ -37,9 +54,27 @@ export class LoginScene extends Component {
         </View>
         <View style={styles.mainContainer}>
           {this.state.bimodalLoginRegister ?
-            <LoginCard alternateBimodal={this.alternateBimodal} login={this.props.onCompleteLogin}/>:
-            <RegisterCard alternateBimodal={this.alternateBimodal} register={this.props.onCompleteRegister}/>
+            <LoginCard
+              alternateBimodal={this.alternateBimodal}
+              login={this.props.onCompleteLogin}
+              showError={this.showError}
+            />:
+            <RegisterCard
+              alternateBimodal={this.alternateBimodal}
+              register={this.props.onCompleteRegister}
+              showError={this.showError}
+            />
           }
+        </View>
+        <View style={styles.errorContainerContainer}>
+          <Animated.View style={[styles.errorContainer, {opacity: this.state.fadeAnim}]}>
+            <Text style={styles.errorText}
+                  ellipsizeMode='clip'
+                  numberOfLines={1}
+            >
+              {this.state.error}
+            </Text>
+          </Animated.View>
         </View>
       </View>
     );
@@ -83,5 +118,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch',
     marginBottom: 40,
-  }
+  },
+  errorContainerContainer:{
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: config.window.width/100,
+    left: config.window.width/100,
+    bottom: config.window.height/25,
+  },
+  errorContainer: {
+    backgroundColor: opacity(colors.basicWhite, 0.5),
+    padding: 10,
+    borderRadius: 10
+  },
+  errorText: {
+    textAlign: 'center',
+  },
 });

@@ -10,26 +10,42 @@ export class CoursesScroller extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+
+    this.reorderRegisteredCourses = this.reorderRegisteredCourses.bind(this);
+  }
+
+  reorderRegisteredCourses() {
+    let returnCourses = [];
+    const {courses_registered} = this.props.courses;
+    for(let i = 0; i < courses_registered.length; i++){
+      if(courses_registered[i].active_questions.length > 0){
+        returnCourses.push(courses_registered[i]);
+      }
+    }
+    for(let j = 0; j < courses_registered.length; j++){
+      if(courses_registered[j].active_questions.length === 0){
+        returnCourses.push(courses_registered[j]);
+      }
+    }
+    return returnCourses;
   }
 
   render() {
-    // console.warn('CoursesScroller, courses', this.props.courses);
     //TODO: do the expired courses right now its just the regular current courses, and status is inactive
-
     return (
       <ScrollView style={styles.scrollView}>
         {
-          (!!this.props.courses.courses_registered &&
-            this.props.courses.courses_registered.map((course) => <CourseCard
+          ((this.props.courses.courses_registered !== undefined) &&
+            this.reorderRegisteredCourses().map((course) => <CourseCard
               key={course.course_id}
               course={course}
-              status={(!!course.active_questions) && (course.active_questions.length > 0) ? 'active': 'inactive'}
+              status={(course.active_questions !== undefined) && (course.active_questions.length > 0) ? 'active': 'inactive'}
               onRightButtonPress={this.props.onRightButtonPress}
               onActivePress={this.props.onActivePress}
             />))
         }
         {
-          (!!this.props.courses.courses_expired &&
+          ((this.props.courses.courses_expired !== undefined) &&
             this.props.courses.courses_expired.map((course) => <CourseCard
               key={course.course_id}
               course={course}
@@ -52,5 +68,3 @@ const styles = StyleSheet.create({
   },
 });
 
-// <CourseCard status='active' onRightButtonPress={this.props.onRightButtonPress} onActivePress={this.props.onActivePress}/>
-// <CourseCard status='inactive' onRightButtonPress={null} onActivePress={null}/>

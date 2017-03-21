@@ -11,10 +11,11 @@ import * as colors from '../styling/Colors';
 export class LoginCard extends Component {
   constructor(props) {
     super(props);
+    const username = config.testUser !== undefined ? config.testUser.username : '';
+    const pass_hash = config.testUser !== undefined ? config.testUser.pass_hash : '';
     this.state = {
-      //TODO: fix these
-      username: config.testUser.username,
-      pass_hash: config.testUser.pass_hash,
+      username,
+      pass_hash,
     };
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -31,26 +32,24 @@ export class LoginCard extends Component {
       <View style={styles.cardContainer}>
         <View style={styles.rowContainer}>
           <TextInput
-            //TODO: fix this
             value={this.state.username}
             onChange={(e) => this.setState({username: e.nativeEvent.text})}
             autoFocus={false}
             autoCorrect={false}
             secureTextEntry={false}
-            placeholder="student #"
+            placeholder='student #'
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
           />
         </View>
         <View style={styles.rowContainer}>
           <TextInput
-            //TODO: fix this
             value={this.state.pass_hash}
             onChange={(e) => this.setState({pass_hash: e.nativeEvent.text})}
             autoFocus={false}
             autoCorrect={false}
             secureTextEntry={true}
-            placeholder="password"
+            placeholder='password'
             placeholderTextColor={colors.secondaryBondiBlue}
             style={styles.cardInput}
           />

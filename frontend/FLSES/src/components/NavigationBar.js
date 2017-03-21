@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   icon: {
     backgroundColor: colors.officialPrussianBlue,
     // backgroundColor: colors.basicRed,
-    width: 32,
-    height: 32,
+    width: 30,
+    height: 30,
   }
 });

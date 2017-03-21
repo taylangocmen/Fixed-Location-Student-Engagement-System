@@ -16,9 +16,11 @@ export const api = {
     };
 
     let optionsArray = [];
-    Object.keys(options).map((key, index) => {
-      optionsArray.push(key + '=' + options[key]);
-    });
+    if(options !== undefined) {
+      Object.keys(options).map((key, index) => {
+        optionsArray.push(key + '=' + options[key]);
+      });
+    }
 
     const optionsStringified = '?' + optionsArray.join('&');
 
@@ -28,7 +30,7 @@ export const api = {
     })
       .then(checkStatus)
       .then(response => response.json())
-      .catch(e => console.warn('Error:', e));
+      .catch(e => console.warn('Get error:', e));
   },
 
   post: (path, data) => {
@@ -47,7 +49,7 @@ export const api = {
     })
       .then(checkStatus)
       .then(response => response.json())
-      .catch(e => console.warn('Error:', e));
+      .catch(e => console.warn('Post error:', e));
   },
 
   session_token: () => {
@@ -70,13 +72,6 @@ export const api = {
   getTokenObj: () => ({session_token}),
 
   getAuthHeaders: () => ({
-    "Authorization": `Bearer ${api.getToken()}`,
+    'Authorization': `Bearer ${api.getToken()}`,
   }),
-
-  sudo_post: () => new Promise(function (resolve, reject) {
-    const retObj = {session_token: api.session_token()};
-    resolve(retObj);
-    reject('error');
-  })
-    .catch(e => console.warn('Error:', e)),
 };

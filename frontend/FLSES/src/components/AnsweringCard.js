@@ -3,23 +3,23 @@ import {AppRegistry, StyleSheet, Text, View, TextInput, ScrollView, TouchableOpa
 
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
-import {questionStatusColors, questionStatusFontWeights} from '../utils/Modals';
-import {opacity} from '../utils/Functions';
 import {AnsweringOption} from '../components/AnsweringOption'
+
 
 export class AnsweringCard extends Component {
   constructor(props) {
     super(props);
 
-    // TODO: When index is fixed remove answer-1
-    const optionChosen = !!props.answering.answer_accepted ? (props.answering.answer-1): -1;
+    const optionChosen = props.answering.answer !== undefined ? (props.answering.answer): -1;
 
     this.state = {
       optionChosen,
     };
-
     this.chooseOption = this.chooseOption.bind(this);
+    this.doAnswer = this.doAnswer.bind(this);
+    
   }
+  
 
   chooseOption(newOptionChosen) {
     let optionChosen = newOptionChosen;
@@ -32,40 +32,59 @@ export class AnsweringCard extends Component {
     });
   }
 
+  //TODO: check if answer is chosen -1 and prompt answer not submitted
+  //TODO: do the device and the neighbours
+  //TODO: do the option check
+  doAnswer() {
+    if(this.state.optionChosen === -1){
+      console.warn("CHOOSE AN OPTION");
+    } else {
+      const answerObj = {
+        course_id: this.props.course_id,
+        question_id: this.props.answering.question_id,
+        answer: this.state.optionChosen,
+        neighbours: [],
+        device_id: "device",
+      };
+      this.props.doAnswer(answerObj);
+    }
+  }
+
   render() {
-    //TODO: do  the inactive questions and answered questions
-    const fontWeight = questionStatusFontWeights[this.props.status];
+    const submitStyle = this.props.answering.correct_answer !== undefined ?
+      styles.disabledButton: styles.submitButton;
 
-    // console.warn('AnsweringCard: ', this.props.answering);
-
-    // TODO: When index is fixed remove answer-1
     return (
       <View style={styles.cardContainer}>
         <View style={styles.mainContainer}>
           <View style={styles.questionContainer}>
             <View style={styles.bodyContainer}>
-              <Text style={[styles.bodyText, {fontWeight}]}>
+              <Text style={styles.bodyText}>
                 {this.props.answering.title}
               </Text>
-              <Text style={[styles.bodyText, {fontWeight}]}>
+              <Text style={styles.bodyText}>
                 {this.props.answering.body}
               </Text>
             </View>
             {
               this.props.answering.answers.map((option, index)=><AnsweringOption
                 key={index}
+                index={index}
                 optionText={option}
-                status={this.props.status}
                 onPress={()=>this.chooseOption(index)}
-                chosenAnswer={this.state.optionChosen === index}
-                submittedAnswer={!!this.props.answering.answer_accepted && ((this.props.answering.answer-1) === index)}
-                correctAnswer={!!this.props.answering.correct_answer && ((this.props.answering.correct_answer-1) === index)}
-                disabled={!!this.props.answering.correct_answer}
+                chosenAnswer={index === this.state.optionChosen}
+                submittedAnswer={this.props.answering.answer !== undefined && (this.props.answering.answer === index)}
+                correctAnswer={this.props.answering.correct_answer !== undefined && (this.props.answering.correct_answer === index)}
+                disabled={this.props.answering.correct_answer !== undefined}
               />)
             }
           </View>
           <View style={styles.bottomContainer}>
-            <TouchableOpacity style={styles.submitButton}>
+            <TouchableOpacity
+              onPress={this.doAnswer}
+              disabled={this.props.answering.correct_answer !== undefined}
+              style={submitStyle}
+            >
               <Text style={styles.submitText}>
                 Submit
               </Text>
@@ -81,7 +100,6 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     flexDirection: 'row',
-    borderWidth: 1,
     padding: 16,
   },
   mainContainer: {
@@ -108,6 +126,7 @@ const styles = StyleSheet.create({
   },
   bodyText: {
     fontSize: 24,
+    fontWeight: '600',
   },
   optionText: {
     fontSize: 20,
@@ -117,6 +136,17 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.secondaryCocoaBrown,
     backgroundColor: colors.secondaryCrimson,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width: 200,
+  },
+  disabledButton: {
+    borderRadius: 16,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.basicGray,
+    backgroundColor: colors.accentGreyNurse,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
