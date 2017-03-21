@@ -66,9 +66,7 @@ module.exports = {
                                                         res.send(errors.unknownError);
                                                         return;
                                                     } else {
-                                                        res.send({
-                                                            "success": "Unenrollment successful"
-                                                        });
+                                                        res.send({});
                                                         return;
                                                     }
                                                 }

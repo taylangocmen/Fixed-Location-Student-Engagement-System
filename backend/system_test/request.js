@@ -2,7 +2,7 @@ var CondVar = require('condvar');
 var http = require('http');
 
 // TODO Comment this up
-module.exports = function(path, method, body) {
+module.exports = function(path, method, body, session_token) {
   body = typeof body !== 'undefined' ? body : '';
   body = typeof body !== 'string' ? JSON.stringify(body) : body;
 
@@ -16,6 +16,10 @@ module.exports = function(path, method, body) {
       'Content-Length': Buffer.byteLength(body)
     }
   };
+
+  if (typeof session_token === 'string') {
+    options.headers.Authorization = 'Bearer ' + session_token;
+  }
 
   cv = new CondVar;
   req = http.request(options, function(res) {
