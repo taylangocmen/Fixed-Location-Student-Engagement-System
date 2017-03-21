@@ -22,6 +22,34 @@ var test_course = {
   course_name: 'System Test Course',
   course_desc: 'System Test'
 };
+var question1 = {
+  course_id: undefined, // Populated later
+  timeout: 1000,
+  question: {
+    title: 'System Test Question 1',
+    text: 'This is a system test question?',
+    correct_answer: 1,
+    answers: [
+      'Yes, this is a system test question.',
+      'No, this is not a system test question.'
+    ]
+  }
+};
+var updated_question1 = {
+  course_id: undefined, // Populated later
+  question_id: undefined, // Populated later
+  timeout: 2000,
+  question: {
+    title: 'System Test Question 4',
+    text: 'This is a system test question????',
+    correct_answer: 2,
+    answers: [
+      'Yes, this is a system test question....',
+      'No, this is not a system test question....',
+      'Hello world!'
+    ]
+  }
+};
 
 var db = function(query, params) {
   cv = new CondVar;
@@ -64,8 +92,10 @@ describe('System Tests', function() {
 
     // Reset the database
     var course_ids = db('select id from ece496.courses where course_name=?', [test_course.course_name]);
+    // Iterate over all courses that have the system test course name
     for (var i = 0; i < course_ids.length; i++) {
       db('delete from ece496.users_courses where course_id=?', [course_ids[i].id]);
+      db('delete from ece496.questions where course_id=?', [course_ids[i].id]);
     }
     db('delete from ece496.courses where course_name=?', [test_course.course_name]);
     db('delete from ece496.users where utorid=?', [test_user.utorid]);
@@ -116,6 +146,8 @@ describe('System Tests', function() {
     assert.equal(typeof response.course_id, 'number');
 
     test_course.course_id = response.course_id;
+    question1.course_id = test_course.course_id;
+    updated_question1.course_id = test_course.course_id;
 
     // Expect that the course was actually created
     var dbResults = db('select id ' +
@@ -154,5 +186,50 @@ describe('System Tests', function() {
                        'where course_id=?',
                        [test_course.course_id]);
     assert.equal(dbResults.length, 0);
+  });
+
+  var verifyQuestion = function(dbResult, question) {
+    assert.equal(dbResult.id, question.question_id);
+    assert.equal(dbResult.course_id, question.course_id);
+    assert.equal(dbResult.timeout, question.timeout);
+    assert.equal(dbResult.title, question.question.title);
+    assert.equal(dbResult.question_text, question.question.text);
+    assert.equal(dbResult.correct_answer, question.question.correct_answer);
+    assert.equal(dbResult.answers_array, JSON.stringify(question.question.answers));
+  };
+
+  it("successfully creates a question", function() {
+    var session_token = login();
+
+    var response = request('/question', 'POST', question1, session_token);
+    assert.deepEqual(response, {course_id: test_course.course_id, question_id: response.question_id});
+    assert.equal(typeof response.question_id, 'number');
+
+    question1.question_id = response.question_id;
+    updated_question1.question_id = question1.question_id;
+
+    // Expect the question to be created
+    var dbResults = db('select * ' +
+                       'from ece496.questions ' +
+                       'where id=?',
+                       [response.question_id]);
+    assert.equal(dbResults.length, 1);
+    verifyQuestion(dbResults[0], question1);
+  });
+
+  it("successfully updates a question", function() {
+    var session_token = login();
+
+    var response = request('/question', 'POST', updated_question1, session_token);
+    assert.deepEqual(response, {course_id: test_course.course_id, question_id: response.question_id});
+    assert.equal(typeof response.question_id, 'number');
+
+    // Expect the question to be created
+    var dbResults = db('select * ' +
+                       'from ece496.questions ' +
+                       'where id=?',
+                       [response.question_id]);
+    assert.equal(dbResults.length, 1);
+    verifyQuestion(dbResults[0], updated_question1);
   });
 });

@@ -41,7 +41,7 @@ var handleUpdateQuestion = function(req, res) {
       // If the question_id is valid
       if (rows.length === 1) {
         // If the question has not been asked yet
-        if (rows[0].asked === false) {
+        if (rows[0].asked === 0) {
           // Update the question
           database.pool.query(
             updateQuestionQuery,
