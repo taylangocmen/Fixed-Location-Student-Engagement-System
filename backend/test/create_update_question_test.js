@@ -128,7 +128,7 @@ describe('Create/Update Question', function() {
 
       // When the question_id gets checked, return that it hasn't been asked
       stubdb.pool.query.onCall(1)
-                  .callsArgWith(2, null, [{asked: false}], null);
+                  .callsArgWith(2, null, [{asked: 0}], null);
 
       // When the question gets updated, return success
       stubdb.pool.query.onCall(2)

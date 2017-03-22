@@ -101,7 +101,8 @@ module.exports = {
           'required': true
         },
         'question_id': {
-          'type': 'integer'
+          'type': 'integer',
+          'required': false
         },
         'timeout': {
           'type': 'integer',

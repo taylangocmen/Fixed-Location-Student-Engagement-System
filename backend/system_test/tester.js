@@ -155,6 +155,10 @@ describe('System Tests', function() {
                        'where id=?',
                        [test_course.course_id]);
     assert.equal(dbResults.length, 1);
+
+    // Verify that the course exists
+    response = request('/questions?course_id=' + response.course_id, 'GET', '', session_token);
+    assert.deepEqual(response, {active_questions: [], inactive_questions: []});
   });
 
   it("successfully enrols in a course", function() {
