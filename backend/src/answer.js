@@ -55,6 +55,7 @@ var handleUpdateAnswer = function(req, res, user_id) {
 
       // Success, return an empty object
       res.send({});
+      return;
     }
   );
 };
@@ -78,6 +79,7 @@ var handleCreateAnswer = function(req, res, user_id) {
 
       // Success, return an empty object
       res.send({});
+      return;
     }
   );
 };

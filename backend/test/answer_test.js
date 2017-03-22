@@ -156,11 +156,16 @@ describe('Answer', function() {
 	  // Return that there were no errors updating the answer
       stubdb.pool.query.onCall(3)
                   .callsArgWith(2, null, null, null);
-				  
+    // Return a success upon updating the database
+      stubdb.pool.query.onCall(4)
+                  .callsArgWith(2, null,null,null);
+
 	  answer.handle(req, res);
 	  
 	  // Verify that an empty response was returned
-      assert.equal(res.send.calledWith({ }));
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.deepEqual(res.send.args[0][0], {});
     });
 	
 	// Verify that a user can answer a question given all of the 
@@ -188,11 +193,17 @@ describe('Answer', function() {
 	  // Return that there were no errors adding the submission
       stubdb.pool.query.onCall(3)
                   .callsArgWith(2, null, null, null);
-				  
-	  answer.handle(req, res);
+		// When the submission gets updated, return success 
+
+      stubdb.pool.query.onCall(4)
+                  .callsArgWith(2, null, null, null);
+
+      answer.handle(req, res);
 	  
 	  // Verify that an empty response was returned
-      assert.equal(res.send.calledWith({ }));
+      assert.equal(res.send.args.length, 1);
+      assert.equal(res.send.args[0].length, 1);
+      assert.deepEqual(res.send.args[0][0], {});
     });
 	
 	// TODO: Add tests for query() returning an err at each stage
