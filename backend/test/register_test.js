@@ -197,7 +197,7 @@ describe('Register', function() {
 
       // Verify that an empty response was returned
 
-      assert.equal(res.send.calledWith({ }));
+      assert.equal(res.send.calledWith({}));
 
     });
 

@@ -160,7 +160,7 @@ describe('Answer', function() {
 	  answer.handle(req, res);
 	  
 	  // Verify that an empty response was returned
-      assert.equal(res.send.calledWith({ }));
+      assert.equal(res.send.calledWith({}));
     });
 	
 	// Verify that a user can answer a question given all of the 
@@ -192,7 +192,7 @@ describe('Answer', function() {
 	  answer.handle(req, res);
 	  
 	  // Verify that an empty response was returned
-      assert.equal(res.send.calledWith({ }));
+      assert.equal(res.send.calledWith({}));
     });
 	
 	// TODO: Add tests for query() returning an err at each stage
