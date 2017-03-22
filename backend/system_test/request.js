@@ -2,7 +2,7 @@ var CondVar = require('condvar');
 var http = require('http');
 
 // TODO Comment this up
-module.exports = function(path, method, body, session_token) {
+module.exports = function(path, method, body, session_token, callback) {
   body = typeof body !== 'undefined' ? body : '';
   body = typeof body !== 'string' ? JSON.stringify(body) : body;
 
@@ -30,19 +30,33 @@ module.exports = function(path, method, body, session_token) {
       output += chunk;
     });
     res.on('end', function() {
+      var sendValue;
       try {
         var obj = JSON.parse(output);
-        cv.send(obj);
+        sendValue = obj;
       } catch (e) {
-        cv.send(output);
+        sendValue = output;
+      }
+      if (typeof callback === 'function') {
+        callback(sendValue);
+      } else {
+        cv.send(sendValue);
       }
     });
   });
   req.on('error', function(e) {
-    cv.send(e);
+    if (typeof callback === 'function') {
+      callback(sendValue);
+    } else {
+      cv.send(sendValue);
+    }
   });
   req.write(body);
   req.end();
 
-  return cv.recv();
+  if (typeof callback === 'function') {
+    return;
+  } else {
+    return cv.recv();
+  }
 };

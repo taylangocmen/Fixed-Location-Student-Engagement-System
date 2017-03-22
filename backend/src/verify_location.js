@@ -12,9 +12,14 @@ var acceptAnswerQuery =
   'set accepted=true ' +
   'where course_id=? and question_id=? and user_id=?';
 
-var acceptAnswer = function(course_id, question_id, user_id) {
+var rejectAnswerQuery =
+  'update ece496.submissions ' +
+  'set accepted=false ' +
+  'where course_id=? and question_id=? and user_id=?';
+
+var updateDatabase = function(query, course_id, question_id, user_id) {
   database.pool.query(
-    acceptAnswerQuery,
+    query,
     [course_id, question_id, user_id],
     function(err, rows, fields) {
       if (err) {
@@ -24,7 +29,15 @@ var acceptAnswer = function(course_id, question_id, user_id) {
       }
     }
   );
-}
+};
+
+var acceptAnswer = function(course_id, question_id, user_id) {
+  updateDatabase(acceptAnswerQuery, course_id, question_id, user_id);
+};
+
+var rejectAnswer = function(course_id, question_id, user_id) {
+  updateDatabase(rejectAnswerQuery, course_id, question_id, user_id);
+};
 
 module.exports = {
   verify: function(course_id, question_id) {
@@ -92,6 +105,8 @@ module.exports = {
           // of incoming connections must be at least half of the class
           if (incoming >= Math.floor(rows.length / 2)) {
             acceptAnswer(course_id, question_id, rows[i].user_id);
+          } else {
+            rejectAnswer(course_id, question_id, rows[i].user_id);
           }
         }
       }
