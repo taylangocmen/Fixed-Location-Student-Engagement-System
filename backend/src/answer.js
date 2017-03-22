@@ -12,17 +12,15 @@ var verifyUserQuery =
   'FROM ece496.users_courses ' +
   'WHERE user_id = ? AND course_id = ?';
 
-// TODO dont do select *
 // Check to see whether or not the question exists and is accepting answers
 var selectQuestionQuery =
-  'SELECT * ' +
+  'SELECT asked, completed ' +
   'FROM ece496.questions ' +
   'WHERE course_id=? AND id=?';
 
-// TODO dont do select *
 // Check to see if an answer from the submitting user already exists
 var alreadyAnsweredQuery =
-  'SELECT * ' +
+  'SELECT id ' +
   'FROM ece496.submissions ' +
   'WHERE user_id = ? AND course_id = ? AND question_id = ?';
 
@@ -121,9 +119,6 @@ module.exports = {
                   }
 
                   if (rows.length === 1) {
-                    // TODO you need to check whether there were rows returned using rows.length
-                    // this will give you another error case to handle - errors.invalidQuestion
-                    // there should be exactly one row returned. then you can access 'asked' using rows[0].asked
                     if(rows[0].asked === 1 && rows[0].completed === 0) {
                       // Determine if the user has already answered
                       database.pool.query(
