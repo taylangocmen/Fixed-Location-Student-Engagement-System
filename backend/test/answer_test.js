@@ -20,9 +20,9 @@ var validRequest = {
   }
 };
 var validUser = {user_id: 'authorized_user'};
-var sqlQuestionAsked1 = { asked: false, completed: false};
-var sqlQuestionAsked2 = { asked: true, completed: true};
-var sqlQuestionAsked3 = { asked: true, completed: false};
+var sqlQuestionAsked1 = { asked: 0, completed: 0};
+var sqlQuestionAsked2 = { asked: 1, completed: 1};
+var sqlQuestionAsked3 = { asked: 1, completed: 0};
 
 describe('Answer', function() {
   describe('#handle()', function() {
