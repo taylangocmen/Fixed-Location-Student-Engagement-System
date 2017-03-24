@@ -196,7 +196,13 @@ describe('Register', function() {
       register.handle(req, res);
 
       // Verify that an empty response was returned
-      assert.equal(res.send.calledWith({ }));
+
+
+      // Verify that an empty response was returned
+       assert.equal(res.send.args.length, 1);
+       assert.equal(res.send.args[0].length, 1);
+       assert.deepEqual(res.send.args[0][0], {});
+
     });
 
     // TODO: Add tests for query() returning an err at each stage
