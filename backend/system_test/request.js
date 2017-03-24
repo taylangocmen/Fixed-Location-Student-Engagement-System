@@ -45,6 +45,7 @@ module.exports = function(path, method, body, session_token, callback) {
     });
   });
   req.on('error', function(e) {
+    var sendValue;
     if (typeof callback === 'function') {
       callback(sendValue);
     } else {
