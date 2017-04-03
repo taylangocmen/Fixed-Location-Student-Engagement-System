@@ -9,7 +9,6 @@ var getQuestions = require('./get_questions');
 
 var auth = require('./auth');
 var config = require('./config');
-var wifiInfo = require('./wifi_info');
 var enrol = require('./enrol');
 var unenrol = require('./unenrol');
 var createUpdateQuestion = require('./create_update_question');
@@ -46,7 +45,6 @@ app.get('/questions', getQuestions.handle);
 
 app.post('/login', auth.handleLogin);
 app.post('/register', auth.handleRegister);
-app.post('/updateWifiInfo', wifiInfo.handleUpdateWifiInfo);
 app.post('/enrol', enrol.handle);
 app.post('/unenrol', unenrol.handle);
 app.post('/question', createUpdateQuestion.handle);

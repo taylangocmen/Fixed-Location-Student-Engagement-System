@@ -8,6 +8,7 @@ var verifyLocation = rewire('../src/verify_location');
 verifyLocation.__set__('database', mockdb);
 
 var acceptAnswerQuery = verifyLocation.__get__('acceptAnswerQuery');
+var rejectAnswerQuery = verifyLocation.__get__('rejectAnswerQuery');
 
 var validData = [
   {
@@ -86,7 +87,7 @@ describe('Verify Location', function() {
     it('rejects for missing incoming edges', function() {
       var course_id = 1, question_id = 2;
 
-      var expectation = mockdb.mock.expects('query').exactly(4);
+      var expectation = mockdb.mock.expects('query').exactly(5);
 
       // When the database is queried for the response data, return the dataset
       expectation.onCall(0)
@@ -101,7 +102,7 @@ describe('Verify Location', function() {
       assert(expectation.calledWith(acceptAnswerQuery, [course_id, question_id, 1]));
       assert(expectation.calledWith(acceptAnswerQuery, [course_id, question_id, 2]));
       assert(expectation.calledWith(acceptAnswerQuery, [course_id, question_id, 3]));
-      assert(expectation.neverCalledWith(acceptAnswerQuery, [course_id, question_id, 4]));
+      assert(expectation.calledWith(rejectAnswerQuery, [course_id, question_id, 4]));
     });
 
     it('does not fail for null device lists', function() {
@@ -134,7 +135,7 @@ describe('Verify Location', function() {
     it('works for single null device_id', function() {
       var course_id = 1, question_id = 2;
 
-      var expectation = mockdb.mock.expects('query').exactly(4);
+      var expectation = mockdb.mock.expects('query').exactly(5);
 
       // Create the data with some parts nulled out
       var nullDeviceIdData = JSON.parse(JSON.stringify(validData));
@@ -156,13 +157,13 @@ describe('Verify Location', function() {
       assert(expectation.calledWith(acceptAnswerQuery, [course_id, question_id, 1]));
       assert(expectation.calledWith(acceptAnswerQuery, [course_id, question_id, 2]));
       assert(expectation.calledWith(acceptAnswerQuery, [course_id, question_id, 3]));
-      assert(expectation.neverCalledWith(acceptAnswerQuery, [course_id, question_id, 4]));
+      assert(expectation.calledWith(rejectAnswerQuery, [course_id, question_id, 4]));
     });
 
     it('works for null device_id and nulls in device_list', function() {
       var course_id = 1, question_id = 2;
 
-      var expectation = mockdb.mock.expects('query').exactly(4);
+      var expectation = mockdb.mock.expects('query').exactly(5);
 
       // Create the data with some parts nulled out
       var nullDeviceIdData = JSON.parse(JSON.stringify(validData));
@@ -185,7 +186,7 @@ describe('Verify Location', function() {
       assert(expectation.calledWith(acceptAnswerQuery, [course_id, question_id, 1]));
       assert(expectation.calledWith(acceptAnswerQuery, [course_id, question_id, 2]));
       assert(expectation.calledWith(acceptAnswerQuery, [course_id, question_id, 3]));
-      assert(expectation.neverCalledWith(acceptAnswerQuery, [course_id, question_id, 4]));
+      assert(expectation.calledWith(rejectAnswerQuery, [course_id, question_id, 4]));
     });
 
     // TODO add more tests with larger datasets
