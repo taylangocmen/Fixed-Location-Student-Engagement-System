@@ -9,32 +9,32 @@ export const CardLeftColorBar = ({style}) => <View
 />;
 
 export const NavigationChevronRight = ({style}) => <Image
-  source={require('../material-design-icons/navigation/ios/ic_chevron_right_white_48pt.imageset/ic_chevron_right_white_48pt.png')}
+  source={require('../material-design-icons/ic_chevron_right_white_48pt/ic_chevron_right_white_48pt.png')}
   style={style}
 />;
 
 export const NavigationClose = ({style}) => <Image
-  source={require('../material-design-icons/navigation/ios/ic_close_white_48pt.imageset/ic_close_white_48pt.png')}
+  source={require('../material-design-icons/ic_close_white_48pt/ic_close_white_48pt.png')}
   style={style}
 />;
 
 export const NavigationArrowBack = ({style}) => <Image
-  source={require('../material-design-icons/navigation/ios/ic_arrow_back_white_48pt.imageset/ic_arrow_back_white_48pt.png')}
+  source={require('../material-design-icons/ic_arrow_back_white_48pt/ic_arrow_back_white_48pt.png')}
   style={style}
 />;
 
 export const NavigationMenu = ({style}) => <Image
-  source={require('../material-design-icons/navigation/ios/ic_menu_white_48pt.imageset/ic_menu_white_48pt.png')}
+  source={require('../material-design-icons/ic_menu_white_48pt/ic_menu_white_48pt.png')}
   style={style}
 />;
 
 export const NavigationLogout = ({style}) => <Image
-  source={require('../material-design-icons/action/ios/ic_power_settings_new_white_48pt.imageset/ic_power_settings_new_white_48pt.png')}
+  source={require('../material-design-icons/ic_power_settings_new_white_48pt/ic_power_settings_new_white_48pt.png')}
   style={style}
 />;
 
 export const NavigationRefresh = ({style}) => <Image
-  source={require('../material-design-icons/action/ios/ic_cached_white_48pt.imageset/ic_cached_white_48pt.png')}
+  source={require('../material-design-icons/ic_cached_white_48pt/ic_cached_white_48pt.png')}
   style={style}
 />;
 

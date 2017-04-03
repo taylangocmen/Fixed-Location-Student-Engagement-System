@@ -66,16 +66,18 @@ export class LoginScene extends Component {
             />
           }
         </View>
-        <View style={styles.errorContainerContainer}>
-          <Animated.View style={[styles.errorContainer, {opacity: this.state.fadeAnim}]}>
-            <Text style={styles.errorText}
-                  ellipsizeMode='clip'
-                  numberOfLines={1}
-            >
-              {this.state.error}
-            </Text>
-          </Animated.View>
-        </View>
+        {
+          // <View style={styles.errorContainerContainer}>
+          //   <Animated.View style={[styles.errorContainer, {opacity: this.state.fadeAnim}]}>
+          //     <Text style={styles.errorText}
+          //           ellipsizeMode='clip'
+          //           numberOfLines={1}
+          //     >
+          //       {this.state.error}
+          //     </Text>
+          //   </Animated.View>
+          // </View>
+        }
       </View>
     );
   }

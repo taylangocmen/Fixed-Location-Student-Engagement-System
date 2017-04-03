@@ -14,6 +14,9 @@ export class EmptyComponent extends Component {
   render() {
     return (
       <View>
+        <Text>
+          This is empty component.
+        </Text>
       </View>
     );
   }

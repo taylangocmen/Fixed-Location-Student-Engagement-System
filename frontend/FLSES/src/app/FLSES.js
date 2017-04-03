@@ -5,6 +5,7 @@ import {config} from '../../config';
 import * as colors from '../styling/Colors';
 import {EntryPoint} from '../scenes/EntryPoint';
 import {Container} from '../components/Container';
+import {EmptyComponent} from '../components/EmptyComponent';
 
 
 export class FLSES extends Component {
@@ -24,7 +25,10 @@ export class FLSES extends Component {
   render() {
     return (
       <Container style={styles.container}>
-        <EntryPoint />
+        {
+          <EntryPoint />
+          // <EmptyComponent />
+        }
       </Container>
     );
   }
