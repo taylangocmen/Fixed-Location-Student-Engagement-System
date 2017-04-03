@@ -8,7 +8,7 @@ var errors = require('../../common/errors').GET.courses;
 var schema = require('../../common/schemas').GET.courses;
 
 var getCoursesQuery =
-  'select a.id as course_id, a.course_name, a.course_desc, a.active, ' +
+  'select a.id as course_id, a.course_name, a.course_desc, a.active, a.prof_id, ' +
   '       c.id as question_id, c.title, c.question_text, c.asked, c.completed, c.answers_array ' +
   'from ece496.courses a ' +
   'join ece496.users_courses b ' +
@@ -62,6 +62,7 @@ module.exports = {
                       course_id: courseID,
                       course_name: rows[i].course_name,
                       course_desc: rows[i].course_desc,
+                      is_prof: rows[i].prof_id === user_id,
                       active_questions: []
                     };
                     // Add the new course and record its index
