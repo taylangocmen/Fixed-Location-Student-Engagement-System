@@ -36,7 +36,12 @@ var createAnswerQuery =
   'VALUES (NOW(), ?, ?, ?, ?, ?, ?)';
 
 var handleUpdateAnswer = function(req, res, user_id, existing_device_list) {
+  // Merge the existing and new device list
   existing_device_list.push(req.body.neighbours);
+  // Filter out duplicates
+  existing_device_list = existing_device_list.filter(function(elem, pos) {
+      return existing_device_list.indexOf(elem) == pos;
+  });
   // We already know from the handler that the user has already answered the question
   // we must then seek to update the answer with a new answer.
   database.pool.query(
