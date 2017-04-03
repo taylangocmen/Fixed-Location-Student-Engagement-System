@@ -3,7 +3,7 @@ import {AppRegistry, StyleSheet, Text, View, TextInput, TouchableOpacity} from '
 
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
-import {NavigationArrowBack, NavigationClose, NavigationMenu, NavigationLogout, NavigationRefresh} from '../components/NavigationComponents';
+import {NavigationArrowBack, NavigationClose, NavigationMenu, NavigationLogout, NavigationRefresh, NavigationPlus} from '../components/NavigationComponents';
 
 
 export class NavigationBar extends Component {
@@ -24,6 +24,8 @@ export class NavigationBar extends Component {
         return <NavigationLogout style={styles.icon}/>;
       case 'refresh':
         return <NavigationRefresh style={styles.icon}/>;
+      case 'plus':
+        return <NavigationPlus style={styles.icon}/>;
       default:
         return <View />;
     }

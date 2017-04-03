@@ -38,7 +38,7 @@ export class CourseCard extends Component {
         </View>
         <TouchableOpacity
           style={[styles.rightButton, {backgroundColor}]}
-          onPress={()=>this.props.onRightButtonPress(this.props.course.course_id)}
+          onPress={()=>this.props.onRightButtonPress(this.props.course.course_id, false, !!this.props.course.instructor)}
         >
           <NavigationChevronRight style={[styles.chevron, {backgroundColor}]}/>
         </TouchableOpacity>

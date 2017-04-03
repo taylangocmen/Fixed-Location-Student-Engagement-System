@@ -32,6 +32,9 @@ export class EntryPoint extends Component {
     this.doLogout = this.doLogout.bind(this);
     this.goLanding = this.goLanding.bind(this);
     this.doAnswer = this.doAnswer.bind(this);
+    this.doPostQuestion = this.doPostQuestion.bind(this);
+    this.doPutQuestion = this.doPutQuestion.bind(this);
+    this.doPutCloseQuestion = this.doPutCloseQuestion.bind(this);
     this.doUpdateAnswering = this.doUpdateAnswering.bind(this);
   }
 
@@ -117,6 +120,21 @@ export class EntryPoint extends Component {
       .then(()=>this.doGetQuestions(answerData.course_id))
       .then(()=>this.doUpdateAnswering(answerData))
     ;
+  }
+
+  //TODO: this
+  doPostQuestion(questionData) {
+    api.post('/question', questionData)
+  }
+
+  //TODO: this
+  doPutQuestion() {
+
+  }
+
+  //TODO: this
+  doPutCloseQuestion() {
+
   }
 
   doUpdateAnswering(answerData) {

@@ -38,6 +38,11 @@ export const NavigationRefresh = ({style}) => <Image
   style={style}
 />;
 
+export const NavigationPlus = ({style}) => <Image
+  source={require('../material-design-icons/ic_note_add_white_48pt/ic_note_add_white_48pt.png')}
+  style={style}
+/>;
+
 export const NavigationLoading = ({style}) => <View
   style={{
     flex: 1,

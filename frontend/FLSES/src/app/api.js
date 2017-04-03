@@ -52,6 +52,25 @@ export const api = {
       .catch(e => console.warn('Post error:', e));
   },
 
+  put: () => {
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      ...api.getAuthHeaders(),
+    };
+
+    const body = JSON.stringify(data);
+
+    return fetch(`${apiUrl}${path}`, {
+      method: 'PUT',
+      headers,
+      body,
+    })
+      .then(checkStatus)
+      .then(response => response.json())
+      .catch(e => console.warn('Post error:', e));
+  },
+
   session_token: () => {
     return !!config.testUser ?
       config.testUser.token :

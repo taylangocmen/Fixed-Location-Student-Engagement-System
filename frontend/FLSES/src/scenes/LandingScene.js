@@ -9,6 +9,8 @@ import {NavigationBar} from '../components/NavigationBar';
 import {CoursesScroller} from '../components/CoursesScroller';
 import {QuestionsScroller} from '../components/QuestionsScroller';
 import {AnsweringCard} from '../components/AnsweringCard';
+import {CreationCard} from '../components/CreationCard';
+import {EditingCard} from '../components/EditingCard';
 import {NavigationLoading} from '../components/NavigationComponents';
 
 
@@ -19,6 +21,7 @@ export class LandingScene extends Component {
       prev: flow.a.title,
       title: flow.a.title,
       content: flow.a,
+      instructor: false,
     };
 
     this.goToCourses = this.goToCourses.bind(this);
@@ -26,6 +29,11 @@ export class LandingScene extends Component {
     this.goToAnswering = this.goToAnswering.bind(this);
     this.getOnPressLeft = this.getOnPressLeft.bind(this);
     this.getOnPressRight = this.getOnPressRight.bind(this);
+    this.renderCourses = this.renderCourses.bind(this);
+    this.renderQuestions = this.renderQuestions.bind(this);
+    this.renderAnswering = this.renderAnswering.bind(this);
+    this.renderModifying = this.renderModifying.bind(this);
+    this.renderCreating = this.renderCreating.bind(this);
   }
 
   goToCourses() {
@@ -37,7 +45,7 @@ export class LandingScene extends Component {
     });
   }
 
-  goToQuestions(course_id, keep) {
+  goToQuestions(course_id, keep, instructor) {
     !keep && this.props.doGetQuestions(course_id);
 
     const prev = this.state.title;
@@ -45,17 +53,21 @@ export class LandingScene extends Component {
       prev,
       title: flow.b.title,
       content: flow.b,
+      instructor: !!instructor
     });
   }
 
   goToAnswering(answering, course_id) {
     this.props.doSetAnswering(answering, course_id);
 
+    const title = !!this.state.instructor ? flow.d.title: flow.c.title;
+    const content = !!this.state.instructor ? flow.d: flow.c;
+
     const prev = this.state.title;
     this.setState({
       prev,
-      title: flow.c.title,
-      content: flow.c,
+      title,
+      content,
     });
   }
 
@@ -70,7 +82,12 @@ export class LandingScene extends Component {
       case flow.c.title:
         this.state.prev === flow.a.title ?
           this.goToCourses():
-          this.goToQuestions({}, true);
+          this.goToQuestions({}, true, this.state.instructor);
+        break;
+      case flow.d.title:
+        this.state.prev === flow.a.title ?
+          this.goToCourses():
+          this.goToQuestions({}, true, this.state.instructor);
         break;
       default:
         return null;
@@ -89,6 +106,9 @@ export class LandingScene extends Component {
         // this.state.prev === flow.a.title ?
         //   this.goToCourses():
         //   this.goToQuestions({}, true);
+        break;
+      case flow.d.title:
+        this.renderCreating();
         break;
       default:
         return null;
@@ -125,6 +145,24 @@ export class LandingScene extends Component {
       <NavigationLoading />;
   }
 
+  renderModifying() {
+    return !!this.props.answering ?
+      <EditingCard
+        answering={this.props.answering}
+        course_id={this.props.course_id}
+      /> :
+      <NavigationLoading />;
+  }
+
+  renderCreating() {
+    return !!this.props.answering ?
+      <CreationCard
+        answering={this.props.answering}
+        course_id={this.props.course_id}
+      /> :
+      <NavigationLoading />;
+  }
+
   render() {
     return (
       <View style={styles.pageContainer}>
@@ -133,15 +171,19 @@ export class LandingScene extends Component {
           onPressLeft={this.getOnPressLeft}
           right={this.state.content.right}
           onPressRight={this.getOnPressRight}
-          title={this.state.content.title}
+          title={this.state.title}
         />
         {
           (this.state.title === flow.a.title ?
             this.renderCourses() :
             (this.state.title === flow.b.title ?
                 this.renderQuestions() :
-                this.renderAnswering()
-            ))
+                (this.state.title === flow.c.title ?
+                  this.renderAnswering() :
+                  this.renderCreating()
+                )
+            )
+          )
         }
       </View>
     );

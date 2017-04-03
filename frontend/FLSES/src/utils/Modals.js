@@ -17,6 +17,11 @@ export const flow = {
     title: 'Answering',
     right: 'menu',
   },
+  d:{
+    left: 'back',
+    title: 'Creating',
+    right: 'plus',
+  }
 };
 
 export const courseStatusColors = {
