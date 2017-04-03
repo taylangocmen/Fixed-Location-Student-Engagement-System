@@ -37,7 +37,7 @@ var createAnswerQuery =
 
 var handleUpdateAnswer = function(req, res, user_id, existing_device_list) {
   // Merge the existing and new device list
-  existing_device_list.push(req.body.neighbours);
+  existing_device_list.concat(req.body.neighbours);
   // Filter out duplicates
   existing_device_list = existing_device_list.filter(function(elem, pos) {
       return existing_device_list.indexOf(elem) == pos;
