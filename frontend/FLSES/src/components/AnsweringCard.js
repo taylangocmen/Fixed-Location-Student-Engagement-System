@@ -4,49 +4,63 @@ import {AppRegistry, StyleSheet, Text, View, TextInput, ScrollView, TouchableOpa
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
 import {AnsweringOption} from '../components/AnsweringOption'
+import BluetoothModule from '../bluetooth/BluetoothModule';
 
 
 export class AnsweringCard extends Component {
   constructor(props) {
     super(props);
 
-    const optionChosen = props.answering.answer !== undefined ? (props.answering.answer): -1;
+    const answer = props.answering.answer !== undefined ? (props.answering.answer): -1;
 
     this.state = {
-      optionChosen,
+      answer,
     };
     this.chooseOption = this.chooseOption.bind(this);
     this.doAnswer = this.doAnswer.bind(this);
     
   }
-  
 
-  chooseOption(newOptionChosen) {
-    let optionChosen = newOptionChosen;
+  componentWillMount () {
+    if(config.os === "android") {
+      BluetoothModule.setDiscoverable(300);
+      BluetoothModule.getMAC((mac)=>{
+        this.setState({device_id: mac});
+      });
+    }
+  }
 
-    if(newOptionChosen === this.state.optionChosen)
-      optionChosen = -1;
+  chooseOption(newanswer) {
+    let answer = newanswer;
+
+    if(newanswer === this.state.answer)
+      answer = -1;
 
     this.setState({
-      optionChosen,
+      answer,
     });
   }
 
-  //TODO: check if answer is chosen -1 and prompt answer not submitted
-  //TODO: do the device and the neighbours
-  //TODO: do the option check
   doAnswer() {
-    if(this.state.optionChosen === -1){
-      console.warn("CHOOSE AN OPTION");
-    } else {
-      const answerObj = {
-        course_id: this.props.course_id,
-        question_id: this.props.answering.question_id,
-        answer: this.state.optionChosen,
-        neighbours: [],
-        device_id: "device",
-      };
-      this.props.doAnswer(answerObj);
+    const {course_id, answering, doAnswer} = this.props;
+    const {answer, device_id} = this.state;
+    const {question_id} = answering;
+
+    if(config.os === "android"){
+      BluetoothModule.getNearbyDevices((neighbours)=>{
+        if(answer === -1){
+
+        } else {
+          const answerObj = {
+            course_id,
+            question_id,
+            answer,
+            neighbours,
+            device_id,
+          };
+          doAnswer(answerObj);
+        }
+      });
     }
   }
 
@@ -72,7 +86,7 @@ export class AnsweringCard extends Component {
                 index={index}
                 optionText={option}
                 onPress={()=>this.chooseOption(index)}
-                chosenAnswer={index === this.state.optionChosen}
+                chosenAnswer={index === this.state.answer}
                 submittedAnswer={this.props.answering.answer !== undefined && (this.props.answering.answer === index)}
                 correctAnswer={this.props.answering.correct_answer !== undefined && (this.props.answering.correct_answer === index)}
                 disabled={this.props.answering.correct_answer !== undefined}
@@ -82,7 +96,7 @@ export class AnsweringCard extends Component {
           <View style={styles.bottomContainer}>
             <TouchableOpacity
               onPress={this.doAnswer}
-              disabled={this.props.answering.correct_answer !== undefined}
+              disabled={(this.props.answering.correct_answer !== undefined) || (this.state.answer === -1)}
               style={submitStyle}
             >
               <Text style={styles.submitText}>
