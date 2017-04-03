@@ -20,7 +20,7 @@ var selectQuestionQuery =
 
 // Check to see if an answer from the submitting user already exists
 var alreadyAnsweredQuery =
-  'SELECT id ' +
+  'SELECT id, device_list ' +
   'FROM ece496.submissions ' +
   'WHERE user_id = ? AND course_id = ? AND question_id = ?';
 
@@ -35,14 +35,15 @@ var createAnswerQuery =
   ' device_list, answer_mc) ' +
   'VALUES (NOW(), ?, ?, ?, ?, ?, ?)';
 
-var handleUpdateAnswer = function(req, res, user_id) {
+var handleUpdateAnswer = function(req, res, user_id, existing_device_list) {
+  existing_device_list.push(req.body.neighbours);
   // We already know from the handler that the user has already answered the question
   // we must then seek to update the answer with a new answer.
   database.pool.query(
     updateAnswerQuery,
     [req.body.answer,
      req.body.device_id,
-     JSON.stringify(req.body.neighbours),
+     JSON.stringify(existing_device_list),
      req.body.course_id,
      user_id,
      req.body.question_id],
@@ -134,7 +135,8 @@ module.exports = {
                           }
 
                           if (rows.length === 1) {
-                            handleUpdateAnswer(req, res, user_id);
+                            existing_device_list = JSON.parse(rows[0].device_list);
+                            handleUpdateAnswer(req, res, user_id, existing_device_list);
                           } else {
                             handleCreateAnswer(req, res, user_id);
                           }

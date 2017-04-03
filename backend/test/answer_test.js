@@ -19,7 +19,7 @@ var validRequest = {
     device_id: 'device'
   }
 };
-var validUser = {user_id: 'authorized_user'};
+var validUser = {user_id: 1};
 var sqlQuestionAsked1 = { asked: 0, completed: 0};
 var sqlQuestionAsked2 = { asked: 1, completed: 1};
 var sqlQuestionAsked3 = { asked: 1, completed: 0};
@@ -151,7 +151,7 @@ describe('Answer', function() {
 	  // Indicate that the question has already been answered by returning
 	  // a submission id
       stubdb.pool.query.onCall(2)
-				  .callsArgWith(2, null, [{id: 1}], null);
+				  .callsArgWith(2, null, [{id: 1, device_list: '[]'}], null);
 	  
 	  // Return that there were no errors updating the answer
       stubdb.pool.query.onCall(3)
