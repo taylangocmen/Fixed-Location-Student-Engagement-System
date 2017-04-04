@@ -4,95 +4,14 @@ import {AppRegistry, StyleSheet, Text, View, TextInput, ScrollView, TouchableOpa
 import {config} from '../../config';
 import * as colors from '../styling/Colors';
 import {AnsweringOption} from '../components/AnsweringOption'
-import BluetoothModule from '../bluetooth/BluetoothModule';
 
 
-export class AnsweringCard extends Component {
+export class ClosingCard extends Component {
   constructor(props) {
     super(props);
-
-    const answer = props.answering.answer !== undefined ? (props.answering.answer): -1;
-
-    this.state = {
-      answer,
-      device_id: '',
-      neighbours: [],
-    };
-    this.chooseOption = this.chooseOption.bind(this);
-    this.doAnswer = this.doAnswer.bind(this);
-    
-  }
-
-  componentWillMount () {
-    if(config.os === "android") {
-      BluetoothModule.setDiscoverable(300);
-      BluetoothModule.getMAC((device_id)=>{
-        this.setState({device_id});
-      });
-    }
-  }
-
-  chooseOption(newanswer) {
-    let answer = newanswer;
-
-    if(newanswer === this.state.answer)
-      answer = -1;
-
-    this.setState({
-      answer,
-    });
-  }
-
-  doAnswer() {
-    const {course_id, answering, doAnswer} = this.props;
-    const {answer, device_id} = this.state;
-    const {question_id} = answering;
-
-
-
-
-    if(config.os === "android"){
-      BluetoothModule.getNearbyDevices((newNeighbours)=>{
-        if(answer !== -1) {
-          let neighbours = newNeighbours.concat(this.state.neighbours);
-
-          if(neighbours.length >= 2)
-            neighbours = neighbours.filter((e, p)=>(neighbours.indexOf(e) === p));
-
-          const answerObj = {
-            course_id,
-            question_id,
-            answer,
-            neighbours,
-            device_id,
-          };
-
-          doAnswer(answerObj);
-
-          // ToastAndroid.show(JSON.stringify(neighbours), ToastAndroid.LONG);
-
-          if(neighbours.length > 0)
-            this.setState({neighbours});
-        }
-      });
-      // setTimeout(BluetoothModule.cancelScan, 20000);
-
-    } else {
-      const answerObj = {
-        course_id,
-        question_id,
-        answer,
-        neighbours: ['fake_neighbour_1', 'fake_neighbour_2', 'fake_neighbour_3'],
-        device_id: 'FC:58:FA:10:66:60',
-      };
-      doAnswer(answerObj);
-
-    }
   }
 
   render() {
-    // console.warn("AnsweringCard: answering", JSON.stringify(this.props.answering));
-
     const submitStyle = this.props.answering.correct_answer !== undefined ?
       styles.disabledButton: styles.submitButton;
 
@@ -113,23 +32,30 @@ export class AnsweringCard extends Component {
                 key={index}
                 index={index}
                 optionText={option}
-                onPress={()=>this.chooseOption(index)}
-                chosenAnswer={index === this.state.answer}
-                submittedAnswer={this.props.answering.answer !== undefined && (this.props.answering.answer === index)}
+                onPress={null}
+                chosenAnswer={false}
+                submittedAnswer={false}
                 correctAnswer={this.props.answering.correct_answer !== undefined && (this.props.answering.correct_answer === index)}
-                disabled={this.props.answering.correct_answer !== undefined}
+                disabled={true}
                 acceptedAnswer={!!this.props.answering.answer_accepted}
               />)
             }
           </View>
           <View style={styles.bottomContainer}>
             <TouchableOpacity
-              onPress={this.doAnswer}
-              disabled={(this.props.answering.correct_answer !== undefined) || (this.state.answer === -1)}
+              onPress={()=>{
+                this.props.doPutCloseQuestion({course_id: this.props.course_id, question_id: this.props.answering.question_id});
+                this.props.createCallback();
+              }}
+              disabled={this.props.answering.correct_answer !== undefined}
               style={submitStyle}
             >
               <Text style={styles.submitText}>
-                Submit
+                {
+                  this.props.answering.correct_answer !== undefined ?
+                    'Marked' :
+                    'Close & Mark'
+                }
               </Text>
             </TouchableOpacity>
           </View>

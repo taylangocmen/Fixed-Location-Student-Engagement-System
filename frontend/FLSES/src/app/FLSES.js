@@ -6,7 +6,6 @@ import * as colors from '../styling/Colors';
 import {EntryPoint} from '../scenes/EntryPoint';
 import {Container} from '../components/Container';
 import {EmptyComponent} from '../components/EmptyComponent';
-import {BluetoothTest} from '../bluetooth/BluetoothTest';
 
 
 export class FLSES extends Component {
@@ -29,7 +28,6 @@ export class FLSES extends Component {
         {
           <EntryPoint />
           // <EmptyComponent />
-          // <BluetoothTest />
         }
       </Container>
     );

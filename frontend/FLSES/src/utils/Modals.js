@@ -19,8 +19,8 @@ export const flow = {
   },
   d:{
     left: 'back',
-    title: 'Creating',
-    right: 'plus',
+    title: 'Asking',
+    right: 'menu',
   }
 };
 

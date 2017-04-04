@@ -38,10 +38,10 @@ export class AnsweringOption extends Component {
             {!this.props.submittedAnswer && this.props.chosenAnswer && !this.props.disabled &&
               <View style={styles.indicatorsContainer}>{indicator.TickWhite(styles.indicatorStyle)}</View>}
 
-            {!this.props.submittedAnswer && this.props.chosenAnswer && !this.props.disabled &&
+            {this.props.submittedAnswer && !this.props.acceptedAnswer && this.props.disabled &&
               <View style={styles.indicatorsContainer}>{indicator.BtBadWhite(styles.indicatorStyle)}</View>}
 
-            {!this.props.submittedAnswer && this.props.chosenAnswer && !this.props.disabled &&
+            {this.props.submittedAnswer && this.props.acceptedAnswer && this.props.disabled &&
               <View style={styles.indicatorsContainer}>{indicator.BtGoodWhite(styles.indicatorStyle)}</View>}
 
             {this.props.submittedAnswer && !this.props.disabled &&
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   indicatorsContainerContainer: {
     minWidth: 22,
-    marginRight: -8,
+    marginRight: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

@@ -133,4 +133,9 @@ public class BluetoothModule extends ReactContextBaseJavaModule {
     initReceiver(callback);
     mBluetoothAdapter.startDiscovery();
   }
+
+  @ReactMethod
+  public void cancelScan() {
+    mBluetoothAdapter.cancelDiscovery();
+  }
 }

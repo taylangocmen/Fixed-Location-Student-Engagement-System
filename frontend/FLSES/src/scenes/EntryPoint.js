@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, Text, View, Navigator, TouchableHighlight, StatusBar, TouchableOpacity} from 'react-native';
-import {Provider} from 'react-redux';
+// import {Provider} from 'react-redux';
 
 import {config} from '../../config';
 import {api} from '../app/api';
@@ -122,19 +122,27 @@ export class EntryPoint extends Component {
     ;
   }
 
-  //TODO: this
+  //TODO: this return {"course_id":XX,"question_id":XXX}
   doPostQuestion(questionData) {
+    // console.warn("doPostQuestion: ", JSON.stringify(questionData));
+
     api.post('/question', questionData)
+      .then((response)=>this.doPutQuestion(response))
+      .then(()=>this.doGetQuestions(questionData.course_id))
+    ;
   }
 
-  //TODO: this
-  doPutQuestion() {
-
+  //TODO: this returns no response
+  doPutQuestion(questionData) {
+    api.put('/question', questionData)
+    ;
   }
 
-  //TODO: this
-  doPutCloseQuestion() {
-
+  //TODO: this returns no response
+  doPutCloseQuestion(questionData) {
+    api.put('/close_question', questionData)
+      .then(()=>this.doGetQuestions(questionData.course_id))
+    ;
   }
 
   doUpdateAnswering(answerData) {
@@ -163,6 +171,11 @@ export class EntryPoint extends Component {
           doSetAnswering={this.doSetAnswering}
           doLogout={this.doLogout}
           doAnswer={this.doAnswer}
+
+          doPostQuestion = {this.doPostQuestion}
+          doPutQuestion = {this.doPutQuestion}
+          doPutCloseQuestion = {this.doPutCloseQuestion}
+
           courses={this.state.courses}
           questions={this.state.questions}
           answering={this.state.answering}

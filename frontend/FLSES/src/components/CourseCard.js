@@ -16,6 +16,9 @@ export class CourseCard extends Component {
   }
 
   render() {
+    // console.warn("CourseCard: this.props.course: ", this.props.course);
+    // console.warn("CourseCard: this.props.course.is_prof: ", this.props.course.is_prof);
+
     const backgroundColor = courseStatusColors[this.props.status];
     const fontWeight = courseStatusFontWeights[this.props.status];
 
@@ -38,7 +41,7 @@ export class CourseCard extends Component {
         </View>
         <TouchableOpacity
           style={[styles.rightButton, {backgroundColor}]}
-          onPress={()=>this.props.onRightButtonPress(this.props.course.course_id, false, !!this.props.course.instructor)}
+          onPress={()=>this.props.onRightButtonPress(this.props.course.course_id, false, !!this.props.course.is_prof)}
         >
           <NavigationChevronRight style={[styles.chevron, {backgroundColor}]}/>
         </TouchableOpacity>

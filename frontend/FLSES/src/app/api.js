@@ -52,7 +52,7 @@ export const api = {
       .catch(e => console.warn('Post error:', e));
   },
 
-  put: () => {
+  put: (path, data) => {
     const headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -72,9 +72,7 @@ export const api = {
   },
 
   session_token: () => {
-    return !!config.testUser ?
-      config.testUser.token :
-      session_token;
+    return session_token;
   },
 
 

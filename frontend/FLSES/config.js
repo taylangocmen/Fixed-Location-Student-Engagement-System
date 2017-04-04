@@ -5,8 +5,8 @@ export const config = {
   window: Dimensions.get('window'),
   apiBaseUrl: 'http://ec2-54-213-241-203.us-west-2.compute.amazonaws.com',
   // TODO: remove this test user
-  testUser: {
-    username: 'utoridnu',
-    pass_hash: 'password',
-  }
+  // testUser: {
+  //   username: 'utoridnu',
+  //   pass_hash: 'password',
+  // }
 };
