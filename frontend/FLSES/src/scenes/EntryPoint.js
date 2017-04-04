@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, Text, View, Navigator, TouchableHighlight, StatusBar, TouchableOpacity} from 'react-native';
-import {Provider} from 'react-redux';
+// import {Provider} from 'react-redux';
 
 import {config} from '../../config';
 import {api} from '../app/api';
@@ -32,6 +32,9 @@ export class EntryPoint extends Component {
     this.doLogout = this.doLogout.bind(this);
     this.goLanding = this.goLanding.bind(this);
     this.doAnswer = this.doAnswer.bind(this);
+    this.doPostQuestion = this.doPostQuestion.bind(this);
+    this.doPutQuestion = this.doPutQuestion.bind(this);
+    this.doPutCloseQuestion = this.doPutCloseQuestion.bind(this);
     this.doUpdateAnswering = this.doUpdateAnswering.bind(this);
   }
 
@@ -119,6 +122,29 @@ export class EntryPoint extends Component {
     ;
   }
 
+  //TODO: this return {"course_id":XX,"question_id":XXX}
+  doPostQuestion(questionData) {
+    // console.warn("doPostQuestion: ", JSON.stringify(questionData));
+
+    api.post('/question', questionData)
+      .then((response)=>this.doPutQuestion(response))
+      .then(()=>this.doGetQuestions(questionData.course_id))
+    ;
+  }
+
+  //TODO: this returns no response
+  doPutQuestion(questionData) {
+    api.put('/question', questionData)
+    ;
+  }
+
+  //TODO: this returns no response
+  doPutCloseQuestion(questionData) {
+    api.put('/close_question', questionData)
+      .then(()=>this.doGetQuestions(questionData.course_id))
+    ;
+  }
+
   doUpdateAnswering(answerData) {
     for(let i = 0; i < this.state.questions.active_questions.length; i++){
       if(this.state.questions.active_questions[i].question_id === answerData.question_id) {
@@ -145,6 +171,11 @@ export class EntryPoint extends Component {
           doSetAnswering={this.doSetAnswering}
           doLogout={this.doLogout}
           doAnswer={this.doAnswer}
+
+          doPostQuestion = {this.doPostQuestion}
+          doPutQuestion = {this.doPutQuestion}
+          doPutCloseQuestion = {this.doPutCloseQuestion}
+
           courses={this.state.courses}
           questions={this.state.questions}
           answering={this.state.answering}

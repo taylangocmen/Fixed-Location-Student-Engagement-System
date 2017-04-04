@@ -31,7 +31,6 @@ export class CoursesScroller extends Component {
   }
 
   render() {
-    //TODO: do the expired courses right now its just the regular current courses, and status is inactive
     return (
       <ScrollView style={styles.scrollView}>
         {
