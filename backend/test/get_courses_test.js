@@ -15,6 +15,7 @@ var rowData = [
     course_id: 1,
     course_name: 'ece496',
     course_desc: 'Design course',
+    prof_id: 1,
     active: 1,
     question_id: 1,
     title: 'Question 1',
@@ -25,6 +26,7 @@ var rowData = [
   },
   {
     course_id: 1,
+    prof_id: 4,
     course_name: 'ece496',
     course_desc: 'Design course',
     active: 1,
@@ -37,6 +39,7 @@ var rowData = [
   },
   {
     course_id: 1,
+    prof_id: 4,
     course_name: 'ece496',
     course_desc: 'Design course',
     active: 1,
@@ -49,6 +52,7 @@ var rowData = [
   },
   {
     course_id: 2,
+    prof_id: 4,
     course_name: 'ece466',
     course_desc: 'Networks II',
     active: 0,
@@ -61,6 +65,7 @@ var rowData = [
   },
   {
     course_id: 2,
+    prof_id: 4,
     course_name: 'ece466',
     course_desc: 'Networks II',
     active: 0,
@@ -73,6 +78,7 @@ var rowData = [
   },
   {
     course_id: 3,
+    prof_id: 4,
     course_name: 'ece521',
     course_desc: 'Inference Algorithms and Machine Learning',
     active: 1,
@@ -85,6 +91,7 @@ var rowData = [
   },
   {
     course_id: 4,
+    prof_id: 4,
     course_name: 'ece419',
     course_desc: 'Distributed Systems',
     active: 0,
@@ -101,6 +108,7 @@ var expectedResponse = {
   courses_registered: [
     {
       course_id: 1,
+      is_prof: true,
       course_name: 'ece496',
       course_desc: 'Design course',
       active_questions: [
@@ -126,6 +134,7 @@ var expectedResponse = {
     },
     {
       course_id: 3,
+      is_prof: false,
       course_name: 'ece521',
       course_desc: 'Inference Algorithms and Machine Learning',
       active_questions: []
@@ -134,6 +143,7 @@ var expectedResponse = {
   courses_expired: [
     {
       course_id: 2,
+      is_prof: false,
       course_name: 'ece466',
       course_desc: 'Networks II',
       active_questions: [
@@ -150,6 +160,7 @@ var expectedResponse = {
     },
     {
       course_id: 4,
+      is_prof: false,
       course_name: 'ece419',
       course_desc: 'Distributed Systems',
       active_questions: []
