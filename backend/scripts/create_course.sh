@@ -1,17 +1,26 @@
 #!/bin/bash
 
-SESSION_TOKEN=$(curl -s -X POST 'https://localhost:8443/login' \
-     -d '{"username":"blah","pass_hash":"1234"}' \
+USERNAME=$1
+PASSWORD=$2
+COURSENAME=$3
+COURSEDESC=$4
+
+if [[ $USERNAME == "" || $PASSWORD == "" || $COURSENAME == "" || $COURSEDESC == "" ]]; then
+	echo "Usage: enrol.sh <username> <password> <coursename> <coursedesc>"
+	exit
+fi
+
+SESSION_TOKEN=$(curl -s -X POST 'https://localhost:443/login' \
+     -d '{"username":"'$USERNAME'","pass_hash":"'$PASSWORD'"}' \
      -H 'Content-Type: application/json' \
      --cacert ca/certs/ca.cert.pem | sed -e 's/.*session_token.*"\(.*\)".*/\1/')
 
-URL='https://localhost:8443/create_course'
+URL='https://localhost:443/create_course'
 
 COURSE_REQUEST='{
-  "course_name":"ece496",
-	"course_desc":"Fantastic course"
+  "course_name":"'$COURSENAME'",
+	"course_desc":"'$COURSEDESC'"
 }'
-echo $SESSION_TOKEN
 curl -X POST $URL \
      -d "$COURSE_REQUEST" \
      -H 'Content-Type: application/json' \
