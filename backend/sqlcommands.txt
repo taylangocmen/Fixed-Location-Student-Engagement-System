@@ -1,0 +1,4 @@
+select id, time_received, course_id, question_id, user_id, device_id, device_list, answer_mc, accepted from ece496.submissions;
+select id, course_id, title, correct_answer, asked, completed from ece496.questions;
+select id, utorid, create_courses from ece496.users;
+select id, prof_id, course_name, course_desc from ece496.courses;
