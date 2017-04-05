@@ -24,7 +24,7 @@ export class AnsweringCard extends Component {
   }
 
   componentWillMount () {
-    if(config.os === "android") {
+    if((config.os === "android") && ((this.props.answering.correct_answer === undefined))) {
       BluetoothModule.setDiscoverable(300);
       BluetoothModule.getMAC((device_id)=>{
         this.setState({device_id});

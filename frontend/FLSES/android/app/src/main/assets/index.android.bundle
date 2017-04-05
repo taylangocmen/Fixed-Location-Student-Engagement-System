@@ -69674,7 +69674,7 @@ _this.doAnswer=_this.doAnswer.bind(_this);return _this;
 }babelHelpers.createClass(AnsweringCard,[{key:'componentWillMount',value:function componentWillMount()
 
 {var _this2=this;
-if(_config.config.os==="android"){
+if(_config.config.os==="android"&&this.props.answering.correct_answer===undefined){
 _BluetoothModule2.default.setDiscoverable(300);
 _BluetoothModule2.default.getMAC(function(device_id){
 _this2.setState({device_id:device_id});

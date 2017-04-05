@@ -38,7 +38,7 @@ export class RegisterCard extends Component {
     else if (this.state.pass_hash_confirm === '')
       this.props.showError('Error: Cannot leave confirm password empty.');
 
-    else if(this.state.pass_hash === this.state.pass_hash_confirm)
+    else if(this.state.pass_hash !== this.state.pass_hash_confirm)
       this.props.showError('Error: Passwords do not match.');
 
     else if(this.state.pass_hash.length < 8)
