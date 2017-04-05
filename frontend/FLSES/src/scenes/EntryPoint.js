@@ -89,7 +89,24 @@ export class EntryPoint extends Component {
           const responseError = 'Error: ' +  response.error + '.';
           this.setState({responseError, showError: true});
         } else {
-          this.doLogin({username: registerData.utorid, pass_hash: registerData.pass_hash});
+          const loginData = {username: registerData.utorid, pass_hash: registerData.pass_hash};
+          const enrolData = {course_id: 50};
+          api.post('/login', loginData)
+            .then((response) => {
+              if(response.session_token !== undefined) {
+                api.setToken(response.session_token);
+                this.doGetCourses();
+              } else if(response.error !== undefined){
+                const responseError = 'Error: ' +  response.error + '.';
+                this.setState({responseError, showError: true});
+              } else {
+                const responseError = 'Error: Could not login.';
+                this.setState({responseError, showError: true});
+              }
+            })
+            .then(()=>api.post('/enrol', enrolData))
+            .then(()=>this.doGetCourses())
+          ;
         }
       })
     ;
